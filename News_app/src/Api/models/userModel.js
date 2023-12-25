@@ -12,6 +12,7 @@ const UserSchema = mongoose.Schema(
       required: [true, "Email Id is required."],
       trim: true,
     },
+
     mobile: {
       type: String,
       required: [true, "Mobile no is required."],
