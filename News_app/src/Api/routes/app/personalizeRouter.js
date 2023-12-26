@@ -1,10 +1,9 @@
 const express = require("express");
+const { getpersonalize } = require("../../controllers/app/personalizeController");
 
-const { addPersonalize } = require("../../controllers/app/personalizeContoller");
 const router = express.Router();
 
-router.post("/addpersonalize", addPersonalize);
 
-
+router.get("/get-personalize", getpersonalize);
 
 module.exports = router;
