@@ -5,8 +5,6 @@ const getpersonalize = async (req, res) => {
   try {
     const personalizeData = await Personalize.find();
 
-    // const List = personalize.map((personalize) => personalize.name);
-
     if (!personalizeData) {
       return res.status(404).json({ message: "personalize data not found" });
     }

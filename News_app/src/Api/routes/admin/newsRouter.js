@@ -1,7 +1,7 @@
 const express = require("express");
 const { singleFileUpload } = require("../../helper/upload");
 const { addNews } = require("../../controllers/admin/newsController");
-const { allnewsList } = require("../../controllers/admin/newsController");
+const { allNewsList } = require("../../controllers/admin/newsController");
 const router = express.Router();
 
 router.post(
@@ -10,6 +10,6 @@ router.post(
   addNews
 );
 
-router.get("/get-news", allnewsList);
+router.get("/get-news", allNewsList);
 
 module.exports = router;

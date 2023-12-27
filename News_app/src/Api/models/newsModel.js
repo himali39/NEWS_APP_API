@@ -1,4 +1,3 @@
-const { array } = require("joi");
 const mongoose = require("mongoose");
 
 const newsSchema = mongoose.Schema(
@@ -21,7 +20,7 @@ const newsSchema = mongoose.Schema(
       trim: true,
       required: [true, "News Title name is required."],
     },
-    tag_Name: {
+    tag_name: {
       type: mongoose.Types.ObjectId,
       ref: "tag", //modle name
     },

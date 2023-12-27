@@ -24,4 +24,24 @@ const addTag = async (req, res) => {
   }
 };
 
-module.exports = { addTag };
+const getTagData = async (req, res) => {
+  try {
+    const tag = await Tag.find();
+
+    if (!tag) {
+      return res.status(404).json({ message: "Tag data not found" });
+    }
+    res.status(200).json({
+      success: true,
+      message: `Tag data get successfully!`,
+      data: tag,
+    });
+  } catch (err) {
+    res.status(400).json({
+      success: false,
+      message: err.message,
+    });
+  }
+};
+
+module.exports = { addTag, getTagData };
