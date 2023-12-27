@@ -21,10 +21,9 @@ const newsSchema = mongoose.Schema(
       trim: true,
       required: [true, "News Title name is required."],
     },
-    tag: {
-      type: String,
-      trim: true,
-      required: [true, "Tag name is required."],
+    tag_Name: {
+      type: mongoose.Types.ObjectId,
+      ref: "tag", //modle name
     },
     location: {
       type: String,

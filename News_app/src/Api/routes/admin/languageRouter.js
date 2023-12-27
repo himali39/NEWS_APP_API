@@ -1,12 +1,12 @@
-const { addlanguage } = require("../../controllers/admin/languagesController");
+const { addLanguage } = require("../../controllers/admin/languagesController");
 const { multiDiffFileUpload } = require("../../helper/upload");
 
 const router = require("express").Router();
 
 // Use router in index
 router.post(
-  "/addlanguage",
-  multiDiffFileUpload("./src/Api/public/lang", [
+  "/addLanguage",
+  multiDiffFileUpload("/lang", [
     {
       name: "json_file",
       maxCount: 1,
@@ -18,7 +18,7 @@ router.post(
       allowedMimes: ["image/png", "image/jpeg", "image/jpg", "image/webp"],
     },
   ]),
-  addlanguage
+  addLanguage
 );
 
 module.exports = router;

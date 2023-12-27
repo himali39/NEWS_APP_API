@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const languagesSchema = mongoose.Schema(
   {
-    languages: {
+    name: {
       type: String,
       required: [true, "language name is required."],
       trim: true,

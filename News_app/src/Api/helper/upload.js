@@ -15,9 +15,11 @@ const singleFileUpload = (basePath, name) => {
     },
 
     filename: function (req, file, cb) {
-      cb(null,   Date.now() + "-" + file.originalname.replace(/\s/g, "-").toLowerCase()
+      cb(
+        null,
+        Date.now() + "-" + file.originalname.replace(/\s/g, "-").toLowerCase()
         // new Date().getTime() + file.originalname
-        );
+      );
     },
   });
 
@@ -26,10 +28,15 @@ const singleFileUpload = (basePath, name) => {
   }).single(name);
 };
 
-function multiDiffFileUpload(path, fieldConfigurations) {
+function multiDiffFileUpload(basePath, fieldConfigurations) {
   const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-      cb(null, path);
+    destination: function (req, file, cb) {
+      const dynamicPath = path.join(__dirname, "../public" + basePath);
+
+      if (!fs.existsSync(dynamicPath)) {
+        fs.mkdirSync(dynamicPath, { recursive: true });
+      }
+      cb(null, dynamicPath);
     },
     filename: (req, file, cb) => {
       cb(
@@ -38,14 +45,12 @@ function multiDiffFileUpload(path, fieldConfigurations) {
       );
     },
   });
-
   const uploadFields = fieldConfigurations.map((fieldConfig) => {
     return {
       name: fieldConfig.name,
       maxCount: fieldConfig.maxCount,
     };
   });
-
   const fileFilter = (req, file, cb) => {
     const allowedMimes = fieldConfigurations.find(
       (config) => config.name === file.fieldname
@@ -59,11 +64,13 @@ function multiDiffFileUpload(path, fieldConfigurations) {
       return cb(error);
     }
   };
-
   return multer({
     storage: storage,
     fileFilter: fileFilter,
   }).fields(uploadFields);
 }
 
-module.exports = { singleFileUpload, multiDiffFileUpload };
+module.exports = {
+  singleFileUpload,
+  multiDiffFileUpload,
+};

@@ -5,13 +5,11 @@ const addPersonalize = async (req, res) => {
   try {
     const reqbody = req.body;
 
-    console.log(reqbody);
-
     if (req.file) {
       reqbody.image = req.file.filename;
     }
 
-    /** create user using createUser service */
+    /** create personalize using model */
     const personalize = await Personalize.create(reqbody);
 
     if (!personalize) {

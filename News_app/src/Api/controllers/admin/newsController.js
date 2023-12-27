@@ -29,4 +29,29 @@ const addNews = async (req, res) => {
   }
 };
 
-module.exports = { addNews };
+/* ----------------------------- Get News data ----------------------------- */
+const allnewsList = async (req, res) => {
+  try {
+    const newsData = await News.find().populate("tag_Name");
+    //   {
+    //   path: "Tag", //model name
+    //   select: ["tag_Name"], //felied name
+    // });
+
+    // if (!newsData) {
+    //   return res.status(404).json({ message: "News list ata not found" });
+    // }
+    res.status(200).json({
+      success: true,
+      message: "News data get successfully ",
+      data: newsData,
+    });
+  } catch (error) {
+    res.status(404).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
+module.exports = { addNews, allnewsList };
