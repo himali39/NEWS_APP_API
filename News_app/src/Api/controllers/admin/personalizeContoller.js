@@ -5,10 +5,12 @@ const addPersonalize = async (req, res) => {
   try {
     const reqbody = req.body;
 
-    if (req.file ) {
+    console.log(reqbody);
+
+    if (req.file) {
       reqbody.image = req.file.filename;
     }
-   
+
     /** create user using createUser service */
     const personalize = await Personalize.create(reqbody);
 
@@ -20,7 +22,6 @@ const addPersonalize = async (req, res) => {
       message: `Personalize data add successfully!`,
       data: personalize,
     });
-    
   } catch (err) {
     res.status(400).json({
       success: false,
