@@ -1,19 +1,24 @@
 const router = require("express").Router();
-const languageRouter = require("../admin/languageRouter");
-const personalizeRouter = require("../admin/personalizeRouter");
+const languageRouter = require("../admin/adminLanguageRouter");
+const categoryRouter = require("../admin/adminCategoryRouter");
 const newsRouter = require("../admin/newsRouter");
 const tagRouter = require("../admin/tagRouter");
-const demo = require("../admin/demo");
+const subcategoryRouter = require("../admin/adminSubcategoryRouter");
 
-// Use router in index
+
+/* ---------------------------- Language Routers ---------------------------- */
 router.use("/admin/language", languageRouter);
 
-router.use("/admin/personalize", personalizeRouter);
+/* ---------------------------- Category Routers ---------------------------- */
+router.use("/admin/category", categoryRouter);
 
+/* ---------------------------- sub Category Routers ---------------------------- */
+router.use("/admin/subcategory", subcategoryRouter);
+
+/* ---------------------------- News Routers ---------------------------- */
 router.use("/admin/news", newsRouter);
 
-router.use("/admin/demo", demo);
-
+/* ---------------------------- Tag Routers ---------------------------- */
 router.use("/admin/tag", tagRouter);
 
 

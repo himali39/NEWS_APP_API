@@ -1,8 +1,8 @@
-const abc = require("../../models/abc");
 const Languages = require("../../models/languagesModel");
-const fs = require("fs");
 
+/* --------------------------- add Languages data --------------------------- */
 const addLanguage = async (req, res) => {
+  console.log("object");
   try {
     const reqbody = req.body;
 
@@ -13,13 +13,6 @@ const addLanguage = async (req, res) => {
       reqbody.flag_image = req.files["flag_image"][0].filename;
     }
 
-    // if (req.files["flag_image"] && req.files["flag_image"][0]) {
-    //   reqbody.flag_image = req.files["flag_image"][0].filename;
-    // }
-
-    // if (req.files["json_file"] && req.files["json_file"][0]) {
-    //   reqbody.json_file = req.files["json_file"][0].filename;
-    // }
     const addData = await Languages.create(reqbody);
 
     if (!addData) {
@@ -37,4 +30,27 @@ const addLanguage = async (req, res) => {
     });
   }
 };
-module.exports = { addLanguage };
+
+/* ---------------------------- list of Languages --------------------------- */
+const getLanguage = async (req, res) => {
+  try {
+    const LanguageData = await Languages.find();
+
+    if (!LanguageData) {
+      return res.status(404).json({ message: "Language Data not found" });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "List of Language Data successfully ",
+      personalize: LanguageData,
+    });
+  } catch (error) {
+    res.status(404).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
+module.exports = { addLanguage, getLanguage };

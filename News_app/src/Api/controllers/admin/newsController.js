@@ -1,10 +1,10 @@
 const News = require("../../models/newsModel");
-const Personalize = require("../../models/personalizeModel");
 
 /* -------------------------------add Personalize data------------------------------ */
 const addNews = async (req, res) => {
   try {
     const reqbody = req.body;
+    console.log("🚀 ~  reqbody:", reqbody)
 
     if (req.file) {
       reqbody.news_image = req.file.filename;
@@ -32,11 +32,7 @@ const addNews = async (req, res) => {
 const allNewsList = async (req, res) => {
   try {
     const newsData = await News.find().populate("tag_name");
-    //   {
-    //   path: "Tag", //model name
-    //   select: ["tag_Name"], //felied name
-    // });
-
+  
     if (!newsData) {
       return res.status(404).json({ message: "News list ata not found" });
     }
@@ -45,6 +41,7 @@ const allNewsList = async (req, res) => {
       message: "News data get successfully ",
       data: newsData,
     });
+
   } catch (error) {
     res.status(404).json({
       success: false,

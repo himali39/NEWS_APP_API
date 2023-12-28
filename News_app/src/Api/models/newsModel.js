@@ -7,9 +7,10 @@ const newsSchema = mongoose.Schema(
       required: [true, "language name is required."],
       trim: true,
     },
-    personalize: {
-      type: String,
-    },
+    category: [{
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "category",
+    }],
     expiry_date: {
       type: Date,
       default: Date(),
@@ -20,10 +21,12 @@ const newsSchema = mongoose.Schema(
       trim: true,
       required: [true, "News Title name is required."],
     },
-    tag_name: {
-      type: mongoose.Types.ObjectId,
-      ref: "tag", //modle name
-    },
+    tag_name: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "tag", //modle name
+      },
+    ],
     location: {
       type: String,
       trim: true,

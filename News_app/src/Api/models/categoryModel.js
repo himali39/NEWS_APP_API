@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const personalizeSchema = mongoose.Schema(
+const categorySchema = mongoose.Schema(
   {
     name: {
       type: String,
@@ -23,6 +23,6 @@ const personalizeSchema = mongoose.Schema(
   }
 );
 
-const Personalize = mongoose.model("personalize", personalizeSchema);
+const Category = mongoose.model("category", categorySchema);
 
-module.exports = Personalize;
+module.exports = Category;

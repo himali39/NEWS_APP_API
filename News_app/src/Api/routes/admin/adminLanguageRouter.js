@@ -1,12 +1,12 @@
-const { addLanguage } = require("../../controllers/admin/languagesController");
+const { addLanguage, getLanguage } = require("../../controllers/admin/adminLanguagesController");
 const { multiDiffFileUpload } = require("../../helper/upload");
 
 const router = require("express").Router();
 
-// Use router in index
+/* --------------------------- add Language route --------------------------- */
 router.post(
   "/addLanguage",
-  multiDiffFileUpload("/lang", [
+  multiDiffFileUpload("/languages", [
     {
       name: "json_file",
       maxCount: 1,
@@ -20,5 +20,8 @@ router.post(
   ]),
   addLanguage
 );
+
+/* ------------------------- get Language data route ------------------------ */
+router.get("/get-Languages", getLanguage);
 
 module.exports = router;

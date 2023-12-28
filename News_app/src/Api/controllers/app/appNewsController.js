@@ -3,15 +3,14 @@ const News = require("../../models/newsModel");
 /* ----------------------------- Get News data ----------------------------- */
 const allnewsList = async (req, res) => {
   try {
-    const newsData = await News.find().populate("tag_Name");
-    //   {
-    //   path: "Tag", //model name
-    //   select: ["tag_Name"], //felied name
-    // });
+    const newsData = await News.find().populate({
+      path: "Tag", //model name
+      select: ["tag_Name"], //felied name
+    });
 
-    // if (!newsData) {
-    //   return res.status(404).json({ message: "News list ata not found" });
-    // }
+    if (!newsData) {
+      return res.status(404).json({ message: "News list ata not found" });
+    }
     res.status(200).json({
       success: true,
       message: "News data get successfully ",
@@ -25,6 +24,29 @@ const allnewsList = async (req, res) => {
   }
 };
 
+/* ----------------------------- Get News data ----------------------------- */
+const forYouNewsList = async (req, res) => {
+  try {
+    const newsData = await News.find().populate({
+      path: "category",
+      select: ["name"], //felied name
+    });
+
+    if (!newsData) {
+      return res.status(404).json({ message: "News list ata not found" });
+    }
+    res.status(200).json({
+      success: true,
+      message: "News data get successfully ",
+      data: newsData,
+    });
+  } catch (error) {
+    res.status(404).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
 /* ----------------------------- Get particuler News data ----------------------------- */
 const getNewsById = async (req, res) => {
   try {
@@ -97,4 +119,11 @@ const getTrandingTagList = async (req, res) => {
     res.status(500).json({ success: false, error: "Internal Server Error" });
   }
 };
-module.exports = { allnewsList, getNewsById, searchNews, getTrandingTagList };
+
+module.exports = {
+  allnewsList,
+  forYouNewsList,
+  getNewsById,
+  searchNews,
+  getTrandingTagList,
+};
