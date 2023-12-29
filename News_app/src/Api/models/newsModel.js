@@ -3,18 +3,32 @@ const mongoose = require("mongoose");
 const newsSchema = mongoose.Schema(
   {
     languages: {
-      type: String,
-      required: [true, "language name is required."],
-      trim: true,
-    },
-    category: [{
       type: mongoose.Schema.Types.ObjectId,
-      ref: "category",
-    }],
+      ref: "languages",
+      required: [true, "language name is required."],
+    },
+    category: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "category",
+      },
+    ],
+    sub_category: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "subcategory", //model name
+      },
+    ],
     expiry_date: {
       type: Date,
-      default: Date(),
+      default: Date.now,
       required: [true, "Expiry Date name is required."],
+      validate: {
+        validator: function (value) {
+          return value > new Date(); // Check if expiry_date is in the future
+        },
+        message: "Expiry Date must be a future date.",
+      },
     },
     title: {
       type: String,
@@ -28,20 +42,29 @@ const newsSchema = mongoose.Schema(
       },
     ],
     location: {
-      type: String,
-      trim: true,
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "location",
     },
     news_image: {
       type: String,
       trim: true,
       required: [true, "News image name is required."],
     },
+    multipleImage: [
+      {
+        type: String,
+      },
+    ],
     content_type: {
       type: String,
     },
     description: {
       type: String,
       trim: true,
+    },
+    notifyUser: {
+      type: Boolean,
+      default: false,
     },
   },
   {

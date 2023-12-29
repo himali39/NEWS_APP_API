@@ -20,7 +20,4 @@ router.get("/get-foryouNews", forYouNewsList);
 router.get("/trending-hashtags", getTrandingTagList);
 
 
-
-
-
 module.exports = router;

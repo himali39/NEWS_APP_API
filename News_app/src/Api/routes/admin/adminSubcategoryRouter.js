@@ -12,7 +12,4 @@ router.get("/get-subCategory", getSubCategory);
 
 /* ----------------------- delete category route  ----------------------- */
 
-
-
-
 module.exports = router;

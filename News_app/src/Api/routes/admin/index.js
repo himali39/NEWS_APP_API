@@ -1,9 +1,10 @@
 const router = require("express").Router();
 const languageRouter = require("../admin/adminLanguageRouter");
 const categoryRouter = require("../admin/adminCategoryRouter");
-const newsRouter = require("../admin/newsRouter");
+const newsRouter = require("../admin/adminNewsRouter");
 const tagRouter = require("../admin/tagRouter");
 const subcategoryRouter = require("../admin/adminSubcategoryRouter");
+const locationRouter = require("../admin/adminLocationRoute");
 
 
 /* ---------------------------- Language Routers ---------------------------- */
@@ -21,5 +22,7 @@ router.use("/admin/news", newsRouter);
 /* ---------------------------- Tag Routers ---------------------------- */
 router.use("/admin/tag", tagRouter);
 
+/* ---------------------------- Location Routers ---------------------------- */
+router.use("/admin/location", locationRouter);
 
 module.exports = router;

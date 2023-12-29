@@ -9,7 +9,7 @@ const addCategory = async (req, res) => {
     if (req.file) {
       reqbody.image = req.file.filename;
     }
-    
+
     /** create category using model */
     const category = await Category.create(reqbody);
 
@@ -32,7 +32,8 @@ const addCategory = async (req, res) => {
 /* ----------------------------- Get Category data ----------------------------- */
 const getCategory = async (req, res) => {
   try {
-    const CategoryData = await Category.find();
+    const CategoryData = await Category.find()
+     
 
     if (!CategoryData) {
       return res.status(404).json({ message: "Category  data not found" });
@@ -89,7 +90,7 @@ const updateCategory = async (req, res) => {
     const updateCateData = await Category.findByIdAndUpdate(id, req.body, {
       new: true,
     });
-   
+
     if (!updateCateData) {
       throw new Error("Something went wrong, try again later");
     }

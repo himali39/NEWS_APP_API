@@ -27,10 +27,7 @@ const addSubCategory = async (req, res) => {
 /* ----------------------------- Get sub-Category data ----------------------------- */
 const getSubCategory = async (req, res) => {
   try {
-    const subCategoryData = await subCategory.find().populate({
-      path: "category",
-      select: ["name"],
-    });
+    const subCategoryData = await subCategory.find();
 
     if (!subCategoryData) {
       return res.status(404).json({ message: "sub Category  data not found" });

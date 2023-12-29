@@ -2,13 +2,13 @@ const mongoose = require("mongoose");
 
 const subCategorySchema = mongoose.Schema(
   {
-    name: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "category", //model name
-      },
-    ],
-    subCategory_name: {
+    // category_name: [
+    //   {
+    //     type: mongoose.Schema.Types.ObjectId,
+    //     ref: "category", //model name
+    //   },
+    // ],
+    subCategoryName: {
       type: String,
       required: [true, "Name is required."],
       trim: true,

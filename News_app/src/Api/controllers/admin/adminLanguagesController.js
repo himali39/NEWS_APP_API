@@ -2,7 +2,7 @@ const Languages = require("../../models/languagesModel");
 
 /* --------------------------- add Languages data --------------------------- */
 const addLanguage = async (req, res) => {
-  console.log("object");
+ 
   try {
     const reqbody = req.body;
 
