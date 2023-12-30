@@ -59,7 +59,7 @@ const newsSchema = mongoose.Schema(
     ],
     contentType: {
       type: String,
-      
+      fileType: "video/mp4",
     },
     description: {
       type: String,

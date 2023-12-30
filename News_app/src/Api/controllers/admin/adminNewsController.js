@@ -14,10 +14,13 @@ const addNews = async (req, res) => {
         (file) => file.filename
       );
     }
-     if (req.files.contentType) {
-       reqbody.contentType = req.files.contentType[0].filename;
-     }
+    if (req.files.contentType) {
+      reqbody.contentType = req.files.contentType[0].filename;
+    }
 
+    // if (reqbody.contentType !==) {
+    //   throw new Error("Content-Type not supported");
+    // }
     const newsData = await News.create(reqbody);
 
     if (!newsData) {

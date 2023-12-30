@@ -142,10 +142,9 @@ const searchNews = async (req, res) => {
 const getVideoNewList= async (req, res) => {
   try {
     const videoNewsData = await News.find({
-      contentType: "video", // Assuming content_type is a field indicating the type of content
-    });
-      // .sort({ createdAt: -1 })
-      // .lean();
+      contentType: "video",
+      fileType: "video/mp4", 
+    }).sort({ createdAt: -1 });
 
     res.status(200).json({
       success: true,
