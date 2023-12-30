@@ -2,7 +2,7 @@ const multer = require("multer");
 const fs = require("fs");
 const path = require("path");
 
- /* ------------- single images upload related code for multer ... ------------ */
+/* ------------- single images upload related code for multer ... ------------ */
 const singleFileUpload = (basePath, name) => {
   const storage = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -29,7 +29,7 @@ const singleFileUpload = (basePath, name) => {
   }).single(name);
 };
 
- /* -------------  diffrent file and image upload related code for multer ... ------------ */
+/* -------------  diffrent file and image upload related code for multer ... ------------ */
 function multiDiffFileUpload(basePath, fieldConfigurations) {
   const storage = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -72,8 +72,10 @@ function multiDiffFileUpload(basePath, fieldConfigurations) {
   }).fields(uploadFields);
 }
 
- /* ------------- Multi images upload related code for multer ... ------------ */
+/* ------------- Multi images upload related code for multer ... ------------ */
 function multiFileUpload(basePath, allowedMimes, fileSize, name) {
+  console.log(basePath);
+
   const storage = multer.diskStorage({
     destination: function (req, file, cb) {
       const dynamicPath = path.join(__dirname, "../public" + basePath);

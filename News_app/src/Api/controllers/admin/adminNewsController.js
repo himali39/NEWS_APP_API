@@ -3,29 +3,32 @@ const News = require("../../models/newsModel");
 /* -------------------------------add Personalize data------------------------------ */
 const addNews = async (req, res) => {
   try {
-    console.log("fileeee")
-    // const reqbody = req.body;
+    const reqbody = req.body;
 
-    // if (req.file) {
-    //   reqbody.news_image = req.file.filename;
-    // }
-    // console.log(req.files);
+    if (req.files.newsImage) {
+      reqbody.newsImage = req.files.newsImage[0].filename;
+    }
 
-    // if (req.files && req.files.length > 0) {
-    //   req.files.forEach((file) => {
-    //     reqbody.multipleImage.push(file.filename);
-    //   });
-    // }
-    // const newsData = await News.create(reqbody);
-    // console.log(newsData);
-    // if (!newsData) {
-    //   return res.status(404).json({ message: "News Data not found" });
-    // }
-    // res.status(200).json({
-    //   success: true,
-    //   message: `News Data data add successfully!`,
-    //   data: newsData,
-    // });
+    if (req.files.multipleImage) {
+      reqbody.multipleImage = req.files.multipleImage.map(
+        (file) => file.filename
+      );
+    }
+     if (req.files.contentType) {
+       reqbody.contentType = req.files.contentType[0].filename;
+     }
+
+    const newsData = await News.create(reqbody);
+
+    if (!newsData) {
+      return res.status(404).json({ message: "News Data not found" });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: `News Data data add successfully!`,
+      data: newsData,
+    });
   } catch (err) {
     res.status(400).json({
       success: false,
@@ -39,24 +42,24 @@ const allNewsList = async (req, res) => {
   try {
     const newsData = await News.find().populate([
       {
-        path: "tag_name",
-        select: ["name"],
+        path: "languages",
+        select: ["languagesName"],
       },
       {
         path: "category",
-        select: ["name"],
+        select: ["categoryName"],
       },
       {
-        path: "sub_category",
-        select: ["subCategory_name"],
+        path: "subcategory",
+        select: ["subCategoryName"],
+      },
+      {
+        path: "tag",
+        select: ["tagName"],
       },
       {
         path: "location",
-        select: ["location_name"],
-      },
-      {
-        path: "languages",
-        select: ["name"],
+        select: ["locationName"],
       },
     ]);
 

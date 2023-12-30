@@ -3,14 +3,18 @@ const mongoose = require("mongoose");
 
 const tagSchema = mongoose.Schema(
   {
-    name: {
+    tagName: {
       type: String,
       required: [true, "Tag name is required."],
       trim: true,
     },
-    language: {
-      type: String,
-    }, 
+    languages: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "languages",
+        required: [true, "language name is required."],
+      },
+    ],
   },
   {
     timestamps: true,

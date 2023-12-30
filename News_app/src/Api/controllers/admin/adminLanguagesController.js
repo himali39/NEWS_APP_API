@@ -6,11 +6,11 @@ const addLanguage = async (req, res) => {
   try {
     const reqbody = req.body;
 
-    if (req.files["json_file"][0]) {
-      reqbody.json_file = req.files["json_file"][0].filename;
+    if (req.files["jsonFile"][0]) {
+      reqbody.jsonFile = req.files["jsonFile"][0].filename;
     }
-    if (req.files["flag_image"][0]) {
-      reqbody.flag_image = req.files["flag_image"][0].filename;
+    if (req.files["flagImage"][0]) {
+      reqbody.flagImage = req.files["flagImage"][0].filename;
     }
 
     const addData = await Languages.create(reqbody);

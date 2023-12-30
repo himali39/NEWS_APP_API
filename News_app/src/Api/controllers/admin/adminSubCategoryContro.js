@@ -19,7 +19,7 @@ const addSubCategory = async (req, res) => {
   } catch (err) {
     res.status(400).json({
       success: false,
-      message: err.message,
+      message: err.message,            
     });
   }
 };
@@ -27,7 +27,10 @@ const addSubCategory = async (req, res) => {
 /* ----------------------------- Get sub-Category data ----------------------------- */
 const getSubCategory = async (req, res) => {
   try {
-    const subCategoryData = await subCategory.find();
+    const subCategoryData = await subCategory.find().populate({
+      path: "languages",
+      select: ["languagesName"],
+    });
 
     if (!subCategoryData) {
       return res.status(404).json({ message: "sub Category  data not found" });
@@ -35,7 +38,7 @@ const getSubCategory = async (req, res) => {
 
     res.status(200).json({
       success: true,
-      message: "get all sub  Category data ",
+      message: "get all subCategory data ",
       personalize: subCategoryData,
     });
   } catch (error) {

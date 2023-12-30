@@ -2,12 +2,12 @@ const mongoose = require("mongoose");
 
 const languagesSchema = mongoose.Schema(
   {
-    name: {
+    languagesName: {
       type: String,
       required: [true, "language name is required."],
       trim: true,
     },
-    display_name: {
+    displayName: {
       type: String,
       trim: true,
     },
@@ -15,11 +15,11 @@ const languagesSchema = mongoose.Schema(
       type: String,
       trim: true,
     },
-    json_file: {
+    jsonFile: {
       type: String,
       required: [true, "language JSON file is required."],
     },
-    flag_image: {
+    flagImage: {
       type: String,
     },
   },

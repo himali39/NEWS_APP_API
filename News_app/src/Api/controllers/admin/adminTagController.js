@@ -24,9 +24,13 @@ const addTag = async (req, res) => {
   }
 };
 
+  
 const getTagData = async (req, res) => {
   try {
-    const tag = await Tag.find();
+    const tag = await Tag.find().populate({
+      path:"languages",
+      select:["languagesName"]
+    }); 
 
     if (!tag) {
       return res.status(404).json({ message: "Tag data not found" });

@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const locationSchema = new mongoose.Schema(
   {
-    location_name: {
+    locationName: {
       type: String,
       trim: true,
     },

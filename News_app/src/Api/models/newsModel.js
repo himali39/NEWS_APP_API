@@ -2,18 +2,20 @@ const mongoose = require("mongoose");
 
 const newsSchema = mongoose.Schema(
   {
-    languages: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "languages",
-      required: [true, "language name is required."],
-    },
+    languages: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "languages",
+        required: [true, "language name is required."],
+      },
+    ],
     category: [
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: "category",
       },
     ],
-    sub_category: [
+    subcategory: [
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: "subcategory", //model name
@@ -35,7 +37,7 @@ const newsSchema = mongoose.Schema(
       trim: true,
       required: [true, "News Title name is required."],
     },
-    tag_name: [
+    tag: [
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: "tag", //modle name
@@ -45,7 +47,7 @@ const newsSchema = mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "location",
     },
-    news_image: {
+    newsImage: {
       type: String,
       trim: true,
       required: [true, "News image name is required."],
@@ -55,8 +57,9 @@ const newsSchema = mongoose.Schema(
         type: String,
       },
     ],
-    content_type: {
+    contentType: {
       type: String,
+      
     },
     description: {
       type: String,

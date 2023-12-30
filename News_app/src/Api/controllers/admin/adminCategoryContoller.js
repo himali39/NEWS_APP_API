@@ -7,7 +7,7 @@ const addCategory = async (req, res) => {
     const reqbody = req.body;
 
     if (req.file) {
-      reqbody.image = req.file.filename;
+      reqbody.categoryImage = req.file.filename;
     }
 
     /** create category using model */

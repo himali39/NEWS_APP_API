@@ -3,8 +3,9 @@ const {
   allnewsList,
   getNewsById,
   searchNews,
-  getTrandingTagList,
-  forYouNewsList
+ 
+  forYouNewsList,
+  getVideoNewList
 } = require("../../controllers/app/appNewsController");
 
 const router = express.Router();
@@ -15,9 +16,9 @@ router.get("/get-news/:id", getNewsById);
 
 router.get("/get-searchNews", searchNews);
 
-router.get("/get-foryouNews", forYouNewsList);
+router.post("/allForYouNews", forYouNewsList);
 
-router.get("/trending-hashtags", getTrandingTagList);
+router.get("/video-news",getVideoNewList);
 
 
 module.exports = router;
