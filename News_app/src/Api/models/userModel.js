@@ -3,23 +3,40 @@ const bcrypt = require("bcrypt");
 
 const UserSchema = mongoose.Schema(
   {
-    name: {
+    fullName: {
       type: String,
       required: [true, "Name is required."],
+    },
+    userName: {
+      type: String,
     },
     email: {
       type: String,
       required: [true, "Email Id is required."],
       trim: true,
     },
-
     mobile: {
       type: String,
       required: [true, "Mobile no is required."],
+      validate: {
+        validator: function (v) {
+          return /^\d{10}$/.test(v);
+        },
+        message: `Mobile number is not valid.`,
+      },
     },
     password: {
       type: String,
       required: [true, "Password is required."],
+    },
+    yourBio: {
+      type: String,
+    },
+    gender: {
+      type: String,
+    },
+    dob: {
+      type: Number,
     },
     accessToken: {
       type: String,
@@ -31,6 +48,10 @@ const UserSchema = mongoose.Schema(
     },
     expiration: {
       type: Date,
+    },
+    autoPlay: {
+      type: Boolean,
+      default: true,
     },
   },
   {

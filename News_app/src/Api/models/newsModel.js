@@ -43,10 +43,10 @@ const newsSchema = mongoose.Schema(
         ref: "tag", //modle name
       },
     ],
-    location: {
+    location: [{
       type: mongoose.Schema.Types.ObjectId,
       ref: "location",
-    },
+    }],
     newsImage: {
       type: String,
       trim: true,
@@ -59,13 +59,21 @@ const newsSchema = mongoose.Schema(
     ],
     contentType: {
       type: String,
-      fileType: "video/mp4",
+      default: 1, //video content type defind deafult 1
+    },
+    video: {
+      type: String,
+      default: null,
     },
     description: {
       type: String,
       trim: true,
     },
     notifyUser: {
+      type: Boolean,
+      default: false,
+    },
+    is_active: {
       type: Boolean,
       default: false,
     },

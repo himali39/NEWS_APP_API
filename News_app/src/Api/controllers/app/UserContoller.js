@@ -6,6 +6,8 @@ const refreshSecret = process.env.JWT_REFRESH_SECRET_KEY;
 const bcrypt = require("bcrypt");
 const ejs = require("ejs");
 const { sendMail } = require("../../helper/emailsend");
+const News = require("../../models/newsModel");
+const Location = require("../../models/locationModel");
 
 /* ---------------------------- Register User Data ---------------------------- */
 const signupUser = async (req, res) => {
@@ -33,7 +35,7 @@ const signupUser = async (req, res) => {
 
     /** create access token */
     const payload = {
-      name: reqbody.name,
+      fullName: reqbody.fullName,
       email: reqbody.email,
       expiresIn: moment().add(5, "minutes").unix(),
     };
@@ -48,7 +50,7 @@ const signupUser = async (req, res) => {
     const refreshToken = generateRefreshToken(payload);
 
     const newUser = {
-      name: req.body.name,
+      fullName: req.body.fullName,
       email: req.body.email,
       mobile: req.body.mobile,
       password: req.body.password,
@@ -109,29 +111,32 @@ const loginUser = async (req, res) => {
     };
     const refreshToken = generateRefreshToken(payload);
 
-    const otp = Math.floor(100000 + Math.random() * 900000);
+    // const otp = Math.floor(100000 + Math.random() * 900000);
 
-    const emailTemplate = await ejs.renderFile("./src/Api/views/email_otp.ejs", {
-      otp,
-    });
+    // const emailTemplate = await ejs.renderFile(
+    //   "./src/Api/views/email_otp.ejs",
+    //   {
+    //     otp,
+    //   }
+    // );
 
     // send mail service is use by email service
-    const mailSent = sendMail(email, emailTemplate, "Verification code");
+    // const mailSent = sendMail(email, emailTemplate, "Verification code");
 
-    if (!mailSent) {
-      // If email sending fails, handle the error
-      res.status(500).json({
-        success: false,
-        message: "Failed to send email with OTP",
-      });
-    }
+    // if (!mailSent) {
+    //   // If email sending fails, handle the error
+    //   res.status(500).json({
+    //     success: false,
+    //     message: "Failed to send email with OTP",
+    //   });
+    // }
     //user send otp
-    findUser.otp = otp;
+    // findUser.otp = otp;
 
     res.status(200).json({
       success: true,
       message: `User Login successfully!`,
-      otp:otp,
+      // otp: otp,
       accessToken: accessToken,
       refreshToken: refreshToken,
     });
@@ -155,7 +160,7 @@ const forgotPasswordEmail = async (req, res) => {
         .status(401)
         .json({ success: false, message: "Invalid email Id" });
 
-      const otp = Math.floor(100000 + Math.random() * 900000); 
+    const otp = Math.floor(100000 + Math.random() * 900000);
     const expirationTime = new Date(Date.now() + 5 * 60 * 1000); // 5 minutes expiration
 
     user.otp = {
@@ -168,9 +173,12 @@ const forgotPasswordEmail = async (req, res) => {
     await user.save();
 
     // Render the EJS template
-    const emailTemplate = await ejs.renderFile("./src/Api/views/email_otp.ejs", {
-      otp,
-    });
+    const emailTemplate = await ejs.renderFile(
+      "./src/Api/views/email_otp.ejs",
+      {
+        otp,
+      }
+    );
 
     // send mail service is use by email service
     const mailSent = sendMail(email, emailTemplate, "Password Reset OTP");
@@ -194,8 +202,151 @@ const forgotPasswordEmail = async (req, res) => {
   }
 };
 
+/* ----------------------------- update user profile ----------------------------- */
+const updateUserProfile = async (req, res) => {
+  try {
+
+    const user = await User.findById(req.body.userId);
+   
+    if (!user) {
+      throw new Error("User Data not found");
+    }
+      if (req.body.dob) {
+        const dateOfBirth = new Date(req.body.dob);
+        req.body.dob = dateOfBirth.getTime();
+      }
+
+    // Update user data in the database
+        const isUpdate = await User.findByIdAndUpdate(
+          req.body.userId,
+          {
+            $set: req.body,
+          },
+          { new: true }
+        );
+    res.status(200).json({
+      success: true,
+      updateData: isUpdate,
+      message: "update successfully",
+    });
+  } catch (err) {
+    res.status(400).json({ success: false, error: err.message });
+  }
+};
+
+/* ----------------------- update  auto play setting  ----------------------- */
+const updateAutoPlay = async (req, res) => {
+  try {
+    const id = req.params.id;
+    let updatedUserData = await User.findById(id);
+
+    // Update user data in the database
+    updatedUserData = await User.findByIdAndUpdate(
+      id,
+      { autoPlay: !updatedUserData.autoPlay },
+      { new: true }
+    );
+    if (!updatedUserData) {
+      throw new Error("User Data not found");
+    }
+    let resMessage = updatedUserData.autoPlay
+      ? "Auto-play setting successfully enabled"
+      : "Auto-play setting successfully disabled";
+
+    res.status(200).json({
+      success: true,
+      updateData: updatedUserData,
+      message: resMessage,
+    });
+  } catch (err) {
+    res.status(400).json({ success: false, error: err.message });
+  }
+};
+
+/* ------------------------ update news location data ----------------------- */
+const updateLocation = async (req, res) => {
+  try {
+    const { location } = req.query;
+
+    if (!location) {
+      return res.status(400).json({
+        success: false,
+        message: "Location parameter is missing.",
+      });
+    }
+
+    const regex = new RegExp(location, "i");
+
+    // const results = await News.find({
+    //   location: { $in: await Location.find({ locationName: regex }) },
+    // }).populate([
+    //   {
+    //     path: "category",
+    //     select: ["categoryName"],
+    //   },
+    //   {
+    //     path: "languages",
+    //     select: ["languagesName"],
+    //   },
+    // ]);
+
+    const results = await News.aggregate([
+      {
+        $match: {
+          location: {
+            $in: (
+              await Location.find({ locationName: regex })
+            ).map((doc) => doc._id),
+          },
+        },
+      },
+      {
+        $lookup: {
+          from: "locations",
+          localField: "location",
+          foreignField: "_id",
+          as: "locationData",
+        },
+      },
+      {
+        $unwind: "$locationData",
+      },
+      // {
+      //   $project: {
+      //     _id: 1,
+      //          category: { $arrayElemAt: ["$category.categoryName", 0] },
+      //      languages: { $arrayElemAt: ["$languages.languagesName", 0] },
+      //     subcategory: { $arrayElemAt: ["$subcategory.subCategoryName", ] },
+      //   },
+      // },
+    ]);
+    if (!results || results.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "No matching news found for the given location.",
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      updateData: results,
+      message: "Location update successful.",
+    });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+};
+
+
+
+
+
 module.exports = {
   signupUser,
   loginUser,
   forgotPasswordEmail,
+  updateAutoPlay,
+  updateLocation,
+  updateUserProfile,
+  
 };

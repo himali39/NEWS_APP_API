@@ -2,7 +2,7 @@ const News = require("../../models/newsModel");
 
 /* ----------------------------- Get News data ----------------------------- */
 const allnewsList = async (req, res) => {
-   try {
+  try {
     const newsData = await News.find().populate([
       {
         path: "languages",
@@ -40,7 +40,7 @@ const allnewsList = async (req, res) => {
       message: error.message,
     });
   }
-}
+};
 
 /* ----------------------------- Get News data ----------------------------- */
 
@@ -52,12 +52,13 @@ const forYouNewsList = async (req, res) => {
     if (languageId) {
       filter.languages = languageId;
     }
-    if (categoryId) {
+    if (categoryId && (categoryId == 1 || categoryId >= 3)) {
       filter.category = categoryId;
+    } else {
+      throw new Error("CategoryId must be 3 are required.");
     }
 
-    // Fetch news data based on the filter
-    const newsData = await News.find(filter).populate([
+        const newsData = await News.find(filter).populate([
       {
         path: "category",
         select: ["categoryName"],
@@ -69,7 +70,9 @@ const forYouNewsList = async (req, res) => {
     ]);
 
     if (!newsData) {
-      return res.status(404).json({ message: "News list data not found" });
+      return res
+        .status(404)
+        .json({ success: false, message: "News list data not found" });
     }
 
     res.status(200).json({
@@ -117,7 +120,7 @@ const searchNews = async (req, res) => {
 
     // Perform the search
     const results = await News.find({
-      $or: [{ tag: regex }, { title: regex }],
+      $or: [ { title: regex }],
     });
 
     if (!results || results.length === 0) {
@@ -139,12 +142,20 @@ const searchNews = async (req, res) => {
 };
 
 /* ----------------------------- Get video News List ----------------------------- */
-const getVideoNewList= async (req, res) => {
+const getVideoNewList = async (req, res) => {
   try {
     const videoNewsData = await News.find({
-      contentType: "video",
-      fileType: "video/mp4", 
-    }).sort({ createdAt: -1 });
+      contentType: 2,
+    }).sort({ createdAt: -1 }).populate([
+        {
+          path: "category",
+          select: ["categoryName"],
+        },
+        {
+          path: "languages",
+          select: ["languagesName"],
+        },
+      ]);;
 
     res.status(200).json({
       success: true,

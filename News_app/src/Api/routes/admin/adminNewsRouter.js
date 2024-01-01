@@ -20,7 +20,7 @@ router.post(
       allowedMimes: ["image/png", "image/jpeg", "image/jpg", "image/webp"],
     },
     {
-      name: "contentType",
+      name: "video",
       maxCount: 1,
       allowedMimes: ["video/mp4"],
     },

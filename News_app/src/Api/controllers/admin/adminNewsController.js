@@ -14,8 +14,8 @@ const addNews = async (req, res) => {
         (file) => file.filename
       );
     }
-    if (req.files.contentType) {
-      reqbody.contentType = req.files.contentType[0].filename;
+    if (req.files.video) {
+      reqbody.video = req.files.video[0].filename;
     }
 
     // if (reqbody.contentType !==) {
