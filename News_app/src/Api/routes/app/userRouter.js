@@ -6,6 +6,8 @@ const {
   updateAutoPlay,
   updateLocation,
   updateUserProfile,
+  updateNewsLanguage,
+  updateAppLanguage,
 } = require("../../controllers/app/UserContoller");
 const router = express.Router();
 
@@ -21,6 +23,10 @@ router.put("/update-UserProfile", updateUserProfile);
 router.put("/update-AutoPlay/:id", updateAutoPlay);
 
 router.get("/update-Location", updateLocation);
+
+router.put("/update-NewsLanguage", updateNewsLanguage);
+
+router.put("/update-AppLanguage", updateAppLanguage);
 
 
 

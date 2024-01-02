@@ -53,7 +53,22 @@ const UserSchema = mongoose.Schema(
       type: Boolean,
       default: true,
     },
+    newsLanguage: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "languages",
+        required: [true, "language name is required."],
+      },
+    ],
+    appLanguage: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "languages",
+        required: [true, "language name is required."],
+      },
+    ],
   },
+
   {
     timestamps: true,
     versionKey: false,

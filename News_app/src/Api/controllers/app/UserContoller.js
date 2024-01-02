@@ -179,7 +179,6 @@ const forgotPasswordEmail = async (req, res) => {
         otp,
       }
     );
-
     // send mail service is use by email service
     const mailSent = sendMail(email, emailTemplate, "Password Reset OTP");
 
@@ -337,9 +336,72 @@ const updateLocation = async (req, res) => {
   }
 };
 
+/* ----------------------------- update  app Language data ----------------------------- */
+const updateNewsLanguage = async (req, res) => {
+  try {
+    const { userId, languageId, categoryId } = req.body;
+   console.log(req.body);
+  
+    // Find the news item by ID
+    let user = await User.findById(userId);
+   
+    if (!user) {
+      throw new Error("user not found");
+    }
 
+    const isUpdate = await User.findByIdAndUpdate(
+      req.body.userId,
+      {
+        $set: languageId,
+        categoryId,
+      },
+      { new: true }
+    );
 
+      res.status(200).json({
+        success: true,
+        updateData: isUpdate,
+        message: "News language updated successfully",
+      });
+  } catch (err) {
+    console.error(err);
+    res.status(400).json({ success: false, error: err.message });
+  }
+};
 
+/* ----------------------------- update  app Language data ----------------------------- */
+const updateAppLanguage= async (req, res) => {
+  try {
+    const { userId, newLanguageId } = req.body;
+
+    // Validate input parameters
+    if (!userId || !newLanguageId) {
+      throw new Error("Invalid input parameters");
+    }
+
+    // Find the user by ID
+    let updatedUser = await User.findById(userId);
+
+    if (!updatedUser) {
+      throw new Error("User not found");
+    }
+
+    updatedUser = await User.findByIdAndUpdate(
+      userId,
+      { newLanguageId: updatedUser.language },
+      { new: true }
+    );
+   
+    res.status(200).json({
+      success: true,
+      updateData: updatedUser,
+      message: "User language updated successfully",
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(400).json({ success: false, error: err.message });
+  }
+};
 
 module.exports = {
   signupUser,
@@ -348,5 +410,6 @@ module.exports = {
   updateAutoPlay,
   updateLocation,
   updateUserProfile,
-  
+  updateNewsLanguage,
+  updateAppLanguage,
 };

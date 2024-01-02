@@ -5,6 +5,7 @@ const subCategoryRouter = require("./appSubCategoryRouter");
 const newsRouter = require("./appNewsRouter");
 const languageRouter = require("../app/appLanguageRouter");
 const tagRouter = require("../app/appTagRouter");
+const faqsRouter = require("../app/appFaqsRouter");
 
 // Use router in index
 router.use("/app/user", userRouter);
@@ -18,6 +19,8 @@ router.use("/app/news", newsRouter);
 router.use("/app/language", languageRouter);
 
 router.use("/app/tag", tagRouter);
+
+router.use("/app/faqs", faqsRouter);
 
 
 
