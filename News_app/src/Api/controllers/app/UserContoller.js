@@ -3,6 +3,7 @@ const moment = require("moment");
 const jwt = require("jsonwebtoken");
 const dotenv = require("dotenv").config();
 const refreshSecret = process.env.JWT_REFRESH_SECRET_KEY;
+const accessSecret = process.env.JWT_SECRECT_KEY;
 const bcrypt = require("bcrypt");
 const ejs = require("ejs");
 const { sendMail } = require("../../helper/emailsend");
@@ -111,33 +112,10 @@ const loginUser = async (req, res) => {
     };
     const refreshToken = generateRefreshToken(payload);
 
-    // const otp = Math.floor(100000 + Math.random() * 900000);
-
-    // const emailTemplate = await ejs.renderFile(
-    //   "./src/Api/views/email_otp.ejs",
-    //   {
-    //     otp,
-    //   }
-    // );
-
-    // send mail service is use by email service
-    // const mailSent = sendMail(email, emailTemplate, "Verification code");
-
-    // if (!mailSent) {
-    //   // If email sending fails, handle the error
-    //   res.status(500).json({
-    //     success: false,
-    //     message: "Failed to send email with OTP",
-    //   });
-    // }
-    //user send otp
-    // findUser.otp = otp;
-
     res.status(200).json({
       success: true,
       message: `User Login successfully!`,
-      // otp: otp,
-      accessToken: accessToken,
+      findUser: findUser,
       refreshToken: refreshToken,
     });
   } catch (err) {
@@ -151,9 +129,11 @@ const loginUser = async (req, res) => {
 /* ----------------------------- Forgot password mail send ----------------------------- */
 const forgotPasswordEmail = async (req, res) => {
   try {
-    const { email } = req.body;
+    const { email, mobile } = req.body;
 
-    const user = await User.findOne({ email });
+    const user = await User.findOne({
+      $or: [{ email: email }, { mobile: mobile }],
+    });
 
     if (!user)
       return res
@@ -201,28 +181,57 @@ const forgotPasswordEmail = async (req, res) => {
   }
 };
 
+/* ---------------------------- Get RefreshToken ---------------------------- */
+const RefreshToken = async (req, res, next) => {
+  const refreshToken = req.body.refreshToken;
+
+  if (!refreshToken) {
+    return res.status(402).send("Access Denied. No refresh token provided.");
+  }
+
+  try {
+    const decoded = jwt.verify(
+      refreshToken,
+      refreshSecret // refresh token key from env
+    );
+
+    const user = await User.findOne({ email: decoded.email });
+
+    if (!user) return res.status(401).send("Invalid Username!");
+
+    const token = jwt.sign(
+      { email: decoded.email },
+      accessSecret, //access secret key from env
+      {
+        expiresIn: "1m",
+      }
+    );
+    res.status(200).json({ success: true, refreshToken: token });
+  } catch (err) {
+    next(err);
+  }
+};
 /* ----------------------------- update user profile ----------------------------- */
 const updateUserProfile = async (req, res) => {
   try {
-
     const user = await User.findById(req.body.userId);
-   
+
     if (!user) {
       throw new Error("User Data not found");
     }
-      if (req.body.dob) {
-        const dateOfBirth = new Date(req.body.dob);
-        req.body.dob = dateOfBirth.getTime();
-      }
+    if (req.body.dob) {
+      const dateOfBirth = new Date(req.body.dob);
+      req.body.dob = dateOfBirth.getTime();
+    }
 
     // Update user data in the database
-        const isUpdate = await User.findByIdAndUpdate(
-          req.body.userId,
-          {
-            $set: req.body,
-          },
-          { new: true }
-        );
+    const isUpdate = await User.findByIdAndUpdate(
+      req.body.userId,
+      {
+        $set: req.body,
+      },
+      { new: true }
+    );
     res.status(200).json({
       success: true,
       updateData: isUpdate,
@@ -340,11 +349,11 @@ const updateLocation = async (req, res) => {
 const updateNewsLanguage = async (req, res) => {
   try {
     const { userId, languageId, categoryId } = req.body;
-   console.log(req.body);
-  
+    console.log(req.body);
+
     // Find the news item by ID
     let user = await User.findById(userId);
-   
+
     if (!user) {
       throw new Error("user not found");
     }
@@ -358,11 +367,11 @@ const updateNewsLanguage = async (req, res) => {
       { new: true }
     );
 
-      res.status(200).json({
-        success: true,
-        updateData: isUpdate,
-        message: "News language updated successfully",
-      });
+    res.status(200).json({
+      success: true,
+      updateData: isUpdate,
+      message: "News language updated successfully",
+    });
   } catch (err) {
     console.error(err);
     res.status(400).json({ success: false, error: err.message });
@@ -370,7 +379,7 @@ const updateNewsLanguage = async (req, res) => {
 };
 
 /* ----------------------------- update  app Language data ----------------------------- */
-const updateAppLanguage= async (req, res) => {
+const updateAppLanguage = async (req, res) => {
   try {
     const { userId, newLanguageId } = req.body;
 
@@ -391,7 +400,7 @@ const updateAppLanguage= async (req, res) => {
       { newLanguageId: updatedUser.language },
       { new: true }
     );
-   
+
     res.status(200).json({
       success: true,
       updateData: updatedUser,
@@ -407,6 +416,7 @@ module.exports = {
   signupUser,
   loginUser,
   forgotPasswordEmail,
+  RefreshToken,
   updateAutoPlay,
   updateLocation,
   updateUserProfile,

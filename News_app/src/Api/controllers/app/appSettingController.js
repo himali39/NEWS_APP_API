@@ -26,47 +26,52 @@ const getAllFaqs = async (req, res, next) => {
 /* ---------------------------- add feedback  --------------------------- */
 const addFeedback = async (req, res, next) => {
   try {
-    // const reqbody = req.body;
-    const user = await User.findById(req.body.userId);
+    const { userId, feedback } = req.body;
+
+    if (!userId || !feedback) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid input parameters",
+      });
+    }
+
+    // Find the user by ID
+    const user = await User.findById(userId);
+
+    // Check if the user exists
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found",
+      });
+    }
 
     const newsFeedback = await Feedback.create({
-      userId: req.body.userId,
-      feedback: req.body.feedback,
+      userId: userId,
+      feedback: feedback,
     });
 
-    const result = await newsFeedback.save();
+    // Render the EJS template
+    const emailTemplate = await ejs.renderFile("./src/Api/views/feedback.ejs", {
+      username: user.name,
+      useremail: user.email,
+      usermo: user.mobile,
+      feedback: feedback,
+    });
 
-    // // Render the EJS template
-    const emailTemplate = await ejs.renderFile("./src/Api/views/feedback.ejs");
-        
+    // Send mail
     sendMail({
       from: user.email,
       to: process.env.EMAIL_FROM,
       sub: "News application",
-      htmlFile: emailTemplate,
-      extraData: {
-        username: user.name,
-        useremail: user.email,
-        usermo: user.mobile,
-        feedback: req.body.feedback,
-      },
+      html: emailTemplate,
     });
-
-    // send mail service is use by email service
-    // const mailSent = sendMail(reqbody.userId, emailTemplate, "thank you");
-
-    // if (!mailSent) {
-    //   // If email sending fails, handle the error
-    //   res.status(404).json({
-    //     success: false,
-    //     message: "Failed to send email with OTP",
-    //   });
-    // }
 
     res.status(200).json({
       success: true,
-      message: "Your request has been send successfully. We will respond you as soon as possible.",
-      result: result,
+      message:
+        "Your request has been sent successfully. We will respond to you as soon as possible.",
+      result: newsFeedback,
     });
   } catch (err) {
     next(err);
@@ -77,4 +82,3 @@ module.exports = {
   getAllFaqs,
   addFeedback,
 };
-

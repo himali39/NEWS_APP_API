@@ -13,7 +13,7 @@ const getLanguage = async (req, res) => {
     res.status(200).json({
       success: true,
       message: "Languages data get successfully ",
-      personalize: listLanguage,
+      Languages: listLanguage,
     });
   } catch (error) {
     res.status(404).json({

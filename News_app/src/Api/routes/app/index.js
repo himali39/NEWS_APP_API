@@ -6,6 +6,7 @@ const newsRouter = require("./appNewsRouter");
 const languageRouter = require("../app/appLanguageRouter");
 const tagRouter = require("../app/appTagRouter");
 const faqsRouter = require("../app/appFaqsRouter");
+const nofitiRouter = require("../app/appNotificationRouter");
 
 // Use router in index
 router.use("/app/user", userRouter);
@@ -21,6 +22,8 @@ router.use("/app/language", languageRouter);
 router.use("/app/tag", tagRouter);
 
 router.use("/app/faqs", faqsRouter);
+
+router.use("/app/notification", nofitiRouter);
 
 
 

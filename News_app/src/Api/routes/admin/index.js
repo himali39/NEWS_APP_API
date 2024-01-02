@@ -6,6 +6,7 @@ const tagRouter = require("../admin/tagRouter");
 const subcategoryRouter = require("../admin/adminSubcategoryRouter");
 const locationRouter = require("../admin/adminLocationRoute");
 const faqsRouter = require("../admin/adminFaqsRouter");
+const notifiRouter = require("../admin/adminNotificationRouter");
 
 
 /* ---------------------------- Language Routers ---------------------------- */
@@ -28,5 +29,8 @@ router.use("/admin/location", locationRouter);
 
 /* ---------------------------- FAQS Routers ---------------------------- */
 router.use("/admin/faqs", faqsRouter);
+
+/* ---------------------------- Notification Routers ---------------------------- */
+router.use("/admin/notification", notifiRouter);
 
 module.exports = router;
