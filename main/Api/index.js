@@ -3,7 +3,7 @@ const bodyParser = require("body-parser");
 const dotenv = require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
-const { connectDB } = require("./src/Api/config/dbConnection");
+const { connectDB } = require("./src/config/dbConnection");
 const path = require("path");
 
 const app = express();
@@ -13,11 +13,11 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 /**admin route */
-const adminRoutes = require("./src/Api/routes/admin");
+const adminRoutes = require("./src/routes/admin");
 app.use(adminRoutes);
 
 /*App route */
-const userRoute = require("./src/Api/routes/app");
+const userRoute = require("./src/routes/app");
 app.use(userRoute);
 
 /** database connection  */
