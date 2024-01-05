@@ -38,13 +38,13 @@ const Navs = () => {
                   </CNavLink>
                 </CNavItem>
                 <CNavItem>
-                  <CNavLink href="#">Link</CNavLink>
+                  <CNavLink href="">Link</CNavLink>
                 </CNavItem>
                 <CNavItem>
-                  <CNavLink href="#">Link</CNavLink>
+                  <CNavLink href="">Link</CNavLink>
                 </CNavItem>
                 <CNavItem>
-                  <CNavLink href="#" disabled>
+                  <CNavLink href="" disabled>
                     Disabled
                   </CNavLink>
                 </CNavItem>
@@ -62,9 +62,9 @@ const Navs = () => {
                 <CNavLink href="#" active>
                   Active
                 </CNavLink>
-                <CNavLink href="#">Link</CNavLink>
-                <CNavLink href="#">Link</CNavLink>
-                <CNavLink href="#" disabled>
+                <CNavLink href="">Link</CNavLink>
+                <CNavLink href="">Link</CNavLink>
+                <CNavLink href="" disabled>
                   Disabled
                 </CNavLink>
               </CNav>

@@ -7,7 +7,10 @@ const subcategoryRouter = require("../admin/adminSubcategoryRouter");
 const locationRouter = require("../admin/adminLocationRoute");
 const faqsRouter = require("../admin/adminFaqsRouter");
 const notifiRouter = require("../admin/adminNotificationRouter");
+const adminRouter = require("../admin/adminRouter");
 
+/* ---------------------------- admin Routers ---------------------------- */
+router.use("/admin", adminRouter);
 
 /* ---------------------------- Language Routers ---------------------------- */
 router.use("/admin/language", languageRouter);

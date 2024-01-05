@@ -20,19 +20,18 @@ import axios from 'axios'
 const Login = () => {
   const { register, handleSubmit } = useForm()
 
-  const onSubmit = async() => {
-  //  try {
-  //      const response = await axios.post('', {
-  //       username: data.username,
-  //       password: data.password,
-  //     });
-  //         // console.log('Login successful', response.data);
-  //   } catch (error) {
-     
-  //     console.error('Login failed', error);
-  //   }
-  };
-  
+  const onSubmit = async (data) => {
+    console.log(data)
+    try {
+      await axios.post('http://localhost:8002/admin/login',data).then((res) => {
+        // console.log(res.findAdmin);
+      })
+      // console.log(res.findAdmin);
+    } catch (error) {
+      console.error('Login failed', error)
+    }
+  }
+
   return (
     <div className="login-page bg-light min-vh-100">
       <CContainer>
@@ -49,9 +48,9 @@ const Login = () => {
                         <CIcon icon={cilUser} />
                       </CInputGroupText>
                       <CFormInput
-                        {...register('username', { required: 'Username is required' })}
-                        placeholder="Username"
-                        autoComplete="username"
+                        {...register('email', { required: 'Email is required' })}
+                        placeholder="email"
+                        autoComplete="email"
                       />
                     </CInputGroup>
                     <CInputGroup className="mb-4">

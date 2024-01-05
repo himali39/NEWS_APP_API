@@ -73,7 +73,6 @@ const signupUser = async (req, res) => {
 };
 
 /* ------------------------------- User Login ------------------------------- */
-
 const loginUser = async (req, res) => {
   try {
     let { email, mobile, password } = req.body;
