@@ -275,7 +275,7 @@ const _nav = [
       {
         component: CNavItem,
         name: 'Login',
-        to: '/login',
+        to: '/',
       },
       {
         component: CNavItem,

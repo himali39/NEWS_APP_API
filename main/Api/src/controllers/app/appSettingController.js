@@ -52,7 +52,7 @@ const addFeedback = async (req, res, next) => {
     });
 
     // Render the EJS template
-    const emailTemplate = await ejs.renderFile("./src/Api/views/feedback.ejs", {
+    const emailTemplate = await ejs.renderFile("../Api/views/feedback.ejs", {
       username: user.userName,
       useremail: user.email,
       usermo: user.mobile,

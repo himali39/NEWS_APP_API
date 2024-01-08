@@ -1,5 +1,5 @@
 const express = require("express");
-const { adminRegister, adminLogin } = require("../../controllers/admin/adminController");
+const { adminRegister, adminLogin, forgotPasswordEmail, resetPassword } = require("../../controllers/admin/adminController");
 const { singleFileUpload } = require("../../helper/upload");
 const router = express.Router();
 
@@ -11,6 +11,10 @@ router.post(
 );
 
 router.post("/login", adminLogin);
+
+router.post("/forgot-password", forgotPasswordEmail);
+
+router.post("/reset-password", resetPassword);
 
 module.exports = router;
  
