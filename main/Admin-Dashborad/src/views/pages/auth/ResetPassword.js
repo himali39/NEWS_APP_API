@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import {
   CContainer,
@@ -16,21 +16,40 @@ import {
 import CIcon from '@coreui/icons-react'
 import { cilLockLocked, cilUser } from '@coreui/icons'
 import axios from 'axios'
-import { NavLink, useNavigate } from 'react-router-dom'
+import { NavLink, useNavigate, useParams } from 'react-router-dom'
+import { ToastContainer, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
+import { resetPassword } from 'src/services/ApiServices'
 
-const Login = () => {
+const ResetPassword = () => {
   const { register, handleSubmit } = useForm()
   const navigate = useNavigate()
+  const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState()
+  const { token, adminid } = useParams()
 
   const onSubmit = async (data) => {
-    try {
-      await axios.post('http://localhost:8002/admin/login', data).then((res) => {
-        console.log(res.data)
+    await resetPassword(data)
+      .then((response) => {
+        if (response.status === 400 || response.data.success === false) {
+          setError(response.data.message)
+          setIsLoading(false)
+        } else {
+          setIsLoading(false)
+
+          toast.success(response.data.message)
+          navigate('/')
+        }
       })
-    } catch (error) {
-      console.error('Login failed', error)
-    }
-    navigate('/dashboard')
+      .catch((err) => {
+        if (err.response.status === 401 || !err.response.data.success) {
+          setError(err.response.data.message)
+          setIsLoading(false)
+        } else {
+          setError('Something is wrong!')
+          setIsLoading(false)
+        }
+      })
   }
 
   return (
@@ -46,33 +65,49 @@ const Login = () => {
                     <p className="text-medium-emphasis text-center">
                       Enter a new password for this email
                     </p>
-                    <CInputGroup className="mb-3">
+                    <ToastContainer />
+                    <div in={error}>
+                      <p className="errors">{error ? error : ''}</p>
+                    </div>
+
+                    <CInputGroup className="mb-2">
+                      <CFormInput {...register('token')} type="hidden" value={token} />
+                      <CFormInput {...register('id')} type="hidden" value={adminid} />
+                    </CInputGroup>
+
+                    <CInputGroup className="mb-2">
                       <CInputGroupText>
                         <CIcon icon={cilUser} />
                       </CInputGroupText>
                       <CFormInput
-                        {...register('otp', { required: 'Email is required' })}
+                        {...register('otp', { required: 'otp is required' })}
                         placeholder="otp"
                         autoComplete="Otp"
                       />
                     </CInputGroup>
-                    <CInputGroup className="mb-4">
+
+                    {/* <div in={success}>
+                      <p color="#40903c">{success ? success : ''}</p>
+                    </div> */}
+
+                    <CInputGroup className="mb-2">
                       <CInputGroupText>
                         <CIcon icon={cilLockLocked} />
                       </CInputGroupText>
                       <CFormInput
-                        {...register('new-password', { required: 'Password is required' })}
+                        {...register('newPassword', { required: 'New password is required' })}
                         type="password"
                         placeholder="new-password"
                         autoComplete="current-password"
                       />
                     </CInputGroup>
-                    <CInputGroup className="mb-4">
+
+                    <CInputGroup className="mb-2">
                       <CInputGroupText>
                         <CIcon icon={cilLockLocked} />
                       </CInputGroupText>
                       <CFormInput
-                        {...register('confirm-password', {
+                        {...register('confirmPassword', {
                           required: 'confirm password is required',
                         })}
                         type="password"
@@ -80,13 +115,14 @@ const Login = () => {
                         autoComplete="current-password"
                       />
                     </CInputGroup>
+
                     <CRow>
                       <CCol xs={12} md={6} className="mb-2 mb-md-0">
-                        <NavLink to="/">
-                          <CButton type="submit" className="w-100 custom-color">
-                            Reset Password
-                          </CButton>
-                        </NavLink>
+                        {/* <NavLink to="/"> */}
+                        <CButton type="submit" className="w-100 custom-color">
+                          {isLoading ? 'Loading...' : 'Reset Password'}
+                        </CButton>
+                        {/* </NavLink> */}
                       </CCol>
                     </CRow>
                   </CForm>
@@ -100,4 +136,4 @@ const Login = () => {
   )
 }
 
-export default Login
+export default ResetPassword

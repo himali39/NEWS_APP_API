@@ -15,48 +15,37 @@ import {
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 import { cilLockLocked, cilUser } from '@coreui/icons'
-import axios from 'axios'
+// import axios from 'axios'
 import { NavLink, useNavigate } from 'react-router-dom'
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
+import { useDispatch } from 'react-redux'
+import { loginUser } from '../../../actions/loginUser'
+import { loginSuccess } from 'src/actions/action'
 
 const Login = () => {
-  const {
-    register,
-    handleSubmit,
-    setError,
-    formState: { errors },
-  } = useForm()
-
+  const { register, handleSubmit } = useForm()
   const [isLoading, setIsLoading] = useState(false)
-  const [success, setSuccess] = useState()
+  const [error, setError] = useState()
   const navigate = useNavigate()
+  const dispatch = useDispatch()
 
-  const onSubmit = async (data) => {
-    setIsLoading(true)
-    await axios
-      .post('http://localhost:8002/admin/login', data)
-      .then((res) => {
-        if (res.data.isSuccess === 400 || res.data.isSuccess === false) {
-          setError(res.data.message)
-          setIsLoading(false)
-        } else {
-          setIsLoading(true)
-          setSuccess('Check your mail box.')
-          // toast.success(res.data.message)
-        }
-      })
-      .catch((err) => {
-        if (err.res.data.status === 401 || !err.res.data.isSuccess) {
-          setError(err.response.data.message)
-          setIsLoading(false)
-        } else {
-          setError('Something is wrong!')
-          setIsLoading(false)
-        }
-      })
+  // const onSubmit = async (data) => {
+  //   try {
+  //     setIsLoading(true)
+  //     // await dispatch(loginUser(data, navigate, setIsLoading, setError))
+  //     // await loginUser(data, navigate, setIsLoading, setError)
 
-    navigate('/dashboard')
+  //   } catch (err) {
+
+  //     console.error(err)
+  //   }
+  // }
+  const onSubmit = () => {
+    // Perform login logic (e.g., API call) and dispatch loginSuccess action
+    const user = { username: 'exampleUser' }
+    console.log(user)
+    dispatch(loginSuccess(user))
   }
 
   return (
@@ -70,7 +59,9 @@ const Login = () => {
                   <CForm onSubmit={handleSubmit(onSubmit)}>
                     <h1 className="text-center mb-4">Login</h1>
                     <p className="text-medium-emphasis text-center">Sign In to your account</p>
-
+                    <div in={error}>
+                      <p className="errors">{error ? error : ''}</p>
+                    </div>
                     <CInputGroup className="mb-2">
                       <CInputGroupText>
                         <CIcon icon={cilUser} />
@@ -82,10 +73,6 @@ const Login = () => {
                         autoComplete="email"
                       />
                     </CInputGroup>
-                    <div in={success}>
-                      <p color="#40903c">{success ? success : ''}</p>
-                    </div>
-                    {errors.email && <div className="errors">{errors.email.message}</div>}
 
                     <CInputGroup className="mb-2">
                       <CInputGroupText>
@@ -98,7 +85,6 @@ const Login = () => {
                         autoComplete="current-password"
                       />
                     </CInputGroup>
-                    {errors.password && <div className="errors">{errors.password.message}</div>}
 
                     <CRow>
                       <CCol xs={12} md={6} className="mb-3 mb-md-0 mt-2">

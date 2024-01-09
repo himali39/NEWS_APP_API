@@ -20,27 +20,20 @@ import axios from 'axios'
 import { NavLink, useNavigate } from 'react-router-dom'
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
+import { forgotPassword } from 'src/services/ApiServices'
 
 const ForgotPassword = () => {
-  const {
-    register,
-    handleSubmit,
-    setError,
-    formState: { errors },
-  } = useForm()
+  const { register, handleSubmit } = useForm()
   const [isLoading, setIsLoading] = useState(false)
   const [success, setSuccess] = useState()
+  const [error, setError] = useState()
 
   const onSubmit = async (data) => {
     setError('')
-    setSuccess('')
     setIsLoading(true)
-    await axios
-      .post('http://localhost:8002/admin/forgot-password', data)
-
+    await forgotPassword(data)
       .then((res) => {
-        console.log(res.status)
-        if (res.data.status === 404 || res.data.success === false) {
+        if (res.status === 400 || res.data.success === false) {
           setError(res.data.message)
           setIsLoading(false)
         } else {
@@ -50,12 +43,9 @@ const ForgotPassword = () => {
         }
       })
       .catch((err) => {
-        // console.log(err.response.data)
-
-        if (err.response.status === 401 || !err.response.data.success === false) {
+        if (err.response.status === 401 || !err.response.data.success) {
           setError(err.response.data.message)
           setIsLoading(false)
-          setSuccess(err.response.data.message)
         } else {
           setError('Something is wrong!')
           setIsLoading(false)
@@ -76,7 +66,8 @@ const ForgotPassword = () => {
                     <p className="text-medium-emphasis text-center">
                       Enter your email and we send you a link to reset your password
                     </p>
-                    <CInputGroup className="mb-3">
+
+                    <CInputGroup className="mb-2">
                       <CInputGroupText>
                         <CIcon icon={cilUser} />
                       </CInputGroupText>
@@ -86,12 +77,14 @@ const ForgotPassword = () => {
                         autoComplete="email"
                       />
                     </CInputGroup>
+
                     <div in={success}>
-                      <p color="#40903c">{success ? success : ''}</p>
+                      <p className="success">{success ? success : ''}</p>
                     </div>
 
-                    {errors.email && <div>{errors.email.message}</div>}
-
+                    <div in={error}>
+                      <p className="errors">{error ? error : ''}</p>
+                    </div>
                     <ToastContainer />
 
                     <CRow>

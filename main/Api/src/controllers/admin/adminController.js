@@ -17,7 +17,7 @@ const adminRegister = async (req, res) => {
     if (req.file) {
       reqbody.profileImage = req.file.filename;
     }
-    
+
     const newAdmin = await Admin.create(reqbody);
 
     res.status(201).json({
@@ -34,16 +34,18 @@ const adminLogin = async (req, res) => {
     let { email, name, password } = req.body;
 
     /** find email and mobile number existence */
-    const findAdmin = await Admin.findOne({
+    const admin = await Admin.findOne({
       $or: [{ email: email }],
     });
 
-    if (!findAdmin) {
-      throw new Error("Admin not Found");
+    if (!admin) {
+      return res
+        .status(401)
+        .json({ success: false, message: "admin not found." });
     }
 
     /**compare password   */
-    const successPassword = await bcrypt.compare(password, findAdmin.password);
+    const successPassword = await bcrypt.compare(password, admin.password);
 
     if (!successPassword) throw Error("Inccorect Password");
 
@@ -57,9 +59,9 @@ const adminLogin = async (req, res) => {
     /**create accesstoken */
     let accessToken;
 
-    if (findAdmin && successPassword) {
+    if (admin && successPassword) {
       accessToken = await jwt.sign(payload, process.env.JWT_SECRECT_KEY);
-      findAdmin.accessToken = accessToken;
+      admin.accessToken = accessToken;
     }
 
     /**generate Refresh token */
@@ -71,7 +73,7 @@ const adminLogin = async (req, res) => {
     res.status(200).json({
       success: true,
       message: `Admin Login successfully!`,
-      findAdmin: findAdmin,
+      admin: admin,
       refreshToken: refreshToken,
     });
   } catch (err) {
@@ -83,7 +85,7 @@ const adminLogin = async (req, res) => {
 };
 
 /* ------------------------------- admin Forgot password ------------------------------- */
-const forgotPasswordEmail = async (req, res) => {
+const forgotPasswordEmail = async (req, res, next) => {
   try {
     const { email } = req.body;
 
@@ -94,7 +96,6 @@ const forgotPasswordEmail = async (req, res) => {
         .status(401)
         .json({ success: false, message: "Invalid email Id" });
 
-        
     let resetCode = crypto.randomBytes(32).toString("hex");
 
     const otp = generateOTP(); //generate otp code emailService through generate
@@ -104,12 +105,12 @@ const forgotPasswordEmail = async (req, res) => {
       value: otp,
       expiration: expirationTime,
     };
-    
+
     // Save the OTP in the user document
     admin.otp = otp; //otp is admin model key name
     admin.resetCode = resetCode;
     await admin.save();
-    
+
     // Render the EJS template
     const emailTemplate = await ejs.renderFile(
       "../Api/src/views/email_otp.ejs",
@@ -118,55 +119,49 @@ const forgotPasswordEmail = async (req, res) => {
         otpURL: `${email_URL}reset-password/${resetCode}/${admin._id}`,
       }
     );
-      // "/home/himali/Documents/NEWS_APP_main/main/Api/src/views/email_otp.ejs",
+    // "/home/himali/Documents/NEWS_APP_main/main/Api/src/views/email_otp.ejs",
 
     // send mail service is use by email service
-    const mailSent = sendMail(
+    sendMail(
       process.env.EMAIL_FROM,
       admin.email,
       emailTemplate,
       "Password Reset OTP"
     );
 
-    if (!mailSent) {
-      // If email sending fails, handle the error
-      res.status(404).json({
-        success: false,
-        message: "Failed to send email with OTP",
-      });
-    }
     res.status(200).json({
       success: true,
       message: `Check your email for Reset password`,
-      
     });
   } catch (err) {
-    res.status(500).json({
-      success: false,
-      message: err.message,
-    });
+    next(err);
+    // res.status(500).json({
+    //   success: false,
+    //   message: err.message,
+    // });
   }
 };
 
 /* ----------------------------- Reset Password ----------------------------- */
 
 const resetPassword = async (req, res) => {
-  const { email, otp, newPassword, confirmPassword } = req.body;
+  const {  otp, newPassword, confirmPassword } = req.body;
 
   try {
     // Find the user by email and verify OTP
-    const admin = await Admin.findOne({ email });
+    const admin = await Admin.findOne({_id:req.body.id})
+   
 
     if (!admin) {
       return res
-        .status(404)
+        .status(401)
         .json({ success: false, message: "admin not found." });
     }
 
     // Check if OTP is valid and not expired
     if (admin.otp != otp || admin.otpExpiration < Date.now()) {
       return res
-        .status(401)
+        .status(400)
         .json({ success: false, message: "Invalid or expired OTP" });
     }
 
