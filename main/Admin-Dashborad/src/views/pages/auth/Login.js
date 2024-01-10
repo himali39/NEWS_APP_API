@@ -15,13 +15,13 @@ import {
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 import { cilLockLocked, cilUser } from '@coreui/icons'
-// import axios from 'axios'
 import { NavLink, useNavigate } from 'react-router-dom'
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import { useDispatch } from 'react-redux'
-import { loginUser } from '../../../actions/loginUser'
-import { loginSuccess } from 'src/actions/action'
+import { adminLogin } from 'src/redux/api/api'
+import { LOGIN_SUCCESS } from 'src/redux/actions/action'
+import Cookies from 'js-cookie'
 
 const Login = () => {
   const { register, handleSubmit } = useForm()
@@ -30,22 +30,37 @@ const Login = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
 
-  // const onSubmit = async (data) => {
-  //   try {
-  //     setIsLoading(true)
-  //     // await dispatch(loginUser(data, navigate, setIsLoading, setError))
-  //     // await loginUser(data, navigate, setIsLoading, setError)
+  const onSubmit = async (data) => {
+    setError('')
+    setIsLoading(true)
+    try {
+      const res = await adminLogin(data)
 
-  //   } catch (err) {
+      if (res.status === 400 || res.data.success === false) {
+        setError(res.data.message)
+        setIsLoading(false)
+      } else {
+        Cookies.set('accessToken', res.data.admin.accessToken)
+        Cookies.set('refreshToken', res.data.refreshToken)
+        Cookies.set('admin', res.data.admin)
+        setIsLoading(false)
+        dispatch({
+          type: LOGIN_SUCCESS,
+          data,
+        })
+        toast.success(res.data.message)
 
-  //     console.error(err)
-  //   }
-  // }
-  const onSubmit = () => {
-    // Perform login logic (e.g., API call) and dispatch loginSuccess action
-    const user = { username: 'exampleUser' }
-    console.log(user)
-    dispatch(loginSuccess(user))
+        navigate('/dashboard')
+      }
+    } catch (err) {
+      if (err.response && (err.response.status === 401 || !err.response.data.success)) {
+        setError(err.response.data.message)
+        setIsLoading(false)
+      } else {
+        setError('Something is wrong!')
+        setIsLoading(false)
+      }
+    }
   }
 
   return (
@@ -66,7 +81,7 @@ const Login = () => {
                       <CInputGroupText>
                         <CIcon icon={cilUser} />
                       </CInputGroupText>
-
+                      <ToastContainer />
                       <CFormInput
                         {...register('email', { required: 'Email is required' })}
                         placeholder="email"
