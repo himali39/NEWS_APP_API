@@ -6,7 +6,7 @@ import CIcon from '@coreui/icons-react'
 
 import { AppSidebarNav } from './AppSidebarNav'
 
-import { logoNegative } from 'src/assets/brand/logo-negative'
+import logoNegative from '../assets/images/news_logo.png'
 import { sygnet } from 'src/assets/brand/sygnet'
 
 import SimpleBar from 'simplebar-react'
@@ -18,7 +18,7 @@ import navigation from '../_nav'
 const AppSidebar = () => {
   const dispatch = useDispatch()
   const unfoldable = useSelector((state) => state.sidebarUnfoldable)
-  const sidebarShow = useSelector((state) => state.sidebarShow)
+  const sidebarShow = useSelector((state) => state.sidebar.sidebarShow)
 
   return (
     <CSidebar
@@ -29,9 +29,11 @@ const AppSidebar = () => {
         dispatch({ type: 'set', sidebarShow: visible })
       }}
     >
-      <CSidebarBrand className="d-none d-md-flex" to="/">
-        <CIcon className="sidebar-brand-full" icon={logoNegative} height={35} />
+      <CSidebarBrand className="d-none d-md-flex main-logo" to="/">
+        {/* <CIcon className="sidebar-brand-full" icon={logoNegative} height={35} /> */}
+        <img src={logoNegative} alt="Logo" height={35} width={45} />
         <CIcon className="sidebar-brand-narrow" icon={sygnet} height={35} />
+        {/* <p>News app</p> */}
       </CSidebarBrand>
       <CSidebarNav>
         <SimpleBar>

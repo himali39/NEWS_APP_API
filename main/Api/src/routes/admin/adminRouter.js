@@ -1,8 +1,16 @@
 const express = require("express");
-const { adminRegister, adminLogin, forgotPasswordEmail, resetPassword } = require("../../controllers/admin/adminController");
+const {
+  adminRegister,
+  adminLogin,
+  forgotPasswordEmail,
+  resetPassword,
+  changePassword,
+  refreshToken,
+  updateProfile,
+} = require("../../controllers/admin/adminController");
 const { singleFileUpload } = require("../../helper/upload");
+const verifyAdminToken = require("../../helper/verifyAdminToken");
 const router = express.Router();
-
 
 router.post(
   "/register",
@@ -16,5 +24,15 @@ router.post("/forgot-password", forgotPasswordEmail);
 
 router.post("/reset-password", resetPassword);
 
+router.post("/change-password", verifyAdminToken, changePassword);
+
+router.post(
+  "/edit-profile",
+  singleFileUpload("/adminImages/", "profileImage"),
+  verifyAdminToken,
+  updateProfile
+);
+
+router.post("/refreshToken", refreshToken);
+
 module.exports = router;
- 

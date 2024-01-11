@@ -9,6 +9,7 @@ const ejs = require("ejs");
 const { generateOTP, sendMail } = require("../../helper/emailsend");
 const crypto = require("crypto");
 const email_URL = process.env.Email_URL;
+
 /* ----------------------------- Admin Register ----------------------------- */
 const adminRegister = async (req, res) => {
   try {
@@ -28,6 +29,7 @@ const adminRegister = async (req, res) => {
     res.status(400).json({ error: err.message });
   }
 };
+
 /* ------------------------------- admin Login ------------------------------- */
 const adminLogin = async (req, res) => {
   try {
@@ -53,7 +55,7 @@ const adminLogin = async (req, res) => {
     let payload = {
       name,
       email,
-      expiresIn: moment().add(10, "minutes").unix(),
+      expiresIn: moment().add(5, "minutes").unix(),
     };
 
     /**create accesstoken */
@@ -143,14 +145,12 @@ const forgotPasswordEmail = async (req, res, next) => {
 };
 
 /* ----------------------------- Reset Password ----------------------------- */
-
 const resetPassword = async (req, res) => {
-  const {  otp, newPassword, confirmPassword } = req.body;
+  const { otp, newPassword, confirmPassword } = req.body;
 
   try {
     // Find the user by email and verify OTP
-    const admin = await Admin.findOne({_id:req.body.id})
-   
+    const admin = await Admin.findOne({ _id: req.body.id });
 
     if (!admin) {
       return res
@@ -192,9 +192,115 @@ const resetPassword = async (req, res) => {
   }
 };
 
+/* ----------------------------- Reset Password ----------------------------- */
+
+const changePassword = async (req, res, next) => {
+  const { oldPassword, newPassword, confirmPassword } = req.body;
+
+  try {
+    // Get the user from the token
+    const admin = await Admin.findById(req.body._id);
+
+    // Check if the old password is correct
+    const isPasswordValid = await bcrypt.compare(oldPassword, admin.password);
+
+    if (!isPasswordValid) {
+      return res.status(401).json({
+        success: false,
+        message: "Old password is incorrect.",
+      });
+    }
+
+    // Check if the new password and confirm password match
+    if (newPassword !== confirmPassword) {
+      return res.status(400).json({
+        success: false,
+        message: "New password and confirm password do not match.",
+      });
+    }
+
+    // Update the user's password
+    admin.password = newPassword;
+
+    await admin.save();
+
+    res.status(200).json({
+      success: true,
+      message: "Password reset successful.",
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
+/* ---------------------------- Get RefreshToken ---------------------------- */
+const refreshToken = async (req, res, next) => {
+  const refreshToken = req.body.refreshToken;
+
+  if (!refreshToken) {
+    return res.status(402).send("Access Denied. No refresh token provided.");
+  }
+
+  try {
+    const decoded = jwt.verify(
+      refreshToken,
+      refreshSecret // refresh token key from env
+    );
+
+    const admin = await Admin.findOne({ email: decoded.email });
+
+    if (!admin) return res.status(401).send("Invalid admin Name!");
+
+    const token = jwt.sign(
+      { email: decoded.email },
+      accessSecret, //access secret key from env
+      {
+        expiresIn: "2m",
+      }
+    );
+    res.status(200).json({ success: true, refreshToken: token });
+  } catch (err) {
+    next(err);
+  }
+};
+
+//Update Admin Profile
+const updateProfile = async (req, res, next) => {
+  try {
+    const { name } = req.body;
+
+    const admin = await Admin.findById(req.body._id);
+
+    if (!admin) {
+      return res
+        .status(401)
+        .json({ success: false, message: "admin not found." });
+    }
+
+    if (req.file) {
+      // deleteFiles(admin.profileImage);
+      admin.profileImage = req.file.filename;
+    }
+
+    admin.name = name;
+    const updatedData = await admin.save();
+
+    res.status(200).json({
+      success: true,
+      message: "Profile set successful.",
+      result: updatedData,
+    });
+  } catch (err) {
+    next(err);      
+  }
+};
+
 module.exports = {
   adminRegister,
   adminLogin,
   forgotPasswordEmail,
   resetPassword,
+  changePassword,
+  refreshToken,
+  updateProfile,
 };

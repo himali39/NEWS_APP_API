@@ -67,7 +67,7 @@ const Login = () => {
     <div className="login-page bg-light min-vh-100">
       <CContainer>
         <CRow className="justify-content-center">
-          <CCol md={8}>
+          <CCol md={12} className="main-col">
             <CCardGroup>
               <CCard className="p-4">
                 <CCardBody>

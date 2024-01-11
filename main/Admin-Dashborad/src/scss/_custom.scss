@@ -1,6 +1,6 @@
 // Here you can add other styles
 @media (min-width: 992px) {
-  .col-md-8 {
+  .main-col {
     width: 33.33%;
   }
 }
@@ -9,23 +9,32 @@
   background-color: #15b3ce;
   border: none;
 }
-.btn-link{
-      color: #15b3ce;
-    }
+.btn-link {
+  color: #15b3ce;
+}
 .login-page {
-    background-image: url("../assets/images/login_banner.jpg");
-    background-color: #000;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
+  background-image: url('../assets/images/login_banner.jpg');
+  background-color: #000;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
 }
-.errors{
-  color: #FF0000;
+.errors {
+  color: #ff0000;
 }
-.success{
-   color:#40903c;
+.success {
+  color: #40903c;
+}
+
+.main-logo img {
+  width: auto;
+  color: #15b3ce;
+}
+.update-button {
+  display: flex;
+  justify-content: end;
 }

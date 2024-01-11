@@ -1,4 +1,4 @@
-import React, { Component, Suspense } from 'react'
+import React, { Suspense } from 'react'
 import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom'
 import './scss/style.scss'
 import ForgotPassword from './views/pages/auth/ForgotPassword'
@@ -22,10 +22,7 @@ const Page404 = React.lazy(() => import('./views/pages/page404/Page404'))
 const Page500 = React.lazy(() => import('./views/pages/page500/Page500'))
 
 export default function App() {
-  const isAuthenticated = useSelector(
-    (state) => state.auth.isAuthenticated,
-    // state.reducer.adminReducer.isAuthenticated
-  )
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated)
 
   const PublicRoute = () => {
     return isAuthenticated || Boolean(Cookies.get('accessToken')) ? (
@@ -65,7 +62,6 @@ export default function App() {
 
           <Route path="/" element={<PrivateRoute />}>
             <Route path="*" name="Home" element={<DefaultLayout />} />
-            {/* <Route path="/dashboard" name="dashboard" element={<Dashboard />} /> */}
           </Route>
         </Routes>
       </Suspense>

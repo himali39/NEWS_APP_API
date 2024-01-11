@@ -14,13 +14,14 @@ import avatar8 from './../../assets/images/avatars/8.jpg'
 import Cookies from 'js-cookie'
 import { LOGOUT } from 'src/redux/actions/action'
 import { useDispatch } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
+import { NavLink, useNavigate } from 'react-router-dom'
 
 const AppHeaderDropdown = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
-  function Logout(dispatch, navigate) {
+  /* ------------------------------ admin logout ------------------------------ */
+  const Logout = () => {
     Cookies.remove('accessToken')
     Cookies.remove('refreshToken')
     Cookies.remove('admin')
@@ -37,14 +38,15 @@ const AppHeaderDropdown = () => {
         <CDropdownHeader className="bg-light fw-semibold py-2">Account</CDropdownHeader>
 
         <CDropdownItem href="">
-          <CIcon icon={cilUser} className="me-2" />
-          Profile
+          <NavLink to={'/change-password'}>
+            <CIcon icon={cilUser} className="me-2" />
+            Edit Profile
+          </NavLink>
         </CDropdownItem>
         <CDropdownDivider />
-        <CDropdownItem href="">
-          <CIcon icon={cilLockLocked} className="me-2" onClick={() => Logout(dispatch, navigate)}>
-            Logout
-          </CIcon>
+        <CDropdownItem href="" onClick={Logout}>
+          <CIcon icon={cilLockLocked} className="me-2" />
+          Logout
         </CDropdownItem>
       </CDropdownMenu>
     </CDropdown>

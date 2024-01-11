@@ -15,11 +15,10 @@ import {
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 import { cilLockLocked, cilUser } from '@coreui/icons'
-import axios from 'axios'
-import { NavLink, useNavigate, useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
-// import { resetPassword } from 'src/redux/services/api'
+import { resetPassword } from 'src/redux/api/api'
 
 const ResetPassword = () => {
   const { register, handleSubmit } = useForm()
@@ -28,29 +27,29 @@ const ResetPassword = () => {
   const [error, setError] = useState()
   const { token, adminid } = useParams()
 
-  // const onSubmit = async (data) => {
-  //   await resetPassword(data)
-  //     .then((response) => {
-  //       if (response.status === 400 || response.data.success === false) {
-  //         setError(response.data.message)
-  //         setIsLoading(false)
-  //       } else {
-  //         setIsLoading(false)
+  const onSubmit = async (data) => {
+    await resetPassword(data)
+      .then((response) => {
+        if (response.status === 400 || response.data.success === false) {
+          setError(response.data.message)
+          setIsLoading(false)
+        } else {
+          setIsLoading(false)
 
-  //         toast.success(response.data.message)
-  //         navigate('/')
-  //       }
-  //     })
-  //     .catch((err) => {
-  //       if (err.response.status === 401 || !err.response.data.success) {
-  //         setError(err.response.data.message)
-  //         setIsLoading(false)
-  //       } else {
-  //         setError('Something is wrong!')
-  //         setIsLoading(false)
-  //       }
-  //     })
-  // }
+          toast.success(response.data.message)
+          navigate('/')
+        }
+      })
+      .catch((err) => {
+        if (err.response.status === 401 || !err.response.data.success) {
+          setError(err.response.data.message)
+          setIsLoading(false)
+        } else {
+          setError('Something is wrong!')
+          setIsLoading(false)
+        }
+      })
+  }
 
   return (
     <div className="login-page bg-light min-vh-100">
@@ -60,9 +59,7 @@ const ResetPassword = () => {
             <CCardGroup>
               <CCard className="p-4">
                 <CCardBody>
-                  <CForm
-                  // onSubmit={handleSubmit(onSubmit)}
-                  >
+                  <CForm onSubmit={handleSubmit(onSubmit)}>
                     <h1 className="text-center mb-4">Reset Your Password</h1>
                     <p className="text-medium-emphasis text-center">
                       Enter a new password for this email
@@ -87,10 +84,6 @@ const ResetPassword = () => {
                         autoComplete="Otp"
                       />
                     </CInputGroup>
-
-                    {/* <div in={success}>
-                      <p color="#40903c">{success ? success : ''}</p>
-                    </div> */}
 
                     <CInputGroup className="mb-2">
                       <CInputGroupText>

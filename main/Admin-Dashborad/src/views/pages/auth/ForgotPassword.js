@@ -12,15 +12,13 @@ import {
   CInputGroupText,
   CFormInput,
   CButton,
-  CFormFeedback,
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
-import { cilUser, cilCircle } from '@coreui/icons'
-import axios from 'axios'
-import { NavLink, useNavigate } from 'react-router-dom'
+import { cilUser } from '@coreui/icons'
+import { NavLink } from 'react-router-dom'
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
-// import { forgotPassword } from 'src/redux/services/api'
+import { forgotPassword } from 'src/redux/api/api'
 
 const ForgotPassword = () => {
   const { register, handleSubmit } = useForm()
@@ -28,30 +26,30 @@ const ForgotPassword = () => {
   const [success, setSuccess] = useState()
   const [error, setError] = useState()
 
-  // const onSubmit = async (data) => {
-  //   setError('')
-  //   setIsLoading(true)
-  //   await forgotPassword(data)
-  //     .then((res) => {
-  //       if (res.status === 400 || res.data.success === false) {
-  //         setError(res.data.message)
-  //         setIsLoading(false)
-  //       } else {
-  //         setIsLoading(false)
-  //         setSuccess('Check your mail box.')
-  //         toast.success(res.data.message)
-  //       }
-  //     })
-  //     .catch((err) => {
-  //       if (err.response.status === 401 || !err.response.data.success) {
-  //         setError(err.response.data.message)
-  //         setIsLoading(false)
-  //       } else {
-  //         setError('Something is wrong!')
-  //         setIsLoading(false)
-  //       }
-  //     })
-  // }
+  const onSubmit = async (data) => {
+    setError('')
+    setIsLoading(true)
+    await forgotPassword(data)
+      .then((res) => {
+        if (res.status === 400 || res.data.success === false) {
+          setError(res.data.message)
+          setIsLoading(false)
+        } else {
+          setIsLoading(false)
+          setSuccess('Check your mail box.')
+          toast.success(res.data.message)
+        }
+      })
+      .catch((err) => {
+        if (err.response.status === 401 || !err.response.data.success) {
+          setError(err.response.data.message)
+          setIsLoading(false)
+        } else {
+          setError('Something is wrong!')
+          setIsLoading(false)
+        }
+      })
+  }
 
   return (
     <div className="login-page bg-light min-vh-100">
@@ -61,9 +59,7 @@ const ForgotPassword = () => {
             <CCardGroup>
               <CCard className="p-4">
                 <CCardBody>
-                  <CForm
-                  // onSubmit={handleSubmit(onSubmit)}
-                  >
+                  <CForm onSubmit={handleSubmit(onSubmit)}>
                     <h2 className="text-center mb-4">Forgot Password </h2>
                     <p className="text-medium-emphasis text-center">
                       Enter your email and we send you a link to reset your password
