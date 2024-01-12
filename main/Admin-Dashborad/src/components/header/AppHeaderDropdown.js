@@ -20,11 +20,16 @@ const AppHeaderDropdown = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
+  const { adminName, adminImg } = {
+    adminName: Cookies.get('adminName'),
+    adminImg: Cookies.get('adminImg'),
+  }
+
   /* ------------------------------ admin logout ------------------------------ */
   const Logout = () => {
     Cookies.remove('accessToken')
-    Cookies.remove('refreshToken')
-    Cookies.remove('admin')
+
+    // Cookies.remove('admin')
     dispatch({ type: LOGOUT })
     navigate('/')
   }
@@ -32,13 +37,14 @@ const AppHeaderDropdown = () => {
   return (
     <CDropdown variant="nav-item">
       <CDropdownToggle placement="bottom-end" className="py-0" caret={false}>
-        <CAvatar src={avatar8} size="md" />
+        <CAvatar src={`http://localhost:8002/adminImages/${adminImg}`} size="md" />
+        {adminName}
       </CDropdownToggle>
       <CDropdownMenu className="pt-0" placement="bottom-end">
         <CDropdownHeader className="bg-light fw-semibold py-2">Account</CDropdownHeader>
 
         <CDropdownItem href="">
-          <NavLink to={'/change-password'}>
+          <NavLink to={'/profile'}>
             <CIcon icon={cilUser} className="me-2" />
             Edit Profile
           </NavLink>

@@ -7,4 +7,8 @@ export const ADMIN_FORGOT_PASSWORD_API = '/admin/forgot-password'
 
 export const ADMIN_RESET_PASSWORD_API = '/admin/reset-password'
 
-export const ADMIN_CHANGE_PASSWORD_API = ''
+/* ---------------------------- admin change password --------------------------- */
+export const ADMIN_CHANGE_PASSWORD_API = '/admin/change-password'
+
+/* ---------------------------- Get admin profile --------------------------- */
+export const ADMIN_EDIT_PROFILE_PASSWORD_API = '/admin/edit-profile'

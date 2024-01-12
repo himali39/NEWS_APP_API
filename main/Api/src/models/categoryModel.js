@@ -13,11 +13,13 @@ const categorySchema = mongoose.Schema(
         ref: "subcategory", //model name subCategory
       },
     ],
-    languages: [{
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "languages",
-      required: [true, "language name is required."],
-    }], 
+    languages: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "languages",
+        required: [true, "language name is required."],
+      },
+    ],
     categoryImage: {
       type: String,
       required: [true, "Image is required."],

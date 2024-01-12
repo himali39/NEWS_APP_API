@@ -30,6 +30,7 @@ const adminRegister = async (req, res) => {
   }
 };
 
+
 /* ------------------------------- admin Login ------------------------------- */
 const adminLogin = async (req, res) => {
   try {
@@ -285,10 +286,18 @@ const updateProfile = async (req, res, next) => {
     admin.name = name;
     const updatedData = await admin.save();
 
+    const baseUrl =
+    req.protocol +
+    "://" +
+    req.get("host") +
+    process.env.BASE_URL_PROFILE_PATH;
+
+
     res.status(200).json({
       success: true,
       message: "Profile set successful.",
       result: updatedData,
+      baseUrl: baseUrl,
     });
   } catch (err) {
     next(err);      

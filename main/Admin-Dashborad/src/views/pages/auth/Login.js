@@ -41,8 +41,11 @@ const Login = () => {
         setIsLoading(false)
       } else {
         Cookies.set('accessToken', res.data.admin.accessToken)
-        Cookies.set('refreshToken', res.data.refreshToken)
-        Cookies.set('admin', res.data.admin)
+        Cookies.set('adminId', res.data.admin._id)
+        Cookies.set('adminName', res.data.admin.name)
+        Cookies.set('adminEmail', res.data.admin.email)
+        Cookies.set('adminImg', res.data.admin.profileImage)
+
         setIsLoading(false)
         dispatch({
           type: LOGIN_SUCCESS,
