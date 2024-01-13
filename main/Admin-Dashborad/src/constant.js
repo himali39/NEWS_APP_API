@@ -12,3 +12,5 @@ export const ADMIN_CHANGE_PASSWORD_API = '/admin/change-password'
 
 /* ---------------------------- Get admin profile --------------------------- */
 export const ADMIN_EDIT_PROFILE_PASSWORD_API = '/admin/edit-profile'
+
+export const All_LANGUAGE_LIST_API = '/admin/language/get-Languages'

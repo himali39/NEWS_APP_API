@@ -41,10 +41,15 @@ const Login = () => {
         setIsLoading(false)
       } else {
         Cookies.set('accessToken', res.data.admin.accessToken)
-        Cookies.set('adminId', res.data.admin._id)
-        Cookies.set('adminName', res.data.admin.name)
-        Cookies.set('adminEmail', res.data.admin.email)
-        Cookies.set('adminImg', res.data.admin.profileImage)
+
+        const adminObject = {
+          name: res.data.admin.name,
+          id: res.data.admin._id,
+          email: res.data.admin.email,
+          img: res.data.admin.profileImage ? res.data.baseUrl + res.data.admin.profileImage : null,
+        }
+        console.log(res)
+        Cookies.set('admin', JSON.stringify(adminObject))
 
         setIsLoading(false)
         dispatch({

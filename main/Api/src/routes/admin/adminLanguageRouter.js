@@ -1,5 +1,9 @@
-const { addLanguage, getLanguage } = require("../../controllers/admin/adminLanguagesController");
+const {
+  addLanguage,
+  getLanguage,
+} = require("../../controllers/admin/adminLanguagesController");
 const { multiDiffFileUpload } = require("../../helper/upload");
+const verifyAdminToken = require("../../helper/verifyAdminToken");
 
 const router = require("express").Router();
 
@@ -22,6 +26,8 @@ router.post(
 );
 
 /* ------------------------- get Language data route ------------------------ */
-router.get("/get-Languages", getLanguage);
+router.get("/get-Languages",
+ verifyAdminToken,
+  getLanguage);
 
 module.exports = router;

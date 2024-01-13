@@ -8,7 +8,9 @@ const verifyAppToken = require("../../helper/verifyAppToken");
 const router = express.Router();
 
 /* -------------------------- list of Language data ------------------------- */
-router.get("/get-Language", verifyAppToken, getLanguage);
+router.get("/get-Language", 
+verifyAppToken,
+ getLanguage);
 
 
 module.exports = router;

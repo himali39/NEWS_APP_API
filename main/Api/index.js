@@ -24,7 +24,11 @@ app.use(userRoute);
 connectDB();
 
 /**UPLOAD FILE */
-app.use(express.static(path.join(__dirname, "./src/Api/public/")));
+app.use(express.static(path.join(__dirname, "./Api/src/public/")));
+app.use(
+  "/Images",
+  express.static(path.join(__dirname, "./src/public/adminImages"))
+);
 
 /**create server */
 const server = http.createServer(app);

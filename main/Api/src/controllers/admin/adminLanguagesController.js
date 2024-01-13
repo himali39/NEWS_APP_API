@@ -2,14 +2,13 @@ const Languages = require("../../models/languagesModel");
 
 /* --------------------------- add Languages data --------------------------- */
 const addLanguage = async (req, res) => {
- 
   try {
     const reqbody = req.body;
 
     if (req.files["jsonFile"][0]) {
       reqbody.jsonFile = req.files["jsonFile"][0].filename;
     }
-    
+
     if (req.files["flagImage"][0]) {
       reqbody.flagImage = req.files["flagImage"][0].filename;
     }
@@ -44,7 +43,7 @@ const getLanguage = async (req, res) => {
     res.status(200).json({
       success: true,
       message: "List of Language Data successfully ",
-      personalize: LanguageData,
+      language: LanguageData,
     });
   } catch (error) {
     res.status(404).json({

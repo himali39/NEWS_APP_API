@@ -25,28 +25,30 @@ const ChangePassword = () => {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState('')
 
-  const adminId = Cookies.get('adminId')
+  const adminString = Cookies.get('admin')
+  const admin = JSON.parse(adminString)
 
   const onSubmit = async (data, e) => {
     setIsLoading(true)
     changePassword(data)
-      .then((response) => {
-        console.log(response)
-        // if (response.data.status === 200 && response.data.success) {
-        //   e.target.reset()
-        //   toast.success(response.data.messages)
-        //   setIsLoading(false)
-        // } else {
-        //   setError(response.data.messages)
-        //   setIsLoading(false)
-        // }
+      .then((res) => {
+        console.log(res)
+        if (res.data.status === 200 && res.data.success) {
+          e.target.reset()
+
+          toast.success(res.data.messages)
+          setIsLoading(false)
+        } else {
+          setError(res.data.messages)
+          setIsLoading(false)
+        }
       })
       .catch((err) => {
-        console.log(err)
-
-        // if ((err.response.data.status === 401 || 400) && !err.response.data.success)
-        //   toast.error(err.response.data.message)
-        // setIsLoading(false)
+        console.log(err.response)
+        if (err.response.status === 401 || 400) {
+          toast.error(err.response.data.message)
+          setIsLoading(false)
+        }
       })
   }
 
@@ -65,7 +67,7 @@ const ChangePassword = () => {
                       <p className="errors">{error ? error : ''}</p>
                     </div>
                     <CInputGroup className="mb-4">
-                      <CFormInput {...register('_id')} type="hidden" value={adminId} />
+                      <CFormInput {...register('_id')} type="hidden" value={admin.id} />
 
                       <CInputGroupText>
                         <CIcon icon={cilUser} />
@@ -106,11 +108,13 @@ const ChangePassword = () => {
 
                     <CRow className="update-button">
                       <CCol xs={6} md={4} className="mb-2 mb-md-0">
-                        {/* <NavLink to="/"> */}
-                        <CButton type="submit" className="w-100 custom-color">
+                        <CButton
+                          type="submit"
+                          className="w-100 custom-color"
+                          style={{ cursor: isLoading ? 'not-allowed' : 'pointer' }}
+                        >
                           {isLoading ? 'Loading...' : 'Reset Password'}
                         </CButton>
-                        {/* </NavLink> */}
                       </CCol>
                     </CRow>
                   </CForm>

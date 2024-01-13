@@ -30,11 +30,10 @@ const adminRegister = async (req, res) => {
   }
 };
 
-
 /* ------------------------------- admin Login ------------------------------- */
 const adminLogin = async (req, res) => {
   try {
-    let { email, name, password } = req.body;
+    let { email, password } = req.body;
 
     /** find email and mobile number existence */
     const admin = await Admin.findOne({
@@ -54,7 +53,6 @@ const adminLogin = async (req, res) => {
 
     /**create Token */
     let payload = {
-      name,
       email,
       expiresIn: moment().add(5, "minutes").unix(),
     };
@@ -72,12 +70,19 @@ const adminLogin = async (req, res) => {
       return jwt.sign(payload, refreshSecret);
     };
     const refreshToken = generateRefreshToken(payload);
+    
+    const baseUrl =
+      req.protocol +
+      "://" +
+      req.get("host") +
+      process.env.BASE_URL_PROFILE_PATH;
 
     res.status(200).json({
       success: true,
       message: `Admin Login successfully!`,
       admin: admin,
       refreshToken: refreshToken,
+      baseUrl: baseUrl,
     });
   } catch (err) {
     res.status(400).json({
@@ -287,20 +292,19 @@ const updateProfile = async (req, res, next) => {
     const updatedData = await admin.save();
 
     const baseUrl =
-    req.protocol +
-    "://" +
-    req.get("host") +
-    process.env.BASE_URL_PROFILE_PATH;
-
+      req.protocol +
+      "://" +
+      req.get("host") +
+      process.env.BASE_URL_PROFILE_PATH;
 
     res.status(200).json({
       success: true,
       message: "Profile set successful.",
-      result: updatedData,
+      admin: updatedData,
       baseUrl: baseUrl,
     });
   } catch (err) {
-    next(err);      
+    next(err);
   }
 };
 

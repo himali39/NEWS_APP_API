@@ -4,6 +4,7 @@ import {
   // cilDescription,
   cilDrop,
   cilPencil,
+  cilLanguage,
   cilSpeedometer,
 } from '@coreui/icons'
 import { CNavItem, CNavTitle } from '@coreui/react'
@@ -26,6 +27,12 @@ const _nav = [
     name: 'SubCategory',
     to: '/subcategory',
     icon: <CIcon icon={cilPencil} customClassName="nav-icon" />,
+  },
+  {
+    component: CNavItem,
+    name: 'Language',
+    to: '/language',
+    icon: <CIcon icon={cilLanguage} customClassName="nav-icon" />,
   },
 
   // {

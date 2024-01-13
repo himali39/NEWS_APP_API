@@ -26,12 +26,14 @@ const EditProfile = () => {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState()
 
-  const { adminId, adminName, adminEmail, adminImg } = {
-    adminId: Cookies.get('adminId'),
-    adminName: Cookies.get('adminName'),
-    adminEmail: Cookies.get('adminEmail'),
-    adminImg: Cookies.get('adminImg'),
-  }
+  // const { adminId, adminName, adminEmail, adminImg } = {
+  //   adminId: Cookies.get('adminId'),
+  //   adminName: Cookies.get('adminName'),
+  //   adminEmail: Cookies.get('adminEmail'),
+  //   adminImg: Cookies.get('adminImg'),
+  // }
+  const adminString = Cookies.get('admin')
+  const admin = JSON.parse(adminString)
 
   const onSubmit = async (data) => {
     setError('')
@@ -48,10 +50,16 @@ const EditProfile = () => {
     UpdateProfile(formData)
       .then((res) => {
         if (res.data.success && res.status === 200) {
-          Cookies.set('adminName', res.data.result.name)
-          Cookies.set('adminEmail', res.data.result.email)
-          Cookies.set('adminImg', res.data.result.profileImage)
+          const adminObject = {
+            name: res.data.admin.name,
+            id: res.data.admin._id,
+            email: res.data.admin.email,
+            img: res.data.admin.profileImage
+              ? res.data.baseUrl + res.data.admin.profileImage
+              : null,
+          }
 
+          Cookies.set('admin', JSON.stringify(adminObject))
           toast.success('Updated successfully!')
         } else {
           if ((res.status === 202 || 400) && !res.data.success) {
@@ -93,7 +101,7 @@ const EditProfile = () => {
                       <p className="errors">{error ? error : ''}</p>
                     </div>
 
-                    <CFormInput {...register('_id')} type="hidden" value={adminId} />
+                    <CFormInput {...register('_id')} type="hidden" value={admin.id} />
 
                     <CInputGroup className="mb-4">
                       <CInputGroupText>
@@ -103,7 +111,7 @@ const EditProfile = () => {
                       <CFormInput
                         {...register('name', { required: ' name is required' })}
                         placeholder="name"
-                        defaultValue={adminName}
+                        defaultValue={admin.name}
                         autoComplete="current-name"
                       />
                     </CInputGroup>
@@ -116,7 +124,7 @@ const EditProfile = () => {
                         type="text"
                         autoComplete="current-email"
                         disabled={true}
-                        defaultValue={adminEmail}
+                        defaultValue={admin.email}
                       />
                     </CInputGroup>
                     <CInputGroup className="mb-4">

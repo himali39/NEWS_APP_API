@@ -10,7 +10,6 @@ import {
 } from '@coreui/react'
 import { cilLockLocked, cilUser } from '@coreui/icons'
 import CIcon from '@coreui/icons-react'
-import avatar8 from './../../assets/images/avatars/8.jpg'
 import Cookies from 'js-cookie'
 import { LOGOUT } from 'src/redux/actions/action'
 import { useDispatch } from 'react-redux'
@@ -20,16 +19,13 @@ const AppHeaderDropdown = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
-  const { adminName, adminImg } = {
-    adminName: Cookies.get('adminName'),
-    adminImg: Cookies.get('adminImg'),
-  }
+  const adminString = Cookies.get('admin')
+  const admin = JSON.parse(adminString)
 
   /* ------------------------------ admin logout ------------------------------ */
   const Logout = () => {
     Cookies.remove('accessToken')
-
-    // Cookies.remove('admin')
+    Cookies.remove('admin')
     dispatch({ type: LOGOUT })
     navigate('/')
   }
@@ -37,8 +33,8 @@ const AppHeaderDropdown = () => {
   return (
     <CDropdown variant="nav-item">
       <CDropdownToggle placement="bottom-end" className="py-0" caret={false}>
-        <CAvatar src={`http://localhost:8002/adminImages/${adminImg}`} size="md" />
-        {adminName}
+        <CAvatar src={admin.img} size="md" />
+        {admin.name}
       </CDropdownToggle>
       <CDropdownMenu className="pt-0" placement="bottom-end">
         <CDropdownHeader className="bg-light fw-semibold py-2">Account</CDropdownHeader>
