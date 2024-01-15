@@ -18,10 +18,18 @@ const addLanguage = async (req, res) => {
     if (!addData) {
       return res.status(404).json({ message: "language data not found" });
     }
+
+    // const baseUrl =
+    //   req.protocol +
+    //   "://" +
+    //   req.get("host") +
+    //   process.env.BASE_URL_CATEGORY_PATH;
+
     res.status(200).json({
       success: true,
       message: "language data add successfully!",
       data: addData,
+      // baseUrl: baseUrl,
     });
   } catch (err) {
     res.status(400).json({
@@ -40,10 +48,17 @@ const getLanguage = async (req, res) => {
       return res.status(404).json({ message: "Language Data not found" });
     }
 
+    const baseUrl =
+      req.protocol +
+      "://" +
+      req.get("host") +
+      process.env.BASE_URL_CATEGORY_PATH;
+
     res.status(200).json({
       success: true,
       message: "List of Language Data successfully ",
       language: LanguageData,
+      baseUrl: baseUrl,
     });
   } catch (error) {
     res.status(404).json({
@@ -53,47 +68,73 @@ const getLanguage = async (req, res) => {
   }
 };
 
-const updateNewsLanguage = async (req, res) => {
+/* ---------------------------- list of Languages --------------------------- */
+const deleteLanguage = async (req, res) => {
   try {
-    const { newsId, languageId, categoryIds } = req.body;
+    const LanguageData = await Languages.findById(req.params.id);
 
-    // Validate input parameters
-    if (
-      !newsId ||
-      !languageId ||
-      !categoryIds ||
-      categoryIds.length === 0 ||
-      categoryIds.length > 3
-    ) {
-      throw new Error("Invalid input parameters");
+    if (!LanguageData) {
+      return res.status(404).json({ message: "Language Data not found" });
     }
+    const DeletedData = await Languages.findByIdAndDelete(
+      req.params.id,
+      req.body,
+      {
+        new: true,
+      }
+    );
+    res.status(200).json({
+      success: true,
+      message: "List of Language Data successfully ",
+      language: DeletedData,
+    });
+  } catch (error) {
+    res.status(404).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+/* ----------------------------- update Languages  data ----------------------------- */
+const updateLanguage = async (req, res) => {
+  try {
+  
+    const Language = await Languages.findById(req.params.id);
 
-    // Find the news item by ID
-    let updatedNews = await News.findById(newsId);
-
-    // Check if the news item exists
-    if (!updatedNews) {
-      throw new Error("News not found");
+    if (!Language) {
+      return res.status(404).json({ message: "Language data not found" });
     }
+    if (req.file && req.file != "undefined") {
+      req.body.flagImage = req.file.filename;
+    }
+   if (req.file && req.file != "undefined") {
+     req.body.jsonFile = req.file.filename;
+   }
 
-    // Update the language
-    updatedNews.languages = [languageId];
+    const updatedData = await Languages.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      {
+        new: true,
+      }
+    );
 
-    // Update the categories (up to three categories)
-    updatedNews.categories = categoryIds.slice(0, 3);
-
-    // Save the updated news item
-    updatedNews = await updatedNews.save();
+    if (!updatedData) {
+      throw new Error("Something went wrong, try again later");
+    }
 
     res.status(200).json({
       success: true,
-      updateData: updatedNews,
-      message: "News language updated successfully",
+      message: "Language data deleted successfully",
+      language: updatedData,
     });
-  } catch (err) {
-    console.error(err);
-    res.status(400).json({ success: false, error: err.message });
+  } catch (error) {
+    res.status(404).json({
+      success: false,
+      message: error.message,
+    });
   }
 };
 
-module.exports = { addLanguage, getLanguage };
+
+module.exports = { addLanguage, getLanguage, deleteLanguage, updateLanguage };

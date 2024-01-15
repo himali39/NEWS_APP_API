@@ -29,6 +29,10 @@ app.use(
   "/Images",
   express.static(path.join(__dirname, "./src/public/adminImages"))
 );
+app.use(
+  "/public/languagesFiles",
+  express.static(path.join(__dirname, "./src/public/languagesFiles"))
+);
 
 /**create server */
 const server = http.createServer(app);

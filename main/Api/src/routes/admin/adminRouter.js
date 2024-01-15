@@ -7,6 +7,7 @@ const {
   changePassword,
   refreshToken,
   updateProfile,
+  allAdminList,
 } = require("../../controllers/admin/adminController");
 const { singleFileUpload } = require("../../helper/upload");
 const verifyAdminToken = require("../../helper/verifyAdminToken");
@@ -19,6 +20,8 @@ router.post(
 );
 
 router.post("/login", adminLogin);
+
+router.get("/allAdminList", allAdminList);
 
 router.post("/forgot-password", forgotPasswordEmail);
 

@@ -41,6 +41,7 @@ const Login = () => {
         setIsLoading(false)
       } else {
         Cookies.set('accessToken', res.data.admin.accessToken)
+        Cookies.set('refreshToken', res.data.refreshToken)
 
         const adminObject = {
           name: res.data.admin.name,
@@ -48,7 +49,7 @@ const Login = () => {
           email: res.data.admin.email,
           img: res.data.admin.profileImage ? res.data.baseUrl + res.data.admin.profileImage : null,
         }
-        console.log(res)
+
         Cookies.set('admin', JSON.stringify(adminObject))
 
         setIsLoading(false)

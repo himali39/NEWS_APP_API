@@ -5,6 +5,7 @@ const Profile = React.lazy(() => import('./views/pages/auth/profile'))
 const ChangePassword = React.lazy(() => import('./views/pages/auth/ChangePassword'))
 const EditProfile = React.lazy(() => import('./views/pages/auth/EditProfile'))
 const Category = React.lazy(() => import('./views/pages/category/Category'))
+const subCategory = React.lazy(() => import('./views/pages/subCategory/subCategory'))
 const Language = React.lazy(() => import('./views/pages/language/Language'))
 
 // const Colors = React.lazy(() => import('./views/theme/colors/Colors'))
@@ -63,6 +64,7 @@ const routes = [
   { path: '/change-password', name: 'change-password', element: ChangePassword },
   { path: '/edit-profile', name: 'edit-profile', element: EditProfile },
   { path: '/category', name: 'category', element: Category },
+  { path: '/sub-category', name: 'sub-category', element: subCategory },
   { path: '/language', name: 'language', element: Language },
 
   // { path: '/theme', name: 'Theme', element: Colors, exact: true },

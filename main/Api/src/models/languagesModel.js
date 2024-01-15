@@ -22,6 +22,10 @@ const languagesSchema = mongoose.Schema(
     flagImage: {
       type: String,
     },
+    status: {
+      type: Boolean,
+      default: true,
+    },
   },
   {
     timestamps: true,

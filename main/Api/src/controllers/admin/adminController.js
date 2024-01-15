@@ -70,7 +70,7 @@ const adminLogin = async (req, res) => {
       return jwt.sign(payload, refreshSecret);
     };
     const refreshToken = generateRefreshToken(payload);
-    
+
     const baseUrl =
       req.protocol +
       "://" +
@@ -83,6 +83,30 @@ const adminLogin = async (req, res) => {
       admin: admin,
       refreshToken: refreshToken,
       baseUrl: baseUrl,
+    });
+  } catch (err) {
+    res.status(400).json({
+      success: false,
+      message: err.message,
+    });
+  }
+};
+
+/* ------------------------------- admin List ------------------------------- */
+const allAdminList = async (req, res) => {
+  try {
+    const admin = await Admin.find();
+
+    if (!admin) {
+      return res
+        .status(401)
+        .json({ success: false, message: "admin not found." });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "All Admin List Get successfully!",
+      admin: admin,
     });
   } catch (err) {
     res.status(400).json({
@@ -261,10 +285,10 @@ const refreshToken = async (req, res, next) => {
       { email: decoded.email },
       accessSecret, //access secret key from env
       {
-        expiresIn: "2m",
+        expiresIn: "20m",
       }
     );
-    res.status(200).json({ success: true, refreshToken: token });
+    res.status(200).json({ success: true, admin: admin, refreshToken: token });
   } catch (err) {
     next(err);
   }
@@ -311,6 +335,7 @@ const updateProfile = async (req, res, next) => {
 module.exports = {
   adminRegister,
   adminLogin,
+  allAdminList,
   forgotPasswordEmail,
   resetPassword,
   changePassword,

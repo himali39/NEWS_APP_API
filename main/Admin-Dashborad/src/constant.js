@@ -13,4 +13,11 @@ export const ADMIN_CHANGE_PASSWORD_API = '/admin/change-password'
 /* ---------------------------- Get admin profile --------------------------- */
 export const ADMIN_EDIT_PROFILE_PASSWORD_API = '/admin/edit-profile'
 
-export const All_LANGUAGE_LIST_API = '/admin/language/get-Languages'
+/* ---------------------------- all language list--------------------------- */
+export const All_LANGUAGE_LIST_API = '/admin/language/get-Language'
+
+/* ---------------------------- update language --------------------------- */
+export const UPDATE_LANGUAGE_API = '/admin/language/update-Language/'
+
+/* ---------------------------- delete language --------------------------- */
+export const DELETE_LANGUAGE_API = '/admin/language/delete-Language/'

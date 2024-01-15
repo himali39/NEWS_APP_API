@@ -44,5 +44,37 @@
   border-radius: 50%;
 }
 .avatar-md {
-      margin-right: 10px;
+  margin-right: 10px;
+}
+
+html:not([dir='rtl']) .ms-2 {
+  margin-left: 9rem !important;
+}
+
+.right-text {
+  display: flex;
+  justify-content: right;
+  margin-top: -27px;
+  margin-bottom: 12px;
+}
+.AddButton {
+  background-color: #15b3ce !important;
+}
+
+/* -------------------------- datatable responsive -------------------------- */
+@media (max-width: 900px) {
+  .MuiTableHead-root {
+    display: none !important;
+  }
+  .MuiTableCell-sizeMedium {
+    display: inline-block !important;
+  }
+  .MuiTableCell-paddingCheckbox {
+    display: table-cell !important;
+  }
+}
+@media (max-width: 426px) {
+  .tss-1vd39vz-MUIDataTableBodyCell-stackedCommon {
+    font-size: 10px !important;
+  }
 }
