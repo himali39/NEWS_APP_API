@@ -11,7 +11,7 @@ const router = require("express").Router();
 
 /* --------------------------- add Language route --------------------------- */
 router.post(
-  "/addLanguage",
+  "/add-Language",
   multiDiffFileUpload("/languagesFiles", [
     {
       name: "jsonFile",

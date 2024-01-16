@@ -16,8 +16,14 @@ export const ADMIN_EDIT_PROFILE_PASSWORD_API = '/admin/edit-profile'
 /* ---------------------------- all language list--------------------------- */
 export const All_LANGUAGE_LIST_API = '/admin/language/get-Language'
 
+/* ---------------------------- add language data--------------------------- */
+export const ADD_LANGUAGE_API = '/admin/language/add-Language'
+
 /* ---------------------------- update language --------------------------- */
 export const UPDATE_LANGUAGE_API = '/admin/language/update-Language/'
 
 /* ---------------------------- delete language --------------------------- */
 export const DELETE_LANGUAGE_API = '/admin/language/delete-Language/'
+
+/* ---------------------------- all category list--------------------------- */
+export const All_CATEGORY_LIST_API = '/admin/category/get-Category'

@@ -36,7 +36,7 @@
 }
 .update-button {
   display: flex;
-  justify-content: end;
+  justify-content: flex-end;
 }
 .avatar-img {
   height: 100%;
@@ -48,7 +48,7 @@
 }
 
 html:not([dir='rtl']) .ms-2 {
-  margin-left: 9rem !important;
+  margin-left: 10rem !important;
 }
 
 .right-text {
@@ -57,8 +57,10 @@ html:not([dir='rtl']) .ms-2 {
   margin-top: -27px;
   margin-bottom: 12px;
 }
-.AddButton {
+.AddButton
+ {
   background-color: #15b3ce !important;
+  border:none !important;
 }
 
 /* -------------------------- datatable responsive -------------------------- */
@@ -77,4 +79,31 @@ html:not([dir='rtl']) .ms-2 {
   .tss-1vd39vz-MUIDataTableBodyCell-stackedCommon {
     font-size: 10px !important;
   }
+}
+
+/* ---------------------------- delete button css --------------------------- */
+.deleteButton {
+  color: #ffff;
+  cursor: pointer;
+  border: 1px solid;
+  border-radius: 5px;
+  margin: 0px 6px;
+  font-size: 30px !important;
+  padding: 4px;
+  background-color: #dc3545;
+}
+.editButton {
+  color: #ffff;
+  cursor: pointer;
+  border: 1px solid;
+  border-radius: 5px;
+  margin: 0px 6px;
+  font-size: 30px !important;
+  padding: 4px;
+  background-color: #3c4b64;
+}
+.submitButton {
+  display: flex;
+  justify-content: flex-end;
+  // background-color: #15b3ce !important;
 }

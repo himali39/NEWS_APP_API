@@ -6,6 +6,7 @@ const {
   deleteCategory,
   updateCategory,
 } = require("../../controllers/admin/adminCategoryContoller");
+const verifyAdminToken = require("../../helper/verifyAdminToken");
 const router = express.Router();
 
 /* ----------------------- add category route ----------------------- */
@@ -16,7 +17,7 @@ router.post(
 );
 
 /* ----------------------- get category route ----------------------- */
-router.get("/get-category", getCategory);
+router.get("/get-category",verifyAdminToken, getCategory);
 
 /* ----------------------- delete category route  ----------------------- */
 router.delete("/delete-category/:id", deleteCategory);

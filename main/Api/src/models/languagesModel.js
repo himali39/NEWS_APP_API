@@ -17,7 +17,7 @@ const languagesSchema = mongoose.Schema(
     },
     jsonFile: {
       type: String,
-      required: [true, "language JSON file is required."],
+      // required: [true, "language JSON file is required."],
     },
     flagImage: {
       type: String,

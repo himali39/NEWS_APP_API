@@ -10,25 +10,23 @@ import swal from 'sweetalert'
 const Language = () => {
   const [dataTableData, setDataTable] = useState([])
   const navigate = useNavigate()
+  const [baseUrl, setBaseUrl] = useState([])
 
   const list = async () => {
-    // setIsLoading(true)
     await getAllLanguage()
       .then((res) => {
-        // console.log(res.data.language)
-        // setIsLoading(false)
         setDataTable(res.data.language)
+        setBaseUrl(`${process.env.REACT_APP_LANGUAGES_IMAGE_PATH}`)
       })
       .catch((err) => {
         console.log(err)
-        // if (!err.response.data.success) {
-        //   if (err.response.data.status === 401) {
-        //     toast.error(err.response.data.message)
-        //     setIsLoading(false)
-        //   } else {
-        //     console.log(err.response.data, 'else')
-        //   }
-        // }
+        if (!err.response.data.success) {
+          if (err.response.data.status === 401) {
+            toast.error(err.response.data.message)
+          } else {
+            console.log(err.response.data, 'else')
+          }
+        }
       })
   }
   useEffect(() => {
@@ -112,36 +110,24 @@ const Language = () => {
           return (
             <div>
               <Icons.EditRounded
-                sx={{
-                  color: '#ffff',
-                  cursor: 'pointer',
-                  border: '1px solid',
-                  borderRadius: '5px',
-                  margin: '0px 6px',
-                  fontSize: '30px',
-                  padding: '4px',
-                  backgroundColor: '#3C4B64',
+                className="editButton"
+                onClick={() => {
+                  const editdata = dataTableData.find((data) => data._id === value)
+                  console.log(editdata)
+                  navigate('/language-form', { state: { editdata: editdata, imageUrl: baseUrl } })
                 }}
               ></Icons.EditRounded>
               <Icons.DeleteRounded
-                sx={{
-                  color: '#ffff',
-                  cursor: 'pointer',
-                  border: '1px solid',
-                  borderRadius: '5px',
-                  margin: '0px 6px',
-                  fontSize: '30px',
-                  padding: '4px',
-                  backgroundColor: '#DC3545',
-                }}
+                className="deleteButton"
                 onClick={async () => {
                   const confirm = await swal({
                     title: 'Are you sure?',
-                    text: 'Are you sure that you want to delete this Excercise Library?',
+                    text: 'Are you sure that you want to delete Language? All related data(Categories,Subcategories,News,Breaking news,Tags) will also be deleted',
                     icon: 'warning',
                     buttons: ['No, cancel it!', 'Yes, I am sure!'],
                     dangerMode: true,
                   })
+
                   if (confirm) {
                     deleteLanguage(value)
                       .then(() => {
@@ -176,9 +162,8 @@ const Language = () => {
         <Button
           variant="contained"
           size="medium"
-          // style={{ backgroundColor: '#15b3c' }}
           className="AddButton"
-          onClick={() => navigate('/LanguageForm')}
+          onClick={() => navigate('/language-form')}
         >
           Add Language
         </Button>

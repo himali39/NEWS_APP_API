@@ -125,7 +125,7 @@ const updateLanguage = async (req, res) => {
 
     res.status(200).json({
       success: true,
-      message: "Language data deleted successfully",
+      message: "Language data update successfully",
       language: updatedData,
     });
   } catch (error) {

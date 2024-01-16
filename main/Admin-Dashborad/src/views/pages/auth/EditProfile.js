@@ -14,8 +14,7 @@ import {
   CButton,
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
-import { cilLockLocked, cilUser, cilEnvelopeClosed } from '@coreui/icons'
-import { useNavigate } from 'react-router-dom'
+import { cilUser, cilEnvelopeClosed } from '@coreui/icons'
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import { UpdateProfile } from 'src/redux/api/api'

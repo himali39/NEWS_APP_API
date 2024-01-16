@@ -1,10 +1,12 @@
 import axios from 'axios'
 import Cookies from 'js-cookie'
 import {
+  ADD_LANGUAGE_API,
   ADMIN_EDIT_PROFILE_PASSWORD_API,
   ADMIN_FORGOT_PASSWORD_API,
   ADMIN_LOGIN_API,
   ADMIN_RESET_PASSWORD_API,
+  All_CATEGORY_LIST_API,
   All_LANGUAGE_LIST_API,
   DELETE_LANGUAGE_API,
   MAIN_URL,
@@ -72,6 +74,12 @@ export const getAllLanguage = (data) =>
     headers: { Authorization: `Bearer ${Cookies.get('accessToken')}` },
   })
 
+/* -------------------------- add Languages -------------------------- */
+export const addLanguage = (data) =>
+  axios.post(MAIN_URL + ADD_LANGUAGE_API, data, {
+    headers: { Authorization: `Bearer ${Cookies.get('accessToken')}` },
+  })
+
 /* -------------------------- update Languages -------------------------- */
 export const updateLanguage = (data, id) =>
   axios.put(MAIN_URL + UPDATE_LANGUAGE_API + id, data, {
@@ -79,7 +87,13 @@ export const updateLanguage = (data, id) =>
   })
 
 /* -------------------------- delete Languages -------------------------- */
-export const deleteLanguage = (data, id) =>
-  axios.delete(MAIN_URL + DELETE_LANGUAGE_API + id, data, {
+export const deleteLanguage = (id) =>
+  axios.delete(MAIN_URL + DELETE_LANGUAGE_API + id, {
+    headers: { Authorization: `Bearer ${Cookies.get('accessToken')}` },
+  })
+
+/* -------------------------- Get All Languages -------------------------- */
+export const getAllCategory = (data) =>
+  axios.get(MAIN_URL + All_CATEGORY_LIST_API, data, {
     headers: { Authorization: `Bearer ${Cookies.get('accessToken')}` },
   })

@@ -32,7 +32,10 @@ const addCategory = async (req, res) => {
 /* ----------------------------- Get Category data ----------------------------- */
 const getCategory = async (req, res) => {
   try {
-    const CategoryData = await Category.find();
+    const CategoryData = await Category.find().populate(
+      "languages"
+        
+    );
 
     if (!CategoryData) {
       return res.status(404).json({ message: "Category  data not found" });
@@ -41,7 +44,7 @@ const getCategory = async (req, res) => {
     res.status(200).json({
       success: true,
       message: "get all Category data ",
-      personalize: CategoryData,
+      category: CategoryData,
     });
   } catch (error) {
     res.status(404).json({
@@ -107,61 +110,12 @@ const updateCategory = async (req, res) => {
   }
 };
 
-/* -------------------------------add Personalize data------------------------------ */
 
-const addProduct = async (req, res) => {
-  try {
-    const reqbody = req.body;
-
-    if (req.file) {
-      reqbody.image = req.file.filename;
-    }
-
-    /** create category using model */
-    const category = await Category.create(reqbody);
-
-    if (!category) {
-      return res.status(404).json({ message: "category data not found" });
-    }
-    res.status(200).json({
-      success: true,
-      message: `category data add successfully!`,
-      data: category,
-    });
-  } catch (err) {
-    res.status(400).json({
-      success: false,
-      message: err.message,
-    });
-  }
-};
-// /* ----------------------------- Get Category data ----------------------------- */
-// const getProduct = async (req, res) => {
-//   try {
-//     const CategoryData = await Category.find();
-
-//     if (!CategoryData) {
-//       return res.status(404).json({ message: "Category  data not found" });
-//     }
-
-//     res.status(200).json({
-//       success: true,
-//       message: "get all Category data ",
-//       personalize: CategoryData,
-//     });
-//   } catch (error) {
-//     res.status(404).json({
-//       success: false,
-//       message: error.message,
-//     });
-//   }
-// };
 
 module.exports = {
   addCategory,
   getCategory,
   deleteCategory,
   updateCategory,
-  addProduct
-
+ 
 };
