@@ -19,7 +19,7 @@ const addSubCategory = async (req, res) => {
   } catch (err) {
     res.status(400).json({
       success: false,
-      message: err.message,            
+      message: err.message,
     });
   }
 };
@@ -27,10 +27,10 @@ const addSubCategory = async (req, res) => {
 /* ----------------------------- Get sub-Category data ----------------------------- */
 const getSubCategory = async (req, res) => {
   try {
-    const subCategoryData = await subCategory.find().populate({
-      path: "languages",
-      select: ["languagesName"],
-    });
+    const subCategoryData = await subCategory
+      .find()
+      .populate("languages")
+      .populate("categoryName");
 
     if (!subCategoryData) {
       return res.status(404).json({ message: "sub Category  data not found" });
@@ -39,7 +39,7 @@ const getSubCategory = async (req, res) => {
     res.status(200).json({
       success: true,
       message: "get all subCategory data ",
-      personalize: subCategoryData,
+      subCategory: subCategoryData,
     });
   } catch (error) {
     res.status(404).json({
@@ -49,4 +49,68 @@ const getSubCategory = async (req, res) => {
   }
 };
 
-module.exports = { addSubCategory, getSubCategory };
+/* ----------------------------- delete Category data ----------------------------- */
+const deleteSubCategory = async (req, res) => {
+  try {
+    const subCategoryData = await subCategory.findById(req.params.id);
+
+    if (!subCategoryData) {
+      return res
+        .status(404)
+        .json({ message: "subCategoryData  data not found" });
+    }
+     
+    const deleteCateData = await subCategory.findByIdAndDelete(req.params.id);
+
+    res.status(200).json({
+      success: true,
+      message: "Sub category data deleted successfully",
+      subcategory: deleteCateData,
+    });
+  } catch (error) {
+    res.status(404).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
+/* ----------------------------- update Category data ----------------------------- */
+const updateSubCategory = async (req, res) => {
+  try {
+    
+    const id = req.params.id;
+    const CategoryData = await subCategory.findById(id);
+
+    if (!CategoryData) {
+      return res.status(404).json({ message: "sub Category data not found" });
+    }
+   
+    const updateCateData = await subCategory.findByIdAndUpdate(id, req.body, {
+      new: true,
+    });
+
+    if (!updateCateData) {
+      throw new Error("Something went wrong, try again later");
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "Sub category data deleted successfully",
+      subCategory: updateCateData,
+    });
+  } catch (error) {
+    res.status(404).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
+
+module.exports = {
+  addSubCategory,
+  getSubCategory,
+  deleteSubCategory,
+  updateSubCategory,
+};

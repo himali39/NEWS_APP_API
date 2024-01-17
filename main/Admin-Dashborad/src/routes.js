@@ -6,7 +6,8 @@ const ChangePassword = React.lazy(() => import('./views/pages/auth/ChangePasswor
 const EditProfile = React.lazy(() => import('./views/pages/auth/EditProfile'))
 const Category = React.lazy(() => import('./views/pages/category/Category'))
 const CategoryForm = React.lazy(() => import('./views/pages/category/CategoryForm'))
-const subCategory = React.lazy(() => import('./views/pages/subCategory/subCategory'))
+const subCategory = React.lazy(() => import('./views/pages/subCategory/SubCategory'))
+const subCategoryForm = React.lazy(() => import('./views/pages/subCategory/SubCategoryForm'))
 const Language = React.lazy(() => import('./views/pages/language/Language'))
 const LanguageForm = React.lazy(() => import('./views/pages/language/LanguageForm'))
 
@@ -68,6 +69,7 @@ const routes = [
   { path: '/category', name: 'category', element: Category },
   { path: '/category-form', name: 'category-form', element: CategoryForm },
   { path: '/sub-category', name: 'sub-category', element: subCategory },
+  { path: '/sub-category-form', name: 'sub-category-form', element: subCategoryForm },
   { path: '/language', name: 'language', element: Language },
   { path: '/language-form', name: 'language-form', element: LanguageForm },
 

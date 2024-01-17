@@ -15,14 +15,21 @@ import {
   CFormSelect,
 } from '@coreui/react'
 import { Controller, useForm } from 'react-hook-form'
-import { addCategory, getAllLanguage, updateCategory } from 'src/redux/api/api'
+import {
+  addCategory,
+  addSubCategory,
+  getAllCategory,
+  getAllLanguage,
+  updateCategory,
+  updateSubCategory,
+} from 'src/redux/api/api'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
 import { MenuItem, Select } from '@mui/material'
 
-const CategoryForm = () => {
+const SubCategoryForm = () => {
   const {
     register,
     getValues,
@@ -33,21 +40,13 @@ const CategoryForm = () => {
   } = useForm()
 
   const navigate = useNavigate()
-  const [newUrl, setNewUrl] = useState()
   const [isUpdate, setIsUpdate] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const [languageOptions, setLanguageOptions] = useState([])
+  const [categoryOptions, setCategoryOptions] = useState([])
 
   const { state } = useLocation()
 
-  const handleFileUpload = (event) => {
-    const file = event.target.files[0]
-    const reader = new FileReader()
-    reader.onloadend = () => {
-      setNewUrl(reader.result)
-    }
-    reader.readAsDataURL(file)
-  }
   const LanguagesList = () => {
     getAllLanguage()
       .then((res) => {
@@ -58,20 +57,21 @@ const CategoryForm = () => {
       })
   }
 
-  const onSubmit = (data) => {
-    let formData = new FormData() //formdata object
-    Object.keys(data).forEach(function (key) {
-      if (key === 'categoryImage') {
-        formData.append(key, data[key][0])
-      } else {
-        formData.append(key, data[key])
-      }
-    })
+  const CategoryList = () => {
+    getAllCategory()
+      .then((res) => {
+        setCategoryOptions(res.data.category)
+      })
+      .catch((err) => {
+        toast.error(err)
+      })
+  }
 
+  const onSubmit = (data) => {
     isUpdate === ''
-      ? addCategory(formData)
+      ? addSubCategory(data)
           .then((res) => {
-            navigate('/category')
+            navigate('/sub-category')
           })
           .catch((err) => {
             if (!err.response.data.success) {
@@ -80,9 +80,9 @@ const CategoryForm = () => {
               setIsLoading(false)
             }
           })
-      : updateCategory(formData, isUpdate)
+      : updateSubCategory(data, isUpdate)
           .then((res) => {
-            navigate('/category')
+            navigate('/sub-category')
           })
           .catch((err) => {
             if (!err.response.data.success) {
@@ -95,13 +95,13 @@ const CategoryForm = () => {
   }
   useEffect(() => {
     if (state) {
-      const { editdata, imageUrl } = state
+      const { editdata } = state
       setIsUpdate(editdata._id)
-      setValue('categoryName', editdata.categoryName)
+      setValue('subCategoryName', editdata.subCategoryName)
       setValue('languages', editdata.languages)
-      setNewUrl(imageUrl + editdata.flagImage)
     }
     LanguagesList()
+    CategoryList()
   }, [])
   return (
     <div className=" bg-light min-vh-100">
@@ -110,20 +110,22 @@ const CategoryForm = () => {
           <CCol md={8}>
             <CCard>
               <CCardHeader>
-                <strong>Category Form</strong>
+                <strong>Sub Category Form</strong>
               </CCardHeader>
               <CCardBody>
                 <ToastContainer />
                 <CForm className="row g-3 " onSubmit={handleSubmit(onSubmit)}>
                   <CCol md={6}>
-                    <CFormLabel htmlFor="validationDefault01">Category Name</CFormLabel>
+                    <CFormLabel htmlFor="validationDefault01">Sub Category</CFormLabel>
                     <CFormInput
                       type="text"
                       id="validationDefault01"
-                      {...register('categoryName', { required: 'category Name is required' })}
-                      invalid={!!errors.categoryName}
+                      {...register('subCategoryName', {
+                        required: ' sub category is required',
+                      })}
+                      invalid={!!errors.subCategoryName}
                     />
-                    <CFormFeedback invalid>Language is required</CFormFeedback>
+                    <CFormFeedback invalid>sub Category is required</CFormFeedback>
                   </CCol>
 
                   <CCol md={6}>
@@ -163,21 +165,39 @@ const CategoryForm = () => {
                   </CCol>
 
                   <CCol md={6}>
-                    <CFormLabel htmlFor="validationDefault01">
-                      Category Image
-                      <span style={{ color: '#ff2d55', fontSize: '12px' }}>
-                        Only png, jpg, webp and jpeg image allow
-                      </span>
-                    </CFormLabel>
-                    <CFormInput
-                      type="file"
-                      id="validationTextarea"
-                      aria-label="file example"
-                      {...register('categoryImage', { required: 'category Image is required' })}
-                      invalid={!!errors.categoryImage}
-                      onChange={handleFileUpload}
+                    <CFormLabel htmlFor="validationDefault01">Category</CFormLabel>
+                    <Controller
+                      name="categoryName"
+                      control={control}
+                      rules={{ required: 'category is required' }}
+                      render={({ field }) => (
+                        <>
+                          <Select
+                            {...field}
+                            style={{
+                              width: '100%',
+                              height: '36px',
+                              borderRadius: '0.375rem',
+                            }}
+                            id="categoryName"
+                            labelId="categoryName"
+                            autoWidth={false}
+                          >
+                            <option value="" disabled selected>
+                              Select Category
+                            </option>
+                            {categoryOptions?.map((option) => (
+                              <MenuItem key={option._id} value={option._id}>
+                                {option?.categoryName}
+                              </MenuItem>
+                            ))}
+                          </Select>
+                        </>
+                      )}
                     />
-                    <CFormFeedback invalid>Flag Image is required</CFormFeedback>
+                    {errors.categoryName && (
+                      <CFormFeedback invalid>{errors.categoryName.message}</CFormFeedback>
+                    )}
                   </CCol>
                   <CCol md={12} className="text-center submitButton">
                     {isLoading ? (
@@ -201,4 +221,4 @@ const CategoryForm = () => {
   )
 }
 
-export default CategoryForm
+export default SubCategoryForm

@@ -4,16 +4,7 @@ const Category = require("../../models/categoryModel");
 /* ----------------------------- Get personalize data ----------------------------- */
 const getCategory = async (req, res) => {
   try {
-    const CategoryData = await Category.find().populate([
-      {
-        path:"subcategory",
-        select: ["subCategoryName"],
-      },
-      {
-        path: "languages",
-        select: ["languagesName"],
-      }
-    ]);
+    const CategoryData = await Category.find().populate("languages");
 
     if (!CategoryData) {
       return res.status(404).json({ message: "Category  data not found" });
@@ -31,6 +22,7 @@ const getCategory = async (req, res) => {
     });
   }
 };
+
 
 
 

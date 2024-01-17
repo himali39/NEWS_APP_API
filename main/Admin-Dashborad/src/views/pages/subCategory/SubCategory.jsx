@@ -2,28 +2,30 @@ import { Button, Switch } from '@mui/material'
 import MUIDataTable from 'mui-datatables'
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { deleteCategory, getAllCategory, updateCategory } from 'src/redux/api/api'
 import * as Icons from '@mui/icons-material'
 import { ToastContainer, toast } from 'react-toastify'
 import swal from 'sweetalert'
+import { deleteSubCategory, getAllSubCategory, updateSubCategory } from 'src/redux/api/api'
 
-const Category = () => {
+const SubCategory = () => {
   const navigate = useNavigate()
   const [dataTableData, setDataTable] = useState([])
-  const [baseUrl, setBaseUrl] = useState([])
 
-  const categoryList = async () => {
-    await getAllCategory()
+  const subCategoryList = async () => {
+    await getAllSubCategory()
       .then((res) => {
-        const transformedData = res.data.category.map((category) => ({
-          ...category,
-          languages: category.languages.map((language) => language.languagesName),
+        console.log(res.data.subCategory)
+        const transformedData = res.data.subCategory.map((subCategory) => ({
+          ...subCategory,
+          languages: subCategory.languages?.map((language) => language.languagesName),
+          categoryName: subCategory.categoryName?.map((category) => category.categoryName),
         }))
 
         setDataTable(transformedData)
-        setBaseUrl(`${process.env.REACT_APP_LANGUAGES_IMAGE_PATH}`)
+        //  setBaseUrl(`${process.env.REACT_APP_LANGUAGES_IMAGE_PATH}`)
       })
       .catch((err) => {
+        console.log(err)
         if (!err.response.data.success) {
           if (err.response.data.status === 401) {
             toast.error(err.response.data.message)
@@ -34,16 +36,27 @@ const Category = () => {
       })
   }
   useEffect(() => {
-    categoryList()
+    subCategoryList()
   }, [])
 
   const columns = [
     {
-      name: 'categoryName',
-      label: 'categoryName',
+      name: 'subCategoryName',
+      label: 'sub Category ',
       options: {
         filter: true,
         sort: true,
+        toUpperCase: true,
+      },
+    },
+
+    {
+      name: 'categoryName',
+      label: 'category',
+      options: {
+        filter: true,
+        sort: false,
+        toUpperCase: true,
       },
     },
     {
@@ -52,22 +65,7 @@ const Category = () => {
       options: {
         filter: true,
         sort: false,
-      },
-    },
-    {
-      name: 'categoryImage',
-      label: 'Image',
-      options: {
-        customBodyRender: (categoryImage) =>
-          categoryImage ? (
-            <img
-              src={`${process.env.REACT_APP_CATEGORY_IMAGE_PATH}${categoryImage}`}
-              alt={categoryImage}
-              style={{ height: '50px', width: '50px' }}
-            />
-          ) : (
-            ''
-          ),
+        toUpperCase: true,
       },
     },
     {
@@ -83,12 +81,12 @@ const Category = () => {
               checked={status}
               onChange={() => {
                 const data = { id: _id, status: !status }
-                updateCategory(data, _id)
+                updateSubCategory(data, _id)
                   .then(() => {
                     toast.success('status changed successfully!', {
                       key: data._id,
                     })
-                    categoryList()
+                    subCategoryList()
                   })
                   .catch(() => {
                     toast.error('something went wrong!', {
@@ -113,7 +111,9 @@ const Category = () => {
                 onClick={() => {
                   const editdata = dataTableData.find((data) => data._id === value)
                   console.log(editdata)
-                  navigate('/category-form', { state: { editdata: editdata, imageUrl: baseUrl } })
+                  navigate('/sub-category-form', {
+                    state: { editdata: editdata },
+                  })
                 }}
               ></Icons.EditRounded>
               <Icons.DeleteRounded
@@ -127,13 +127,12 @@ const Category = () => {
                     dangerMode: true,
                   })
                   if (confirm) {
-                    deleteCategory(value)
+                    deleteSubCategory(value)
                       .then(() => {
                         toast.success('deleted successfully!', {
                           key: value,
                         })
-                        console.log(value)
-                        categoryList()
+                        subCategoryList()
                       })
                       .catch(() => {
                         toast.error('something went wrong!', {
@@ -162,13 +161,13 @@ const Category = () => {
           variant="contained"
           size="medium"
           className="AddButton"
-          onClick={() => navigate('/category-form')}
+          onClick={() => navigate('/sub-category-form')}
         >
-          Add Category
+          Add SubCategory
         </Button>
       </div>
       <MUIDataTable
-        title={'Category List'}
+        title={'Sub Category List'}
         data={dataTableData}
         columns={columns}
         options={options}
@@ -177,4 +176,4 @@ const Category = () => {
   )
 }
 
-export default Category
+export default SubCategory

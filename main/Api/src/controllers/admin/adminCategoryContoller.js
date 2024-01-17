@@ -1,4 +1,5 @@
 const Category = require("../../models/categoryModel");
+const deleteFiles = require("../../helper/deleteFile");
 
 /* -------------------------------add Personalize data------------------------------ */
 
@@ -32,10 +33,7 @@ const addCategory = async (req, res) => {
 /* ----------------------------- Get Category data ----------------------------- */
 const getCategory = async (req, res) => {
   try {
-    const CategoryData = await Category.find().populate(
-      "languages"
-        
-    );
+    const CategoryData = await Category.find().populate("languages");
 
     if (!CategoryData) {
       return res.status(404).json({ message: "Category  data not found" });
@@ -58,9 +56,14 @@ const getCategory = async (req, res) => {
 const deleteCategory = async (req, res) => {
   try {
     const CategoryData = await Category.findById(req.params.id);
+
     if (!CategoryData) {
       return res.status(404).json({ message: "Category  data not found" });
     }
+
+    
+    deleteFiles("category-images/" + CategoryData.categoryImage);
+
     const deleteCateData = await Category.findByIdAndDelete(req.params.id);
 
     res.status(200).json({
@@ -110,12 +113,9 @@ const updateCategory = async (req, res) => {
   }
 };
 
-
-
 module.exports = {
   addCategory,
   getCategory,
   deleteCategory,
   updateCategory,
- 
 };

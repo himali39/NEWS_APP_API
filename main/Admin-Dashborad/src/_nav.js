@@ -19,7 +19,7 @@ const _nav = [
   {
     component: CNavItem,
     name: 'SubCategory',
-    to: '/subcategory',
+    to: '/sub-category',
     icon: <CIcon icon={cilPencil} customClassName="nav-icon" />,
   },
   {

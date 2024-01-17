@@ -27,3 +27,24 @@ export const DELETE_LANGUAGE_API = '/admin/language/delete-Language/'
 
 /* ---------------------------- all category list--------------------------- */
 export const All_CATEGORY_LIST_API = '/admin/category/get-Category'
+
+/* ---------------------------- add category data--------------------------- */
+export const ADD_CATEGORY_API = '/admin/category/add-Category'
+
+/* ---------------------------- delete category --------------------------- */
+export const DELETE_CATEGORY_API = '/admin/category/delete-Category/'
+
+/* ---------------------------- update category --------------------------- */
+export const UPDATE_CATEGORY_API = '/admin/category/update-Category/'
+
+/* ---------------------------- all subcategory list--------------------------- */
+export const All_SUBCATEGORY_LIST_API = '/admin/subcategory/get-subCategory'
+
+/* ---------------------------- add sub category data--------------------------- */
+export const ADD_SUBCATEGORY_API = '/admin/subcategory/add-subCategory/'
+
+/* ---------------------------- delete subcategory --------------------------- */
+export const DELETE_SUBCATEGORY_API = '/admin/subcategory/delete-subCategory/'
+
+/* ---------------------------- update subcategory --------------------------- */
+export const UPDATE_SUBCATEGORY_API = '/admin/subcategory/update-subcategory/'

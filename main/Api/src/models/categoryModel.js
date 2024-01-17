@@ -7,12 +7,12 @@ const categorySchema = mongoose.Schema(
       required: [true, "Name is required."],
       trim: true,
     },
-    subcategory: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "subcategory", //model name subCategory
-      },
-    ],
+    // subcategory: [
+    //   {
+    //     type: mongoose.Schema.Types.ObjectId,
+    //     ref: "subcategory", //model name subCategory
+    //   },
+    // ],
     languages: [
       {
         type: mongoose.Schema.Types.ObjectId,

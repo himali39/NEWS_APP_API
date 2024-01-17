@@ -24,6 +24,11 @@ app.use(userRoute);
 connectDB();
 
 /**UPLOAD FILE */
+app.use(
+  "/public",
+  express.static(path.join(__dirname, "./public/"))
+);
+
 app.use(express.static(path.join(__dirname, "./Api/src/public/")));
 app.use(
   "/Images",
@@ -32,6 +37,10 @@ app.use(
 app.use(
   "/public/languagesFiles",
   express.static(path.join(__dirname, "./src/public/languagesFiles"))
+);
+app.use(
+  "/public/category-images",
+  express.static(path.join(__dirname, "./src/public/category-images"))
 );
 
 /**create server */
