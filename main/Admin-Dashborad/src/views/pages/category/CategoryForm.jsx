@@ -123,7 +123,7 @@ const CategoryForm = () => {
                       {...register('categoryName', { required: 'category Name is required' })}
                       invalid={!!errors.categoryName}
                     />
-                    <CFormFeedback invalid>Language is required</CFormFeedback>
+                    <CFormFeedback invalid>category Name is required</CFormFeedback>
                   </CCol>
 
                   <CCol md={6}>
@@ -157,17 +157,13 @@ const CategoryForm = () => {
                         </>
                       )}
                     />
-                    {errors.languages && (
-                      <CFormFeedback invalid>{errors.languages.message}</CFormFeedback>
-                    )}
+                    {errors.languages && <div className="errors">{errors.languages.message}</div>}
                   </CCol>
 
                   <CCol md={6}>
                     <CFormLabel htmlFor="validationDefault01">
                       Category Image
-                      <span style={{ color: '#ff2d55', fontSize: '12px' }}>
-                        Only png, jpg, webp and jpeg image allow
-                      </span>
+                      <span className="errors">Only png, jpg, webp and jpeg image allow</span>
                     </CFormLabel>
                     <CFormInput
                       type="file"

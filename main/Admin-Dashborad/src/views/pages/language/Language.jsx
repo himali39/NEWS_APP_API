@@ -37,16 +37,19 @@ const Language = () => {
   const columns = [
     {
       name: 'languagesName',
-      label: 'Languages',
+      label: 'Language',
       options: {
         filter: true,
         sort: true,
-        align: 'center',
       },
     },
     {
       name: 'displayName',
       label: 'Display Name',
+      options: {
+        filter: true,
+        sort: true,
+      },
     },
     {
       name: 'code',
@@ -68,7 +71,7 @@ const Language = () => {
               style={{ height: '50px', width: '50px' }}
             />
           ) : (
-            <img src={defaultImg} alt={defaultImg} style={{ height: '50px', width: '50px' }}></img>
+            <img src={defaultImg} alt={defaultImg} style={{ height: '50px', width: '50px' }} />
           ),
       },
     },
@@ -155,7 +158,7 @@ const Language = () => {
   ]
 
   const options = {
-    filterType: 'checkbox',
+    // filterType: 'checkbox',
   }
 
   return (

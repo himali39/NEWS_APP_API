@@ -10,6 +10,10 @@ const subCategory = React.lazy(() => import('./views/pages/subCategory/SubCatego
 const subCategoryForm = React.lazy(() => import('./views/pages/subCategory/SubCategoryForm'))
 const Language = React.lazy(() => import('./views/pages/language/Language'))
 const LanguageForm = React.lazy(() => import('./views/pages/language/LanguageForm'))
+const Tag = React.lazy(() => import('./views/pages/tag/Tag'))
+const TagForm = React.lazy(() => import('./views/pages/tag/TagForm'))
+const News = React.lazy(() => import('./views/pages/news/News'))
+const NewsForm = React.lazy(() => import('./views/pages/news/NewsForm'))
 
 // const Colors = React.lazy(() => import('./views/theme/colors/Colors'))
 // const Typography = React.lazy(() => import('./views/theme/typography/Typography'))
@@ -72,6 +76,10 @@ const routes = [
   { path: '/sub-category-form', name: 'sub-category-form', element: subCategoryForm },
   { path: '/language', name: 'language', element: Language },
   { path: '/language-form', name: 'language-form', element: LanguageForm },
+  { path: '/tag', name: 'tag', element: Tag },
+  { path: '/tag-form', name: 'tag-form', element: TagForm },
+  { path: '/news', name: 'news', element: News },
+  { path: '/news-form', name: 'news-form', element: NewsForm },
 
   // { path: '/theme', name: 'Theme', element: Colors, exact: true },
   // { path: '/theme/colors', name: 'Colors', element: Colors },

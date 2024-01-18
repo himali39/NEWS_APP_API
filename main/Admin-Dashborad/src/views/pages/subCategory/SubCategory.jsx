@@ -52,7 +52,7 @@ const SubCategory = () => {
 
     {
       name: 'categoryName',
-      label: 'category',
+      label: 'Category',
       options: {
         filter: true,
         sort: false,
@@ -61,7 +61,7 @@ const SubCategory = () => {
     },
     {
       name: 'languages',
-      label: 'Language',
+      label: 'Languages',
       options: {
         filter: true,
         sort: false,

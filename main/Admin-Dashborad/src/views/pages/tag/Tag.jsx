@@ -2,28 +2,27 @@ import { Button, Switch } from '@mui/material'
 import MUIDataTable from 'mui-datatables'
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { deleteCategory, getAllCategory, updateCategory } from 'src/redux/api/api'
 import * as Icons from '@mui/icons-material'
 import { ToastContainer, toast } from 'react-toastify'
 import swal from 'sweetalert'
+import { deleteTag, getAllTag, updateTag } from 'src/redux/api/api'
 
-const Category = () => {
+const Tag = () => {
   const navigate = useNavigate()
   const [dataTableData, setDataTable] = useState([])
-  const [baseUrl, setBaseUrl] = useState([])
 
-  const categoryList = async () => {
-    await getAllCategory()
+  const tagList = async () => {
+    await getAllTag()
       .then((res) => {
-        const transformedData = res.data.category.map((category) => ({
-          ...category,
-          languages: category.languages.map((language) => language.languagesName),
+        const transformedData = res.data.tag.map((tag) => ({
+          ...tag,
+          languages: tag.languages?.map((language) => language.languagesName),
         }))
 
         setDataTable(transformedData)
-        setBaseUrl(`${process.env.REACT_APP_LANGUAGES_IMAGE_PATH}`)
       })
       .catch((err) => {
+        console.log(err)
         if (!err.response.data.success) {
           if (err.response.data.status === 401) {
             toast.error(err.response.data.message)
@@ -34,16 +33,17 @@ const Category = () => {
       })
   }
   useEffect(() => {
-    categoryList()
+    tagList()
   }, [])
 
   const columns = [
     {
-      name: 'categoryName',
-      label: 'Category',
+      name: 'tagName',
+      label: 'Tag',
       options: {
         filter: true,
         sort: true,
+        customHeadRender: (columnMeta) => <th style={{ textAlign: 'left' }}>{columnMeta.label}</th>,
       },
     },
     {
@@ -52,22 +52,6 @@ const Category = () => {
       options: {
         filter: true,
         sort: false,
-      },
-    },
-    {
-      name: 'categoryImage',
-      label: 'Image',
-      options: {
-        customBodyRender: (categoryImage) =>
-          categoryImage ? (
-            <img
-              src={`${process.env.REACT_APP_CATEGORY_IMAGE_PATH}${categoryImage}`}
-              alt={categoryImage}
-              style={{ height: '50px', width: '50px' }}
-            />
-          ) : (
-            ''
-          ),
       },
     },
     {
@@ -83,12 +67,12 @@ const Category = () => {
               checked={status}
               onChange={() => {
                 const data = { id: _id, status: !status }
-                updateCategory(data, _id)
+                updateTag(data, _id)
                   .then(() => {
                     toast.success('status changed successfully!', {
                       key: data._id,
                     })
-                    categoryList()
+                    tagList()
                   })
                   .catch(() => {
                     toast.error('something went wrong!', {
@@ -113,7 +97,9 @@ const Category = () => {
                 onClick={() => {
                   const editdata = dataTableData.find((data) => data._id === value)
                   console.log(editdata)
-                  navigate('/category-form', { state: { editdata: editdata, imageUrl: baseUrl } })
+                  navigate('/sub-category-form', {
+                    state: { editdata: editdata },
+                  })
                 }}
               ></Icons.EditRounded>
               <Icons.DeleteRounded
@@ -127,13 +113,12 @@ const Category = () => {
                     dangerMode: true,
                   })
                   if (confirm) {
-                    deleteCategory(value)
+                    deleteTag(value)
                       .then(() => {
                         toast.success('deleted successfully!', {
                           key: value,
                         })
-                        console.log(value)
-                        categoryList()
+                        tagList()
                       })
                       .catch(() => {
                         toast.error('something went wrong!', {
@@ -162,19 +147,14 @@ const Category = () => {
           variant="contained"
           size="medium"
           className="AddButton"
-          onClick={() => navigate('/category-form')}
+          onClick={() => navigate('/tag-form')}
         >
-          Add Category
+          Add Tag
         </Button>
       </div>
-      <MUIDataTable
-        title={'Category List'}
-        data={dataTableData}
-        columns={columns}
-        options={options}
-      />
+      <MUIDataTable title={'Tag List'} data={dataTableData} columns={columns} options={options} />
     </>
   )
 }
 
-export default Category
+export default Tag

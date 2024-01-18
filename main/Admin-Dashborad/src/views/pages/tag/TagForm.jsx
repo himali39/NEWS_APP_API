@@ -15,24 +15,17 @@ import {
   CFormSelect,
 } from '@coreui/react'
 import { Controller, useForm } from 'react-hook-form'
-import {
-  addCategory,
-  addSubCategory,
-  getAllCategory,
-  getAllLanguage,
-  updateCategory,
-  updateSubCategory,
-} from 'src/redux/api/api'
+
 import { useLocation, useNavigate } from 'react-router-dom'
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
 import { MenuItem, Select } from '@mui/material'
+import { addTag, getAllLanguage, updateTag } from 'src/redux/api/api'
 
-const SubCategoryForm = () => {
+const TagForm = () => {
   const {
     register,
-    getValues,
     setValue,
     handleSubmit,
     control,
@@ -57,21 +50,11 @@ const SubCategoryForm = () => {
       })
   }
 
-  const CategoryList = () => {
-    getAllCategory()
-      .then((res) => {
-        setCategoryOptions(res.data.category)
-      })
-      .catch((err) => {
-        toast.error(err)
-      })
-  }
-
   const onSubmit = (data) => {
     isUpdate === ''
-      ? addSubCategory(data)
+      ? addTag(data)
           .then((res) => {
-            navigate('/sub-category')
+            navigate('/tag')
           })
           .catch((err) => {
             if (!err.response.data.success) {
@@ -80,9 +63,9 @@ const SubCategoryForm = () => {
               setIsLoading(false)
             }
           })
-      : updateSubCategory(data, isUpdate)
+      : updateTag(data, isUpdate)
           .then((res) => {
-            navigate('/sub-category')
+            navigate('/tag')
           })
           .catch((err) => {
             if (!err.response.data.success) {
@@ -97,12 +80,12 @@ const SubCategoryForm = () => {
     if (state) {
       const { editdata } = state
       setIsUpdate(editdata._id)
-      setValue('subCategoryName', editdata.subCategoryName)
+      setValue('tagName', editdata.tagName)
       setValue('languages', editdata.languages)
     }
     LanguagesList()
-    CategoryList()
   }, [])
+
   return (
     <div className=" bg-light min-vh-100">
       <CContainer className="mt-3">
@@ -110,23 +93,23 @@ const SubCategoryForm = () => {
           <CCol md={8}>
             <CCard>
               <CCardHeader>
-                <strong>Sub Category Form</strong>
+                <strong>Tag Form</strong>
               </CCardHeader>
               <CCardBody>
                 <ToastContainer />
                 <CForm className="row g-3 " onSubmit={handleSubmit(onSubmit)}>
                   <CCol md={6}>
-                    <CFormLabel htmlFor="validationDefault01">Sub Category</CFormLabel>
+                    <CFormLabel htmlFor="validationDefault01">Tag</CFormLabel>
                     <CFormInput
                       type="text"
                       id="validationDefault01"
-                      {...register('subCategoryName', {
-                        required: ' sub category is required',
+                      {...register('tagName', {
+                        required: 'Tag is required',
                       })}
-                      placeholder="sub category name"
-                      invalid={!!errors.subCategoryName}
+                      placeholder="tag name"
+                      invalid={!!errors.tagName}
                     />
-                    <CFormFeedback invalid>sub Category is required</CFormFeedback>
+                    <CFormFeedback invalid>Tag is required</CFormFeedback>
                   </CCol>
 
                   <CCol md={6}>
@@ -163,41 +146,6 @@ const SubCategoryForm = () => {
                     {errors.languages && <div className="errors">{errors.languages.message}</div>}
                   </CCol>
 
-                  <CCol md={6}>
-                    <CFormLabel htmlFor="validationDefault01">Category</CFormLabel>
-                    <Controller
-                      name="categoryName"
-                      control={control}
-                      rules={{ required: 'category is required' }}
-                      render={({ field }) => (
-                        <>
-                          <Select
-                            {...field}
-                            style={{
-                              width: '100%',
-                              height: '36px',
-                              borderRadius: '0.375rem',
-                            }}
-                            id="categoryName"
-                            labelId="categoryName"
-                            autoWidth={false}
-                          >
-                            <option value="" disabled selected>
-                              Select Category
-                            </option>
-                            {categoryOptions?.map((option) => (
-                              <MenuItem key={option._id} value={option._id}>
-                                {option?.categoryName}
-                              </MenuItem>
-                            ))}
-                          </Select>
-                        </>
-                      )}
-                    />
-                    {errors.categoryName && (
-                      <div className="errors">{errors.categoryName.message}</div>
-                    )}
-                  </CCol>
                   <CCol md={12} className="text-center submitButton">
                     {isLoading ? (
                       <CButton disabled>
@@ -220,4 +168,4 @@ const SubCategoryForm = () => {
   )
 }
 
-export default SubCategoryForm
+export default TagForm
