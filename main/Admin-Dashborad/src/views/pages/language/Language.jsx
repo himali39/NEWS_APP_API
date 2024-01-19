@@ -127,7 +127,7 @@ const Language = () => {
                 onClick={async () => {
                   const confirm = await swal({
                     title: 'Are you sure?',
-                    text: 'Are you sure that you want to delete Language? All related data(Categories,Subcategories,News,Breaking news,Tags) will also be deleted',
+                    text: 'Are you sure? Want to delete Location? All related data will also be deleted',
                     icon: 'warning',
                     buttons: ['No, cancel it!', 'Yes, I am sure!'],
                     dangerMode: true,

@@ -42,7 +42,10 @@ app.use(
   "/public/category-images",
   express.static(path.join(__dirname, "./src/public/category-images"))
 );
-
+app.use(
+  "/public/News_image",
+  express.static(path.join(__dirname, "./src/public/News_image"))
+);
 /**create server */
 const server = http.createServer(app);
 server.listen(process.env.PORT, () => {

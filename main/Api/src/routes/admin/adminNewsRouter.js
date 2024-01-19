@@ -3,11 +3,13 @@ const { multiDiffFileUpload } = require("../../helper/upload");
 const {
   addNews,
   allNewsList,
+  deleteNews,
+  updateNews,
 } = require("../../controllers/admin/adminNewsController");
 const router = express.Router();
 
 router.post(
-  "/add-news",
+  "/add-News",
   multiDiffFileUpload("/News_image/", [
     {
       name: "newsImage",
@@ -28,6 +30,10 @@ router.post(
   addNews
 );
 
-router.get("/get-news", allNewsList);
+router.get("/get-News", allNewsList);
+
+router.delete("/delete-News/:id", deleteNews);
+
+router.put("/put-News/:id", updateNews);
 
 module.exports = router;

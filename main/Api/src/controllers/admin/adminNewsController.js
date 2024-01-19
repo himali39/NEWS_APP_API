@@ -72,7 +72,7 @@ const allNewsList = async (req, res) => {
     res.status(200).json({
       success: true,
       message: "News data get successfully ",
-      data: newsData,
+      news: newsData,
     });
   } catch (error) {
     res.status(404).json({
@@ -82,4 +82,53 @@ const allNewsList = async (req, res) => {
   }
 };
 
-module.exports = { addNews, allNewsList };
+/* ----------------------------- delete Category data ----------------------------- */
+const deleteNews = async (req, res) => {
+  try {
+    const newsData = await News.findById(req.params.id);
+
+    if (!newsData) {
+      return res.status(404).json({ message: "News data not found" });
+    }
+    const deleteNews = await News.findByIdAndDelete(req.params.id);
+
+    res.status(200).json({
+      success: true,
+      message: "News data deleted successfully",
+      Location: deleteNews,
+    });
+  } catch (error) {
+    res.status(404).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
+/* ----------------------------- delete Category data ----------------------------- */
+const updateNews = async (req, res) => {
+  try {
+    const newsData = await News.findById(req.params.id);
+
+    if (!newsData) {
+      return res.status(404).json({ message: "News data not found" });
+    }
+
+    const updateNews = await News.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+    });
+
+    res.status(200).json({
+      success: true,
+      message: "News data update successfully",
+      News: updateNews,
+    });
+  } catch (error) {
+    res.status(404).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
+module.exports = { addNews, allNewsList, deleteNews, updateNews };

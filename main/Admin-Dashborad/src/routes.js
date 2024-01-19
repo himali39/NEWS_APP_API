@@ -12,6 +12,8 @@ const Language = React.lazy(() => import('./views/pages/language/Language'))
 const LanguageForm = React.lazy(() => import('./views/pages/language/LanguageForm'))
 const Tag = React.lazy(() => import('./views/pages/tag/Tag'))
 const TagForm = React.lazy(() => import('./views/pages/tag/TagForm'))
+const Location = React.lazy(() => import('./views/pages/location/Location'))
+const LocationForm = React.lazy(() => import('./views/pages/location/LocationForm'))
 const News = React.lazy(() => import('./views/pages/news/News'))
 const NewsForm = React.lazy(() => import('./views/pages/news/NewsForm'))
 
@@ -78,6 +80,8 @@ const routes = [
   { path: '/language-form', name: 'language-form', element: LanguageForm },
   { path: '/tag', name: 'tag', element: Tag },
   { path: '/tag-form', name: 'tag-form', element: TagForm },
+  { path: '/location', name: 'location', element: Location },
+  { path: '/location-form', name: 'location-form', element: LocationForm },
   { path: '/news', name: 'news', element: News },
   { path: '/news-form', name: 'news-form', element: NewsForm },
 

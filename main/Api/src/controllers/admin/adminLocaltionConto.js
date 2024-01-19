@@ -13,7 +13,7 @@ const addLocation = async (req, res) => {
     res.status(200).json({
       success: true,
       message: "Location data add successfully!",
-      data: addData,
+      location: addData,
     });
   } catch (err) {
     res.status(400).json({
@@ -35,7 +35,7 @@ const getLocation = async (req, res) => {
     res.status(200).json({
       success: true,
       message: "List of Location Data successfully ",
-      personalize: locationData,
+      location: locationData,
     });
   } catch (error) {
     res.status(404).json({

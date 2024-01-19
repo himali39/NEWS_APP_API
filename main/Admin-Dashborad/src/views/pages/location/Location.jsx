@@ -4,66 +4,53 @@ import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import * as Icons from '@mui/icons-material'
 import { ToastContainer, toast } from 'react-toastify'
+import { deleteLocation, getAllLocation, updateLocation } from 'src/redux/api/api'
 import swal from 'sweetalert'
-import { deleteSubCategory, getAllSubCategory, updateSubCategory } from 'src/redux/api/api'
 
-const SubCategory = () => {
-  const navigate = useNavigate()
+const Location = () => {
   const [dataTableData, setDataTable] = useState([])
+  const navigate = useNavigate()
 
-  const subCategoryList = async () => {
-    await getAllSubCategory()
+  const locationList = async () => {
+    await getAllLocation()
       .then((res) => {
-        const transformedData = res.data.subCategory.map((subCategory) => ({
-          ...subCategory,
-          languages: subCategory.languages?.map((language) => language.languagesName),
-          categoryName: subCategory.categoryName?.map((category) => category.categoryName),
-        }))
-
-        setDataTable(transformedData)
+        setDataTable(res.data.location)
       })
       .catch((err) => {
-        console.log(err)
         if (!err.response.data.success) {
           if (err.response.data.status === 401) {
             toast.error(err.response.data.message)
-          } else {
-            console.log(err.response.data, 'else')
-          }
+          } else console.log(err.response.data, 'else')
         }
       })
   }
   useEffect(() => {
-    subCategoryList()
+    locationList()
   }, [])
 
   const columns = [
     {
-      name: 'subCategoryName',
-      label: 'sub Category ',
+      name: 'locationName',
+      label: 'Location',
       options: {
         filter: true,
         sort: true,
-        toUpperCase: true,
-      },
-    },
-
-    {
-      name: 'categoryName',
-      label: 'Category',
-      options: {
-        filter: true,
-        sort: false,
-        toUpperCase: true,
       },
     },
     {
-      name: 'languages',
-      label: 'Languages',
+      name: 'latitude',
+      label: 'Latitude',
       options: {
         filter: true,
-        sort: false,
-        toUpperCase: true,
+        sort: true,
+      },
+    },
+    {
+      name: 'longitude',
+      label: 'Longitude',
+      options: {
+        filter: true,
+        sort: true,
       },
     },
     {
@@ -79,12 +66,12 @@ const SubCategory = () => {
               checked={status}
               onChange={() => {
                 const data = { id: _id, status: !status }
-                updateSubCategory(data, _id)
+                updateLocation(data, _id)
                   .then(() => {
                     toast.success('status changed successfully!', {
                       key: data._id,
                     })
-                    subCategoryList()
+                    locationList()
                   })
                   .catch(() => {
                     toast.error('something went wrong!', {
@@ -97,6 +84,7 @@ const SubCategory = () => {
         },
       },
     },
+
     {
       name: '_id',
       label: 'Action',
@@ -109,9 +97,7 @@ const SubCategory = () => {
                 onClick={() => {
                   const editdata = dataTableData.find((data) => data._id === value)
                   console.log(editdata)
-                  navigate('/sub-category-form', {
-                    state: { editdata: editdata },
-                  })
+                  navigate('/location-form', { state: { editdata: editdata } })
                 }}
               ></Icons.EditRounded>
               <Icons.DeleteRounded
@@ -124,13 +110,15 @@ const SubCategory = () => {
                     buttons: ['No, cancel it!', 'Yes, I am sure!'],
                     dangerMode: true,
                   })
+
                   if (confirm) {
-                    deleteSubCategory(value)
+                    deleteLocation(value)
                       .then(() => {
                         toast.success('deleted successfully!', {
                           key: value,
                         })
-                        subCategoryList()
+                        console.log(value)
+                        locationList()
                       })
                       .catch(() => {
                         toast.error('something went wrong!', {
@@ -148,24 +136,24 @@ const SubCategory = () => {
   ]
 
   const options = {
-    filterType: 'checkbox',
+    // filterType: 'checkbox',
   }
 
   return (
     <>
-      <ToastContainer />
       <div className="right-text">
         <Button
           variant="contained"
           size="medium"
           className="AddButton"
-          onClick={() => navigate('/sub-category-form')}
+          onClick={() => navigate('/location-form')}
         >
-          Add SubCategory
+          Add Language
         </Button>
       </div>
+      <ToastContainer />
       <MUIDataTable
-        title={'Sub Category List'}
+        title={'Location List'}
         data={dataTableData}
         columns={columns}
         options={options}
@@ -174,4 +162,4 @@ const SubCategory = () => {
   )
 }
 
-export default SubCategory
+export default Location

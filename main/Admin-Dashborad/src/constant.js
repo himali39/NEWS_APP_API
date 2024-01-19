@@ -81,3 +81,35 @@ export const DELETE_TAG_API = '/admin/tag/delete-Tag/'
 export const UPDATE_TAG_API = '/admin/tag/update-Tag/'
 
 /* ---------------------------- END TAG API ---------------------------- */
+
+/* ---------------------------- ALL Location API ---------------------------- */
+
+/*  all location list */
+export const All_LOCATION_LIST_API = '/admin/location/get-Location'
+
+/*  add  location data */
+export const ADD_LOCATION_API = '/admin/location/add-Location/'
+
+/*  delete location  */
+export const DELETE_LOCATION_API = '/admin/location/delete-Location/'
+
+/*  update location  */
+export const UPDATE_LOCATION_API = '/admin/location/update-Location/'
+
+/* ---------------------------- END Location API ---------------------------- */
+
+/* ---------------------------- ALL News API ---------------------------- */
+
+/*  all news list */
+export const All_NEWS_LIST_API = '/admin/news/get-News'
+
+/*  add  news data */
+export const ADD_NEWS_API = '/admin/news/add-News/'
+
+/*  delete news  */
+export const DELETE_NEWS_API = '/admin/news/delete-News/'
+
+/*  update news  */
+export const UPDATE_NEWS_API = '/admin/news/update-News/'
+
+/* ---------------------------- END News API ---------------------------- */

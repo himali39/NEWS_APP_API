@@ -39,17 +39,17 @@ const _nav = [
   },
   {
     component: CNavItem,
+    name: 'News',
+    to: '/news',
+    icon: <CIcon icon={cilNewspaper} customClassName="nav-icon" />,
+  },
+  {
+    component: CNavItem,
     name: 'Language',
     to: '/language',
     icon: <CIcon icon={cilLanguage} customClassName="nav-icon" />,
   },
 
-  {
-    component: CNavItem,
-    name: 'News',
-    to: '/news',
-    icon: <CIcon icon={cilNewspaper} customClassName="nav-icon" />,
-  },
   {
     component: CNavItem,
     name: 'Location',

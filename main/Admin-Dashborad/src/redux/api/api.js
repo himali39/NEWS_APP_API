@@ -3,6 +3,8 @@ import Cookies from 'js-cookie'
 import {
   ADD_CATEGORY_API,
   ADD_LANGUAGE_API,
+  ADD_LOCATION_API,
+  ADD_NEWS_API,
   ADD_SUBCATEGORY_API,
   ADD_TAG_API,
   ADMIN_EDIT_PROFILE_PASSWORD_API,
@@ -11,15 +13,21 @@ import {
   ADMIN_RESET_PASSWORD_API,
   All_CATEGORY_LIST_API,
   All_LANGUAGE_LIST_API,
+  All_LOCATION_LIST_API,
+  All_NEWS_LIST_API,
   All_SUBCATEGORY_LIST_API,
   All_TAG_LIST_API,
   DELETE_CATEGORY_API,
   DELETE_LANGUAGE_API,
+  DELETE_LOCATION_API,
+  DELETE_NEWS_API,
   DELETE_SUBCATEGORY_API,
   DELETE_TAG_API,
   MAIN_URL,
   UPDATE_CATEGORY_API,
   UPDATE_LANGUAGE_API,
+  UPDATE_LOCATION_API,
+  UPDATE_NEWS_API,
   UPDATE_SUBCATEGORY_API,
   UPDATE_TAG_API,
 } from 'src/constant'
@@ -190,3 +198,59 @@ export const updateTag = (data, id) =>
   })
 
 /* ---------------------------- ENDTAG API ---------------------------- */
+
+/* ---------------------------- ALL Location API ---------------------------- */
+
+/* Get All location  */
+export const getAllLocation = (data) =>
+  axios.get(MAIN_URL + All_LOCATION_LIST_API, data, {
+    headers: { Authorization: `Bearer ${Cookies.get('accessToken')}` },
+  })
+
+/* add location*/
+export const addLocation = (data) =>
+  axios.post(MAIN_URL + ADD_LOCATION_API, data, {
+    headers: { Authorization: `Bearer ${Cookies.get('accessToken')}` },
+  })
+
+/* delete location */
+export const deleteLocation = (id) =>
+  axios.delete(MAIN_URL + DELETE_LOCATION_API + id, {
+    headers: { Authorization: `Bearer ${Cookies.get('accessToken')}` },
+  })
+
+/* update location  */
+export const updateLocation = (data, id) =>
+  axios.put(MAIN_URL + UPDATE_LOCATION_API + id, data, {
+    headers: { Authorization: `Bearer ${Cookies.get('accessToken')}` },
+  })
+
+/* ---------------------------- END Location API ---------------------------- */
+
+/* ---------------------------- ALL News API ---------------------------- */
+
+/* Get All news  */
+export const getAllNews = (data) =>
+  axios.get(MAIN_URL + All_NEWS_LIST_API, data, {
+    headers: { Authorization: `Bearer ${Cookies.get('accessToken')}` },
+  })
+
+/* add news*/
+export const addNews = (data) =>
+  axios.post(MAIN_URL + ADD_NEWS_API, data, {
+    headers: { Authorization: `Bearer ${Cookies.get('accessToken')}` },
+  })
+
+/* delete news */
+export const deleteNews = (id) =>
+  axios.delete(MAIN_URL + DELETE_NEWS_API + id, {
+    headers: { Authorization: `Bearer ${Cookies.get('accessToken')}` },
+  })
+
+/* update news  */
+export const updateNews = (data, id) =>
+  axios.put(MAIN_URL + UPDATE_NEWS_API + id, data, {
+    headers: { Authorization: `Bearer ${Cookies.get('accessToken')}` },
+  })
+
+/* ---------------------------- END News API ---------------------------- */
