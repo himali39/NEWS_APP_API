@@ -69,10 +69,14 @@ const allNewsList = async (req, res) => {
     if (!newsData) {
       return res.status(404).json({ message: "News list ata not found" });
     }
+
+      const baseUrl =
+        req.protocol + "://" + req.get("host") + process.env.BASE_URL_NEWS_PATH;
     res.status(200).json({
       success: true,
       message: "News data get successfully ",
       news: newsData,
+      baseUrl: baseUrl,
     });
   } catch (error) {
     res.status(404).json({

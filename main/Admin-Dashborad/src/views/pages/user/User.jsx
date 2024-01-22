@@ -2,38 +2,33 @@ import { Button, Switch } from '@mui/material'
 import MUIDataTable from 'mui-datatables'
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import {
-  deleteCategory,
-  deleteNews,
-  getAllCategory,
-  getAllNews,
-  updateCategory,
-  updateNews,
-} from 'src/redux/api/api'
 import * as Icons from '@mui/icons-material'
 import { ToastContainer, toast } from 'react-toastify'
+import {
+  deleteLanguage,
+  deleteUser,
+  getAllLanguage,
+  getAllUser,
+  updateLanguage,
+  updateUser,
+} from 'src/redux/api/api'
 import swal from 'sweetalert'
+import defaultImg from '../../../../src/assets/images/default.png'
 
-const News = () => {
-  const navigate = useNavigate()
+const Language = () => {
   const [dataTableData, setDataTable] = useState([])
+  const navigate = useNavigate()
   const [baseUrl, setBaseUrl] = useState([])
 
-  const newsList = async () => {
-    await getAllNews()
+  const list = async () => {
+    await getAllUser()
       .then((res) => {
-        const transformedData = res.data.news.map((news) => ({
-          ...news,
-          languages: news.languages.map((language) => language.languagesName),
-          tag: news.tag.map((tag) => tag.tagName),
-          location: news.location.map((location) => location.locationName),
-          category: news.category.map((category) => category.categoryName),
-          subcategory: news.subcategory.map((subcategory) => subcategory.subCategoryName),
-        }))
-        setDataTable(transformedData)
-        setBaseUrl(`${process.env.REACT_APP_NEWS_IMAGE_PATH}`)
+        console.log(res.data.user)
+        setDataTable(res.data.user)
+        setBaseUrl(`${process.env.REACT_APP_USER_PROFILE_PATH}`)
       })
       .catch((err) => {
+        console.log(err)
         if (!err.response.data.success) {
           if (err.response.data.status === 401) {
             toast.error(err.response.data.message)
@@ -44,80 +39,48 @@ const News = () => {
       })
   }
   useEffect(() => {
-    newsList()
+    list()
   }, [])
 
   const columns = [
     {
-      name: 'category',
-      label: 'Category',
+      name: 'fullName',
+      label: 'Full Name',
       options: {
         filter: true,
         sort: true,
       },
     },
     {
-      name: 'subcategory',
-      label: 'sub category',
+      name: 'email',
+      label: 'Email',
       options: {
         filter: true,
         sort: true,
       },
     },
     {
-      name: 'title',
-      label: 'title',
+      name: 'mobile',
+      label: 'Mobile',
       options: {
         filter: true,
         sort: false,
       },
     },
     {
-      name: 'newsImage',
-      label: 'Image',
+      name: 'ProfileImg',
+      label: 'Profile',
       options: {
-        customBodyRender: (newsImage) =>
-          newsImage ? (
+        customBodyRender: (ProfileImg) =>
+          ProfileImg ? (
             <img
-              src={`${process.env.REACT_APP_NEWS_IMAGE_PATH}${newsImage}`}
-              alt={newsImage}
+              src={`${process.env.REACT_APP_USER_PROFILE_PATH}${ProfileImg}`}
+              alt={ProfileImg}
               style={{ height: '50px', width: '50px' }}
             />
           ) : (
-            ''
+            <img src={defaultImg} alt={defaultImg} style={{ height: '50px', width: '50px' }} />
           ),
-      },
-    },
-    {
-      name: 'languages',
-      label: 'languages',
-      options: {
-        filter: true,
-        sort: true,
-      },
-    },
-    {
-      name: 'tag',
-      label: 'Tag',
-      options: {
-        filter: true,
-        sort: true,
-      },
-    },
-    {
-      name: 'location',
-      label: 'Location',
-      options: {
-        filter: true,
-        sort: true,
-      },
-    },
-    {
-      name: 'expiry_date',
-      label: 'Date',
-      options: {
-        filter: true,
-        sort: true,
       },
     },
     {
@@ -133,12 +96,12 @@ const News = () => {
               checked={status}
               onChange={() => {
                 const data = { id: _id, status: !status }
-                updateNews(data, _id)
+                updateUser(data, _id)
                   .then(() => {
                     toast.success('status changed successfully!', {
                       key: data._id,
                     })
-                    newsList()
+                    list()
                   })
                   .catch(() => {
                     toast.error('something went wrong!', {
@@ -151,6 +114,7 @@ const News = () => {
         },
       },
     },
+
     {
       name: '_id',
       label: 'Action',
@@ -163,7 +127,7 @@ const News = () => {
                 onClick={() => {
                   const editdata = dataTableData.find((data) => data._id === value)
                   console.log(editdata)
-                  navigate('/news-form', { state: { editdata: editdata, imageUrl: baseUrl } })
+                  navigate('/user-form', { state: { editdata: editdata, imageUrl: baseUrl } })
                 }}
               ></Icons.EditRounded>
               <Icons.DeleteRounded
@@ -176,13 +140,15 @@ const News = () => {
                     buttons: ['No, cancel it!', 'Yes, I am sure!'],
                     dangerMode: true,
                   })
+
                   if (confirm) {
-                    deleteNews(value)
+                    deleteUser(value)
                       .then(() => {
                         toast.success('deleted successfully!', {
                           key: value,
                         })
-                        newsList()
+                        console.log(value)
+                        list()
                       })
                       .catch(() => {
                         toast.error('something went wrong!', {
@@ -200,25 +166,25 @@ const News = () => {
   ]
 
   const options = {
-    filterType: 'checkbox',
+    // filterType: 'checkbox',
   }
 
   return (
     <>
-      <ToastContainer />
       <div className="right-text">
         <Button
           variant="contained"
           size="medium"
           className="AddButton"
-          onClick={() => navigate('/news-form')}
+          onClick={() => navigate('/user-form')}
         >
-          Add News
+          Add User
         </Button>
       </div>
-      <MUIDataTable title={'News List'} data={dataTableData} columns={columns} options={options} />
+      <ToastContainer />
+      <MUIDataTable title={'User List'} data={dataTableData} columns={columns} options={options} />
     </>
   )
 }
 
-export default News
+export default Language

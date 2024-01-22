@@ -104,7 +104,7 @@ export const UPDATE_LOCATION_API = '/admin/location/update-Location/'
 export const All_NEWS_LIST_API = '/admin/news/get-News'
 
 /*  add  news data */
-export const ADD_NEWS_API = '/admin/news/add-News/'
+export const ADD_NEWS_API = '/admin/news/add-News'
 
 /*  delete news  */
 export const DELETE_NEWS_API = '/admin/news/delete-News/'
@@ -113,3 +113,19 @@ export const DELETE_NEWS_API = '/admin/news/delete-News/'
 export const UPDATE_NEWS_API = '/admin/news/update-News/'
 
 /* ---------------------------- END News API ---------------------------- */
+
+/* ---------------------------- ALL User API ---------------------------- */
+
+/*  all user list */
+export const All_USER_LIST_API = '/admin/get-user'
+
+/*  add  User data */
+export const ADD_USER_API = '/admin/add-user'
+
+/*  delete USER  */
+export const DELETE_USER_API = '/admin/delete-user/'
+
+/*  update USER  */
+export const UPDATE_USER_API = '/admin/update-user/'
+
+/* ---------------------------- END User API ---------------------------- */

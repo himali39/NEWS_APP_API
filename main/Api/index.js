@@ -24,10 +24,7 @@ app.use(userRoute);
 connectDB();
 
 /**UPLOAD FILE */
-app.use(
-  "/public",
-  express.static(path.join(__dirname, "./public/"))
-);
+app.use("/public", express.static(path.join(__dirname, "./public/")));
 
 app.use(express.static(path.join(__dirname, "./Api/src/public/")));
 app.use(
@@ -46,6 +43,11 @@ app.use(
   "/public/News_image",
   express.static(path.join(__dirname, "./src/public/News_image"))
 );
+app.use(
+  "/public/userImg",
+  express.static(path.join(__dirname, "./src/public/userImg"))
+);
+
 /**create server */
 const server = http.createServer(app);
 server.listen(process.env.PORT, () => {

@@ -38,7 +38,7 @@ const UserSchema = mongoose.Schema(
     dob: {
       type: Number,
     },
-    userProfileImg: {
+    ProfileImg: {
       type: String,
     },
     accessToken: {

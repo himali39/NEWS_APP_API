@@ -8,9 +8,13 @@ const locationRouter = require("../admin/adminLocationRoute");
 const faqsRouter = require("../admin/adminFaqsRouter");
 const notifiRouter = require("../admin/adminNotificationRouter");
 const adminRouter = require("../admin/adminRouter");
+const userRouter = require("../admin/userRouter");
 
 /* ---------------------------- admin Routers ---------------------------- */
 router.use("/admin", adminRouter);
+
+/* ---------------------------- admin Routers ---------------------------- */
+router.use("/admin", userRouter);
 
 /* ---------------------------- Language Routers ---------------------------- */
 router.use("/admin/language", languageRouter);

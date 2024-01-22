@@ -95,6 +95,7 @@ const deleteLanguage = async (req, res) => {
     });
   }
 };
+
 /* ----------------------------- update Languages  data ----------------------------- */
 const updateLanguage = async (req, res) => {
   try {

@@ -10,7 +10,7 @@ const {
   updateAppLanguage,
   RefreshToken,
   resetPassword,
-} = require("../../controllers/app/UserContoller");
+} = require("../../controllers/app/userContoller");
 const router = express.Router();
 const { singleFileUpload } = require("../../helper/upload");
 
@@ -26,7 +26,7 @@ router.post("/refreshToken", RefreshToken);
 
 router.put(
   "/update-UserProfile",
-  singleFileUpload("/userImg", "userProfileImg"),
+  singleFileUpload("/userImg", "ProfileImg"),
   updateUserProfile
 );
 

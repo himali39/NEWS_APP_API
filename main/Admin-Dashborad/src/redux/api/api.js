@@ -7,6 +7,7 @@ import {
   ADD_NEWS_API,
   ADD_SUBCATEGORY_API,
   ADD_TAG_API,
+  ADD_USER_API,
   ADMIN_EDIT_PROFILE_PASSWORD_API,
   ADMIN_FORGOT_PASSWORD_API,
   ADMIN_LOGIN_API,
@@ -17,12 +18,14 @@ import {
   All_NEWS_LIST_API,
   All_SUBCATEGORY_LIST_API,
   All_TAG_LIST_API,
+  All_USER_LIST_API,
   DELETE_CATEGORY_API,
   DELETE_LANGUAGE_API,
   DELETE_LOCATION_API,
   DELETE_NEWS_API,
   DELETE_SUBCATEGORY_API,
   DELETE_TAG_API,
+  DELETE_USER_API,
   MAIN_URL,
   UPDATE_CATEGORY_API,
   UPDATE_LANGUAGE_API,
@@ -30,6 +33,7 @@ import {
   UPDATE_NEWS_API,
   UPDATE_SUBCATEGORY_API,
   UPDATE_TAG_API,
+  UPDATE_USER_API,
 } from 'src/constant'
 // export const MAIN_url = 'http://localhost:8002'
 
@@ -254,3 +258,28 @@ export const updateNews = (data, id) =>
   })
 
 /* ---------------------------- END News API ---------------------------- */
+
+/* ---------------------------- ALL User API ---------------------------- */
+/* Get All user  */
+export const getAllUser = (data) =>
+  axios.get(MAIN_URL + All_USER_LIST_API, data, {
+    headers: { Authorization: `Bearer ${Cookies.get('accessToken')}` },
+  })
+
+/* add User*/
+export const addUser = (data) =>
+  axios.post(MAIN_URL + ADD_USER_API, data, {
+    headers: { Authorization: `Bearer ${Cookies.get('accessToken')}` },
+  })
+
+/* delete User  */
+export const deleteUser = (id) =>
+  axios.delete(MAIN_URL + DELETE_USER_API + id, {
+    headers: { Authorization: `Bearer ${Cookies.get('accessToken')}` },
+  })
+
+/* update User  */
+export const updateUser = (data, id) =>
+  axios.put(MAIN_URL + UPDATE_USER_API + id, data, {
+    headers: { Authorization: `Bearer ${Cookies.get('accessToken')}` },
+  })
