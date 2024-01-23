@@ -54,11 +54,10 @@ const newsSchema = mongoose.Schema(
       trim: true,
       // required: [true, "News image name is required."],
     },
-    multipleImage: [
+    multipleImage: 
       {
-        type: String,
+        type: Array,
       },
-    ],
     contentType: {
       type: String,
       default: 1, //video content type defind deafult 1

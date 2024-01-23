@@ -25,15 +25,14 @@ const AppSidebar = () => {
       position="fixed"
       unfoldable={unfoldable}
       visible={sidebarShow}
+      className="sidebar"
       onVisibleChange={(visible) => {
         dispatch({ type: 'set', sidebarShow: visible })
       }}
     >
-      <CSidebarBrand className="d-none d-md-flex main-logo" to="/">
-        {/* <CIcon className="sidebar-brand-full" icon={logoNegative} height={35} /> */}
+      <CSidebarBrand className="d-none d-md-flex main-logo " to="/">
         <img src={logoNegative} alt="Logo" height={35} width={45} />
         <CIcon className="sidebar-brand-narrow" icon={sygnet} height={35} />
-        {/* <p>News app</p> */}
       </CSidebarBrand>
       <CSidebarNav>
         <SimpleBar>

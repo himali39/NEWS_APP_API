@@ -4,10 +4,7 @@ const { singleFileUpload } = require("../../helper/upload");
 
 const router = express.Router();
 
-router.post(
-  "/add-user",
-  singleFileUpload("/userImg/", "ProfileImg"), addUser
-);
+router.post("/add-user", singleFileUpload("/userImg/", "ProfileImg"), addUser);
 
 router.get("/get-user", allUserList);
 

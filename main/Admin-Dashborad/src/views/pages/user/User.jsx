@@ -4,14 +4,7 @@ import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import * as Icons from '@mui/icons-material'
 import { ToastContainer, toast } from 'react-toastify'
-import {
-  deleteLanguage,
-  deleteUser,
-  getAllLanguage,
-  getAllUser,
-  updateLanguage,
-  updateUser,
-} from 'src/redux/api/api'
+import { deleteUser, getAllUser, updateUser } from 'src/redux/api/api'
 import swal from 'sweetalert'
 import defaultImg from '../../../../src/assets/images/default.png'
 

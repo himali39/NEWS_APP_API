@@ -5,9 +5,10 @@ const addUser = async (req, res) => {
   try {
     const reqbody = req.body;
 
-    if (req.files.ProfileImg) {
-      reqbody.ProfileImg = req.files.ProfileImg[0].filename;
+    if (req.file) {
+      reqbody.ProfileImg = req.file.filename;
     }
+    console.log(req.files)
 
     const userData = await User.create(reqbody);
 

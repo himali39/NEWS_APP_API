@@ -7,14 +7,16 @@ import {
   CCol,
   CContainer,
   CForm,
+  CFormCheck,
   CFormFeedback,
   CFormInput,
   CFormLabel,
+  CFormTextarea,
   CRow,
   CSpinner,
 } from '@coreui/react'
 import { useForm } from 'react-hook-form'
-import { addLanguage, addUser, updateLanguage, updateUser } from 'src/redux/api/api'
+import { addUser, updateUser } from 'src/redux/api/api'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
@@ -22,24 +24,22 @@ import 'react-toastify/dist/ReactToastify.css'
 const UserForm = () => {
   const {
     register,
-    getValues,
     setValue,
     handleSubmit,
     formState: { errors },
   } = useForm()
   const navigate = useNavigate()
-  const [newUrl, setNewUrl] = useState()
   const [isUpdate, setIsUpdate] = useState('')
-  var [isLoading, setIsLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
+  const [singleImageUrl, setSingleImageUrl] = useState(null)
 
   const { state } = useLocation()
-  console.log(state)
 
   const handleFileUpload = (event) => {
     const file = event.target.files[0]
     const reader = new FileReader()
     reader.onloadend = () => {
-      setNewUrl(reader.result)
+      setSingleImageUrl(reader.result)
     }
     reader.readAsDataURL(file)
   }
@@ -48,6 +48,7 @@ const UserForm = () => {
     let formData = new FormData() //formdata object
     Object.keys(data).forEach(function (key) {
       if (key === 'ProfileImg') {
+        console.log(data[key])
         formData.append(key, data[key][0])
       } else {
         formData.append(key, data[key])
@@ -71,7 +72,7 @@ const UserForm = () => {
       : updateUser(formData, isUpdate)
           .then((res) => {
             console.log(res)
-            navigate('/language')
+            navigate('/user')
           })
           .catch((err) => {
             if (!err.response.data.success) {
@@ -83,18 +84,18 @@ const UserForm = () => {
           })
   }
   useEffect(() => {
-    // if (state) {
-    //   const { editdata, imageUrl } = state
-    //   console.log(state)
-    //   setIsUpdate(editdata._id)
-    //   setValue('languagesName', editdata.languagesName)
-    //   setValue('displayName', editdata.displayName)
-    //   setValue('code', editdata.code)
-    //   setValue(imageUrl + editdata.jsonFile)
-    //   setNewUrl(imageUrl + editdata.flagImage)
-    //   console.log(editdata.flagImage)
-    // }
-    // setdefaultLoading(false)
+    if (state) {
+      const { editdata, imageUrl } = state
+      setIsUpdate(editdata._id)
+      setValue('fullName', editdata.fullName)
+      setValue('userName', editdata.userName)
+      setValue('mobile', editdata.mobile)
+      setValue('email', editdata.email)
+      setValue('yourBio', editdata.yourBio)
+      setValue('gender', editdata.gender)
+      setSingleImageUrl(imageUrl, editdata.imageUrl)
+      setSingleImageUrl(imageUrl + editdata.ProfileImg)
+    }
   })
   return (
     <div className=" bg-light min-vh-100">
@@ -112,61 +113,109 @@ const UserForm = () => {
                     <CFormLabel htmlFor="validationDefault01">FullName</CFormLabel>
                     <CFormInput
                       type="text"
-                      id="validationDefault01"
+                      id="fullName"
+                      placeholder=" Enter your fullName"
                       {...register('fullName', { required: 'fullName is required' })}
                       invalid={!!errors.fullName}
                     />
                     <CFormFeedback invalid>Language is required</CFormFeedback>
                   </CCol>
+
                   <CCol md={6}>
                     <CFormLabel htmlFor="validationDefault01">UserName</CFormLabel>
                     <CFormInput
                       type="text"
-                      id="validationDefault01"
+                      id="userName"
+                      placeholder=" Enter User Name"
                       {...register('userName', { required: 'User name is required' })}
                       invalid={!!errors.userName}
                     />
                     <CFormFeedback invalid>user Name is required</CFormFeedback>
                   </CCol>
+
                   <CCol md={6}>
                     <CFormLabel htmlFor="validationDefault01">Email</CFormLabel>
                     <CFormInput
                       type="text"
-                      id="validationDefault01"
+                      id="email"
+                      placeholder="Enter Email"
                       {...register('email', { required: 'Email code is required' })}
                       invalid={!!errors.email}
                     />
-                    <CFormFeedback invalid>Email code is required</CFormFeedback>
+                    <CFormFeedback invalid>Email is required</CFormFeedback>
                   </CCol>
+
+                  <CCol md={6}>
+                    <CFormLabel htmlFor="validationDefault01">Mobile</CFormLabel>
+                    <CFormInput
+                      type="number"
+                      id="mobile"
+                      placeholder="Enter mobile"
+                      {...register('mobile', { required: 'Mobile  is required' })}
+                      invalid={!!errors.mobile}
+                    />
+                    <CFormFeedback invalid>Email is required</CFormFeedback>
+                  </CCol>
+
+                  <CCol md={6}>
+                    <CFormLabel className="gender">Gender</CFormLabel>
+                    <CFormCheck
+                      type="radio"
+                      id="male"
+                      name="gender"
+                      label="Male"
+                      className="radio"
+                    />
+                    <CFormCheck
+                      type="radio"
+                      name="gender"
+                      id="female"
+                      label="Female"
+                      className="radio"
+                    />
+                    <CFormCheck
+                      type="radio"
+                      name="gender"
+                      id="other"
+                      label="Other"
+                      className="radio"
+                    />
+                    <CFormFeedback invalid>Gender is required</CFormFeedback>
+                  </CCol>
+
+                  <CCol md={6}>
+                    <CFormLabel>Your Bio</CFormLabel>
+                    <CFormTextarea
+                      id="bioTextarea1"
+                      rows="4"
+                      type="text"
+                      placeholder="Enter your Bio"
+                      {...register('yourBio', { required: 'your Bio  is required' })}
+                      invalid={!!errors.yourBio}
+                    />
+                    <CFormFeedback invalid>your Bio is required</CFormFeedback>
+                  </CCol>
+
                   <CCol md={6}>
                     <CFormLabel htmlFor="validationDefault01">Profile</CFormLabel>
                     <CFormInput
                       type="file"
-                      id="ProfileImg"
-                      aria-label="file example"
+                      id="ProfileImgw"
                       {...register('ProfileImg', { required: 'Profile Image is required' })}
                       invalid={!!errors.ProfileImg}
                       onChange={handleFileUpload}
                     />
-                    <CFormFeedback invalid> Profile Img is required</CFormFeedback>
                   </CCol>
                   <CCol md={6}>
-                    <CFormLabel htmlFor="validationDefault01">
-                      Flag Image
-                      <span style={{ color: '#ff2d55', fontSize: '12px' }}>
-                        Only png, jpg, webp and jpeg image allow
-                      </span>
-                    </CFormLabel>
-                    <CFormInput
-                      type="file"
-                      id="validationTextarea"
-                      aria-label="file example"
-                      {...register('flagImage', { required: 'flag Image is required' })}
-                      invalid={!!errors.flagImage}
-                      onChange={handleFileUpload}
-                    />
-                    <CFormFeedback invalid>Flag Image is required</CFormFeedback>
+                    {singleImageUrl && (
+                      <div>
+                        <p>Profile img :</p>
+                        <img src={singleImageUrl} alt="Single Image" className="user-profile" />
+                      </div>
+                    )}
                   </CCol>
+                  <CFormFeedback invalid> Profile Img is required</CFormFeedback>
+
                   <CCol md={12} className="text-center submitButton">
                     {isLoading ? (
                       <CButton disabled>

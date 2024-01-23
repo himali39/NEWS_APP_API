@@ -7,7 +7,8 @@
     background-color: $light-50 !important;
 
     @at-root .dark-theme & {
-      background-color: rgba(255, 255, 255, .1) !important;
+      // background-color: rgba(255, 255, 255, .1) !important;
+      background-color: #15b3ce !important;
     }
   }
 

@@ -4,6 +4,7 @@ const News = require("../../models/newsModel");
 const addNews = async (req, res) => {
   try {
     const reqbody = req.body;
+  
 
     if (req.files.newsImage) {
       reqbody.newsImage = req.files.newsImage[0].filename;
@@ -70,8 +71,8 @@ const allNewsList = async (req, res) => {
       return res.status(404).json({ message: "News list ata not found" });
     }
 
-      const baseUrl =
-        req.protocol + "://" + req.get("host") + process.env.BASE_URL_NEWS_PATH;
+    const baseUrl =
+      req.protocol + "://" + req.get("host") + process.env.BASE_URL_NEWS_PATH;
     res.status(200).json({
       success: true,
       message: "News data get successfully ",
