@@ -125,7 +125,6 @@ const CategoryForm = () => {
                     />
                     <CFormFeedback invalid>category Name is required</CFormFeedback>
                   </CCol>
-
                   <CCol md={6}>
                     <CFormLabel htmlFor="validationDefault01">Language</CFormLabel>
                     <Controller
@@ -159,7 +158,6 @@ const CategoryForm = () => {
                     />
                     {errors.languages && <div className="errors">{errors.languages.message}</div>}
                   </CCol>
-
                   <CCol md={6}>
                     <CFormLabel htmlFor="validationDefault01">
                       Category Image
@@ -168,13 +166,14 @@ const CategoryForm = () => {
                     <CFormInput
                       type="file"
                       id="validationTextarea"
-                      aria-label="file example"
                       {...register('categoryImage', { required: 'category Image is required' })}
                       invalid={!!errors.categoryImage}
                       onChange={handleFileUpload}
                     />
+
                     <CFormFeedback invalid>Flag Image is required</CFormFeedback>
                   </CCol>
+
                   <CCol md={12} className="text-center submitButton">
                     {isLoading ? (
                       <CButton disabled>

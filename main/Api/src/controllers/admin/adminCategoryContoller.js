@@ -1,6 +1,6 @@
 const Category = require("../../models/categoryModel");
 const deleteFiles = require("../../helper/deleteFile");
-
+const mongoose = require("mongoose");
 /* -------------------------------add Personalize data------------------------------ */
 
 const addCategory = async (req, res) => {
@@ -61,7 +61,6 @@ const deleteCategory = async (req, res) => {
       return res.status(404).json({ message: "Category  data not found" });
     }
 
-    
     deleteFiles("category-images/" + CategoryData.categoryImage);
 
     const deleteCateData = await Category.findByIdAndDelete(req.params.id);
@@ -113,9 +112,47 @@ const updateCategory = async (req, res) => {
   }
 };
 
+const getCategoryByLanguage = async (req, res) => {
+  try {
+    // Get language ID from the request parameters or query string
+    const languageId = req.params.languageId || req.query.languageId;
+
+    // Check if languageId is provided
+    if (!languageId) {
+      return res
+        .status(400)
+        .json({ message: "Language ID is required for filtering categories" });
+    }
+
+    // Find categories and populate based on the provided language ID
+    const CategoryData = await Category.find({
+      languages: languageId,
+    }).populate("languages");
+
+    if (!CategoryData || CategoryData.length === 0) {
+      return res
+        .status(404)
+        .json({ message: "No categories found for the given language ID" });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "Get categories data based on language ID",
+      category: CategoryData,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
+
 module.exports = {
   addCategory,
   getCategory,
   deleteCategory,
   updateCategory,
+  getCategoryByLanguage,
 };

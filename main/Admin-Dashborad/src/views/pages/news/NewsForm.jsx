@@ -22,6 +22,7 @@ import {
   getAllLocation,
   getAllSubCategory,
   getAllTag,
+  getCatByLanguage,
   updateNews,
 } from 'src/redux/api/api'
 import { useLocation, useNavigate } from 'react-router-dom'
@@ -36,6 +37,7 @@ const NewsForm = () => {
     handleSubmit,
     control,
     formState: { errors },
+    clearErrors,
   } = useForm()
 
   const navigate = useNavigate()
@@ -43,7 +45,7 @@ const NewsForm = () => {
   const [isLoading, setIsLoading] = useState(false)
   const [languageOptions, setLanguageOptions] = useState([])
   const [categoryOptions, setCategoryOptions] = useState([])
-  const [subcatOptions, setSubCatOptions] = useState([])
+  const [subCatOptions, setSubCatOptions] = useState([])
   const [locationOptions, setLocationOptions] = useState([])
   const [tagOptions, setTagOptions] = useState([])
   const [singleImageUrl, setSingleImageUrl] = useState(null)
@@ -54,20 +56,27 @@ const NewsForm = () => {
 
   const handleSingleImgChange = (e) => {
     const files = e.target.files[0]
-    setSingleImageUrl(URL.createObjectURL(files))
-    setValue('newsImage', files)
+    if (files) {
+      const imageUrl = URL.createObjectURL(files)
+      setSingleImageUrl(imageUrl)
+
+      clearErrors('newsImage')
+    } else {
+      setSingleImageUrl(null)
+    }
   }
   const handleMultiImgChange = (e) => {
     const files = e.target.files
     const multipleImgPreviews = Array.from(files).map((file) => URL.createObjectURL(file))
     setMultipleImageUrls(multipleImgPreviews)
-    setValue('multipleImage', files)
+    clearErrors('multipleImage')
   }
 
-  // const handleLangChange = async (selectedLanguageId) => {
-  //   setValue('languages', selectedLanguageId) // Update the selected language in the form state
-  //   await CategoryList() // Fetch category options based on the selected language
-  // }
+  const handleLangChange = async (languageId) => {
+    setValue('languages', languageId)
+    await CategoryList(languageId)
+  }
+
   /* list of languages data*/
   const LanguagesList = () => {
     getAllLanguage()
@@ -79,14 +88,21 @@ const NewsForm = () => {
       })
   }
   /** list of Category data */
-  const CategoryList = () => {
-    getAllCategory()
-      .then((res) => {
-        setCategoryOptions(res.data.category)
-      })
-      .catch((err) => {
-        toast.error(err)
-      })
+  const CategoryList = async (languageId, data) => {
+    try {
+      const res = await getCatByLanguage(languageId, data)
+      console.log(res)
+      setCategoryOptions(res.data.category)
+    } catch (err) {
+      console.error(err)
+    }
+    // getAllCategory()
+    //   .then((res) => {
+    //     setCategoryOptions(res.data.category)
+    //   })
+    //   .catch((err) => {
+    //     toast.error(err)
+    //   })
   }
 
   /**list of sub category data */
@@ -125,8 +141,8 @@ const NewsForm = () => {
 
     Object.keys(data).forEach(function (key) {
       if (key === 'newsImage') {
-        if (data[key] !== undefined) {
-          formData.append(key, data[key])
+        if (data[key][0] !== undefined) {
+          formData.append(key, data[key][0])
         }
       } else if (key === 'multipleImage') {
         if (data[key] !== undefined) {
@@ -175,9 +191,9 @@ const NewsForm = () => {
     LanguagesList()
 
     CategoryList()
-    // subCategoryList()
-    // LocationList()
-    // TagList()
+    subCategoryList()
+    LocationList()
+    TagList()
   }, [])
 
   return (
@@ -195,51 +211,34 @@ const NewsForm = () => {
                   {/* start language */}
                   <CCol md={6}>
                     <CFormLabel htmlFor="validationDefault01">Language</CFormLabel>
-                    <CFormSelect id="languages" name="languages">
-                      <option>Select Language</option>
+                    <CFormSelect
+                      id="languages"
+                      name="languages"
+                      {...register('languages', { required: 'Language is required' })}
+                      onChange={(e) => handleLangChange(e.target.value)}
+                      invalid={!!errors.languages}
+                    >
+                      <option value="">Select Language</option>
                       {languageOptions?.map((option) => (
                         <option key={option._id} value={option._id}>
                           {option.languagesName}
                         </option>
                       ))}
                     </CFormSelect>
-                    {errors.category && <div className="errors">{errors.category.message}</div>}
-
-                    {/* <Select
-                            {...field}
-                            style={{
-                              width: '100%',
-                              height: '36px',
-                              borderRadius: '0.375rem',
-                            }}
-                            id="languages"
-                            labelId="languages"
-                            autoWidth={false}
-                            onChange={(e) => handleLangChange(e.target.value)}
-                          >
-                            <MenuItem value="">Choose Option</MenuItem>
-                            {languageOptions?.map((option) => (
-                              <MenuItem key={option._id} value={option._id}>
-                                {option.lang}
-                              </MenuItem>
-                            ))}
-                          </Select> */}
-                    {/* </> */}
-                    {/* )} */}
-                    {/* /> */}
+                    {errors.languages && <div className="errors">{errors.languages.message}</div>}
                   </CCol>
                   {/* end language */}
+
                   {/* start-category field */}
                   <CCol md={6}>
-                    <CFormLabel htmlFor="validationDefault01">Category</CFormLabel>
-
+                    <CFormLabel>Category</CFormLabel>
                     <CFormSelect
                       id="category"
                       name="category"
                       {...register('category', { required: 'category is required' })}
                       invalid={!!errors.category}
                     >
-                      <option disabled>Select category</option>
+                      <option value="">Select category</option>
                       {categoryOptions?.map((option) => (
                         <option key={option._id} value={option._id}>
                           {option.categoryName}
@@ -247,77 +246,26 @@ const NewsForm = () => {
                       ))}
                     </CFormSelect>
                     <CFormFeedback invalid>category Name is required</CFormFeedback>
-
-                    {/* <Controller
-                      name="categoryName"
-                      control={control}
-                      rules={{ required: 'category is required' }}
-                      render={({ field }) => (
-                        <>
-                          <Select
-                            {...field}
-                            style={{
-                              width: '100%',
-                              height: '36px',
-                              borderRadius: '0.375rem',
-                            }}
-                            id="categoryName"
-                            labelId="categoryName"
-                            autoWidth={false}
-                          >
-                            <option value="" disabled>
-                              Select Category
-                            </option>
-                            {categoryOptions?.map((option) => (
-                              <MenuItem key={option._id} value={option._id}>
-                                {option?.categoryName}
-                              </MenuItem>
-                            ))}
-                          </Select>
-                        </>
-                      )}
-                    /> */}
-                    {/* {errors.categoryName && (
-                      <div className="errors">{errors.categoryName.message}</div>
-                    )} */}
                   </CCol>
                   {/* end category */}
 
                   {/* start subcategory */}
                   <CCol md={6}>
-                    <CFormLabel htmlFor="validationDefault01">Sub Category</CFormLabel>
-                    <Controller
+                    <CFormLabel>Sub Category</CFormLabel>
+                    <CFormSelect
+                      id="subcategory"
                       name="subcategory"
-                      control={control}
-                      rules={{ required: 'subcategory is required' }}
-                      render={({ field }) => (
-                        <>
-                          <Select
-                            {...field}
-                            style={{
-                              width: '100%',
-                              height: '36px',
-                              borderRadius: '0.375rem',
-                            }}
-                            id="subcategory"
-                            labelId="subcategory"
-                            autoWidth={false}
-                          >
-                            <option value="" disabled>
-                              Select subcategory
-                            </option>
-                            {subcatOptions?.map((option) => (
-                              <MenuItem key={option._id} value={option._id}>
-                                {option?.subCategoryName}
-                              </MenuItem>
-                            ))}
-                          </Select>
-                        </>
-                      )}
-                    />
-                    {errors.subcategory && (
-                      <div className="errors">{errors.subcategory.message}</div>
-                    )}
+                      {...register('subcategory', { required: 'Sub category is required' })}
+                      invalid={!!errors.subcategory}
+                    >
+                      <option value="">Select Sub Category</option>
+                      {subCatOptions?.map((option) => (
+                        <option key={option._id} value={option._id}>
+                          {option.subCategoryName}
+                        </option>
+                      ))}
+                    </CFormSelect>
+                    <CFormFeedback invalid>Sub category is required</CFormFeedback>
                   </CCol>
                   {/* end subcategory */}
 
@@ -344,9 +292,9 @@ const NewsForm = () => {
                       type="date"
                       id="validationDefault01"
                       {...register('expiry_date', {
-                        required: 'expiry_date is required',
+                        required: 'Expiry Date is required',
                       })}
-                      placeholder="Expiry_date name"
+                      placeholder="Expiry Date"
                       invalid={!!errors.expiry_date}
                     />
                     <CFormFeedback invalid>Expiry Date is required</CFormFeedback>
@@ -355,108 +303,66 @@ const NewsForm = () => {
 
                   {/* start location */}
                   <CCol md={6}>
-                    <CFormLabel htmlFor="validationDefault01">Location</CFormLabel>
-                    <Controller
+                    <CFormLabel>Location</CFormLabel>
+                    <CFormSelect
+                      id="location"
                       name="location"
-                      control={control}
-                      rules={{ required: 'location name is required' }}
-                      render={({ field }) => (
-                        <>
-                          <Select
-                            {...field}
-                            style={{
-                              width: '100%',
-                              height: '36px',
-                              borderRadius: '0.375rem',
-                            }}
-                            id="location"
-                            labelId="location"
-                            autoWidth={false}
-                          >
-                            <option value="" disabled>
-                              Select location
-                            </option>
-                            {locationOptions?.map((option) => (
-                              <MenuItem key={option._id} value={option._id}>
-                                {option?.locationName}
-                              </MenuItem>
-                            ))}
-                          </Select>
-                        </>
-                      )}
-                    />
-                    {errors.location && <div className="errors">{errors.location.message}</div>}
+                      {...register('location', { required: 'Location is required' })}
+                      invalid={!!errors.location}
+                    >
+                      <option value="">Select Location</option>
+                      {locationOptions?.map((option) => (
+                        <option key={option._id} value={option._id}>
+                          {option.locationName}
+                        </option>
+                      ))}
+                    </CFormSelect>
+                    <CFormFeedback invalid>Location is required</CFormFeedback>
                   </CCol>
                   {/* end location */}
 
                   {/* start tag */}
                   <CCol md={6}>
-                    <CFormLabel htmlFor="validationDefault01">Tag</CFormLabel>
-                    <Controller
+                    <CFormLabel>Tag</CFormLabel>
+                    <CFormSelect
+                      id="tag"
                       name="tag"
-                      control={control}
-                      rules={{ required: 'Tag name is required' }}
-                      render={({ field }) => (
-                        <>
-                          <Select
-                            {...field}
-                            style={{
-                              width: '100%',
-                              height: '36px',
-                              borderRadius: '0.375rem',
-                            }}
-                            id="tag"
-                            labelId="tag"
-                            autoWidth={false}
-                          >
-                            <option value="" disabled>
-                              Select tag
-                            </option>
-                            {tagOptions?.map((option) => (
-                              <MenuItem key={option._id} value={option._id}>
-                                {option?.tagName}
-                              </MenuItem>
-                            ))}
-                          </Select>
-                        </>
-                      )}
-                    />
-                    {errors.tag && <div className="errors">{errors.tag.message}</div>}
+                      {...register('tag', { required: 'Tag is required' })}
+                      invalid={!!errors.tag}
+                    >
+                      <option value="">Select Tag</option>
+                      {tagOptions?.map((option) => (
+                        <option key={option._id} value={option._id}>
+                          {option.tagName}
+                        </option>
+                      ))}
+                    </CFormSelect>
+                    <CFormFeedback invalid>Tag is required</CFormFeedback>
                   </CCol>
                   {/* end tag */}
 
                   {/* start image field */}
                   <CCol md={6}>
-                    <CFormLabel htmlFor="validationDefault01">
+                    <CFormLabel>
                       News Images
                       <span className="errors">Only png, jpg, webp and jpeg image allow</span>
                     </CFormLabel>
-                    <Controller
-                      name="newsImage"
-                      control={control}
-                      render={({ field }) => (
-                        <>
-                          <CFormInput
-                            type="file"
-                            id="newsImage"
-                            onChange={(e) => {
-                              field.onChange(e)
-                              handleSingleImgChange(e) // Assuming handleImageChange is a function you've defined
-                            }}
-                          />
-                          {singleImageUrl && (
-                            <img
-                              src={singleImageUrl}
-                              alt="singleImageUrl"
-                              style={{ maxWidth: '20%' }}
-                            />
-                          )}
-                          {errors.newsImage && (
-                            <span style={{ color: '#e55353' }}>{errors.newsImage.message}</span>
-                          )}
-                        </>
-                      )}
+                    <CFormInput
+                      type="file"
+                      id="newsImage"
+                      {...register('newsImage', { required: 'newsImage is required' })}
+                      className={errors.newsImage ? 'is-invalid' : ''}
+                      onChange={(e) => {
+                        handleSingleImgChange(e)
+                      }}
                     />
+                    {singleImageUrl && (
+                      <img src={singleImageUrl} alt="Single Image" style={{ maxWidth: '20%' }} />
+                    )}
+
+                    {errors.newsImage && (
+                      <CFormFeedback invalid>News Image is required</CFormFeedback>
+                    )}
                   </CCol>
                   {/* end image */}
 
@@ -466,65 +372,17 @@ const NewsForm = () => {
                       Other Images
                       <span className="errors">Only png, jpg, webp and jpeg image allow</span>
                     </CFormLabel>
-                    <Controller
-                      name="multipleImage"
-                      control={control}
-                      render={({ field }) => (
-                        <>
-                          <CFormInput
-                            type="file"
-                            id="multipleImage"
-                            onChange={(e) => {
-                              field.onChange(e)
-                              handleMultiImgChange(e) // Assuming handleImageChange is a function you've defined
-                            }}
-                            multiple
-                          />
-                          {multipleImageUrls &&
-                            multipleImageUrls.map((preview, index) => (
-                              <img
-                                key={index}
-                                src={preview}
-                                alt={`preview${index + 1}`}
-                                width="60"
-                                height="60"
-                              />
-                            ))}
-                          {errors.multipleImage && (
-                            <span style={{ color: '#e55353' }}>{errors.multipleImage.message}</span>
-                          )}
-                        </>
-                      )}
-                    />
-                  </CCol>
-                  {/* end image */}
 
-                  {/* <CCol md={6}>
-                    <CFormLabel htmlFor="validationDefault01">News Image</CFormLabel>
-                    <CFormInput
-                      type="file"
-                      id="newsImage"
-                      onChange={(e) => {
-                        handleImageChange(e)
-                      }}
-                    />
-                    {singleImageUrl && (
-                      <div>
-                        <p>Single Image Preview:</p>
-                        <img src={singleImageUrl} alt="Single Image" style={{ maxWidth: '20%' }} />
-                      </div>
-                    )}
-                    {errors.newsImage && (
-                      <span style={{ color: '#e55353' }}>{errors.newsImage.message}</span>
-                    )}
-                  </CCol>
-                  <CCol md={6}>
-                    <CFormLabel htmlFor="multipleImage">Multiple Images</CFormLabel>
                     <CFormInput
                       type="file"
                       id="multipleImage"
+                      className={errors.multipleImage ? 'is-invalid' : ''}
+                      {...register('multipleImage', {
+                        required: 'Image is required',
+                      })}
+                      invalid={!!errors.multipleImage}
                       onChange={(e) => {
-                        handleImageChange(e)
+                        handleMultiImgChange(e) // Assuming handleImageChange is a function you've defined
                       }}
                       multiple
                     />
@@ -538,10 +396,10 @@ const NewsForm = () => {
                           height="60"
                         />
                       ))}
-                    {errors.multipleImage && (
-                      <span style={{ color: '#e55353' }}>{errors.multipleImage.message}</span>
-                    )}
-                  </CCol> */}
+                    {errors.newsImage && <CFormFeedback invalid> Image is required</CFormFeedback>}
+                  </CCol>
+                  {/* end image */}
+
                   <CCol md={12} className="text-center submitButton">
                     {isLoading ? (
                       <CButton disabled>

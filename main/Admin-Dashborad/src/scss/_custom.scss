@@ -33,7 +33,7 @@
 
 .main-logo img {
   width: auto;
-  color: #15b3ce;
+  // color: #15b3ce;
 }
 .update-button {
   display: flex;
@@ -80,6 +80,14 @@ html:not([dir='rtl']) .ms-2 {
     font-size: 10px !important;
   }
 }
+.MuiTableCell-head {
+  padding-left: 0 !important;
+}
+// .MuiTableCell-body{
+//   padding-left: 0 !important;
+
+// }
+
 /* ---------------------------- delete button css --------------------------- */
 .deleteButton {
   color: #ffff;
@@ -118,10 +126,35 @@ html:not([dir='rtl']) .ms-2 {
   height: 80px;
   border-radius: 25%;
 }
-// .sidebar {
-//   background-color: rgba(21, 179, 206, 0.9) !important;
-// }
-// .sidebar-nav{
-//   background-color: rgba(21, 179, 206, 0.9) !important;
 
-// }
+.card-header:first-child {
+    border-radius: var(--cui-card-inner-border-radius) var(--cui-card-inner-border-radius) 0 0;
+}
+.card-header {
+  background-color: rgba(21, 179, 206, 0.2);
+}
+.sidebar {
+  // --cui-sidebar-bg: rgba(21, 179, 206, 0.4) !important;
+  --cui-sidebar-bg: rgba(21, 179, 206,0.6) !important;
+  
+  // --cui-sidebar-brand-bg: rgba(0, 0, 21, 0.4) !important;
+  // --cui-sidebar-toggler-bg: rgba(0, 0, 21, 0.4) !important;
+  // --cui-sidebar-toggler-hover-bg: rgba(0, 0, 0, 0.3) !important;
+  // --cui-sidebar-header-bg: rgba(0, 0, 21, 0.2);
+  // --cui-sidebar-footer-bg: rgba(0, 0, 21, 0.2);
+  // background-color: rgba(21, 179, 206, 0.9) !important;
+}
+.sidebar-brand {
+  // background: none !important;
+}
+.sidebar-nav .nav-link {
+  // --cui-sidebar-nav-link-active-bg: rgba(21, 179, 206, 1.1) !important;
+  // color:#ffff
+  background-color: rgb(22, 139, 158);
+  color: #ffff;
+}
+
+.sidebar-nav .nav-item {
+ padding-top: 4px;
+}
+

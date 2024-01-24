@@ -26,6 +26,7 @@ import {
   DELETE_SUBCATEGORY_API,
   DELETE_TAG_API,
   DELETE_USER_API,
+  GET_CATEGORY_BY_LANGUAGE_API,
   MAIN_URL,
   UPDATE_CATEGORY_API,
   UPDATE_LANGUAGE_API,
@@ -281,5 +282,11 @@ export const deleteUser = (id) =>
 /* update User  */
 export const updateUser = (data, id) =>
   axios.put(MAIN_URL + UPDATE_USER_API + id, data, {
+    headers: { Authorization: `Bearer ${Cookies.get('accessToken')}` },
+  })
+
+/* Get All Category By languageId*/
+export const getCatByLanguage = (languageId, data) =>
+  axios.get(MAIN_URL + GET_CATEGORY_BY_LANGUAGE_API + languageId, data, {
     headers: { Authorization: `Bearer ${Cookies.get('accessToken')}` },
   })

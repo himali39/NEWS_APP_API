@@ -5,6 +5,7 @@ const {
   getCategory,
   deleteCategory,
   updateCategory,
+  getCategoryByLanguage,
 } = require("../../controllers/admin/adminCategoryContoller");
 const verifyAdminToken = require("../../helper/verifyAdminToken");
 const router = express.Router();
@@ -28,5 +29,7 @@ router.put(
   singleFileUpload("/category_images/", "categoryImage"),
   updateCategory
 );
+
+router.get("/getCatByLanguage/:languageId", getCategoryByLanguage);
 
 module.exports = router;

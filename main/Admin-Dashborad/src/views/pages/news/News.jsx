@@ -2,14 +2,7 @@ import { Button, Switch } from '@mui/material'
 import MUIDataTable from 'mui-datatables'
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import {
-  deleteCategory,
-  deleteNews,
-  getAllCategory,
-  getAllNews,
-  updateCategory,
-  updateNews,
-} from 'src/redux/api/api'
+import { deleteNews, getAllNews, updateNews } from 'src/redux/api/api'
 import * as Icons from '@mui/icons-material'
 import { ToastContainer, toast } from 'react-toastify'
 import swal from 'sweetalert'
@@ -22,6 +15,7 @@ const News = () => {
   const newsList = async () => {
     await getAllNews()
       .then((res) => {
+        console.log(res)
         const transformedData = res.data.news.map((news) => ({
           ...news,
           languages: news.languages.map((language) => language.languagesName),

@@ -129,3 +129,5 @@ export const DELETE_USER_API = '/admin/delete-user/'
 export const UPDATE_USER_API = '/admin/update-user/'
 
 /* ---------------------------- END User API ---------------------------- */
+
+export const GET_CATEGORY_BY_LANGUAGE_API = '/admin/category/getCatByLanguage/'
