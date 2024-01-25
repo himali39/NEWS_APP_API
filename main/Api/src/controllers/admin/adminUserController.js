@@ -8,7 +8,7 @@ const addUser = async (req, res) => {
     if (req.file) {
       reqbody.ProfileImg = req.file.filename;
     }
-    console.log(req.files)
+    console.log(req.files);
 
     const userData = await User.create(reqbody);
 
@@ -89,15 +89,11 @@ const updateUser = async (req, res) => {
     if (req.file && req.file != "undefined") {
       req.body.ProfileImg = req.file.filename;
     }
-    
-    const updatedData = await User.findByIdAndUpdate(
-      req.params.id,
-      req.body,
-      {
-        new: true,
-      }
-    );
 
+    const updatedData = await User.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+    });
+   
     if (!updatedData) {
       throw new Error("Something went wrong, try again later");
     }

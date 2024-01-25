@@ -85,18 +85,19 @@ const UserForm = () => {
   }
   useEffect(() => {
     if (state) {
-      const { editdata, imageUrl } = state
-      setIsUpdate(editdata._id)
-      setValue('fullName', editdata.fullName)
-      setValue('userName', editdata.userName)
-      setValue('mobile', editdata.mobile)
-      setValue('email', editdata.email)
-      setValue('yourBio', editdata.yourBio)
-      setValue('gender', editdata.gender)
-      setSingleImageUrl(imageUrl, editdata.imageUrl)
-      setSingleImageUrl(imageUrl + editdata.ProfileImg)
+      const { editData, imageUrl } = state
+      console.log(state)
+      setIsUpdate(editData._id)
+      setValue('fullName', editData.fullName)
+      setValue('userName', editData.userName)
+      setValue('mobile', editData.mobile)
+      setValue('email', editData.email)
+      setValue('yourBio', editData.yourBio)
+      setValue('gender', editData.gender)
+      setSingleImageUrl(imageUrl + editData.imageUrl)
+      // setSingleImageUrl(imageUrl + editData.ProfileImg)
     }
-  })
+  }, [])
   return (
     <div className=" bg-light min-vh-100">
       <CContainer className="mt-3">
@@ -110,7 +111,7 @@ const UserForm = () => {
                 <ToastContainer />
                 <CForm className="row g-3 " onSubmit={handleSubmit(onSubmit)}>
                   <CCol md={6}>
-                    <CFormLabel htmlFor="validationDefault01">FullName</CFormLabel>
+                    <CFormLabel>FullName</CFormLabel>
                     <CFormInput
                       type="text"
                       id="fullName"
@@ -118,11 +119,11 @@ const UserForm = () => {
                       {...register('fullName', { required: 'fullName is required' })}
                       invalid={!!errors.fullName}
                     />
-                    <CFormFeedback invalid>Language is required</CFormFeedback>
+                    <CFormFeedback invalid>FullName is required</CFormFeedback>
                   </CCol>
 
                   <CCol md={6}>
-                    <CFormLabel htmlFor="validationDefault01">UserName</CFormLabel>
+                    <CFormLabel>UserName</CFormLabel>
                     <CFormInput
                       type="text"
                       id="userName"
@@ -134,7 +135,7 @@ const UserForm = () => {
                   </CCol>
 
                   <CCol md={6}>
-                    <CFormLabel htmlFor="validationDefault01">Email</CFormLabel>
+                    <CFormLabel>Email</CFormLabel>
                     <CFormInput
                       type="text"
                       id="email"
@@ -146,7 +147,7 @@ const UserForm = () => {
                   </CCol>
 
                   <CCol md={6}>
-                    <CFormLabel htmlFor="validationDefault01">Mobile</CFormLabel>
+                    <CFormLabel>Mobile</CFormLabel>
                     <CFormInput
                       type="number"
                       id="mobile"
@@ -197,7 +198,7 @@ const UserForm = () => {
                   </CCol>
 
                   <CCol md={6}>
-                    <CFormLabel htmlFor="validationDefault01">Profile</CFormLabel>
+                    <CFormLabel>Profile</CFormLabel>
                     <CFormInput
                       type="file"
                       id="ProfileImgw"

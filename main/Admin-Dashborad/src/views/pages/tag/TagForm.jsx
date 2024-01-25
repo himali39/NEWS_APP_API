@@ -99,7 +99,7 @@ const TagForm = () => {
                 <ToastContainer />
                 <CForm className="row g-3 " onSubmit={handleSubmit(onSubmit)}>
                   <CCol md={6}>
-                    <CFormLabel htmlFor="validationDefault01">Tag</CFormLabel>
+                    <CFormLabel>Tag</CFormLabel>
                     <CFormInput
                       type="text"
                       id="validationDefault01"
@@ -113,36 +113,21 @@ const TagForm = () => {
                   </CCol>
 
                   <CCol md={6}>
-                    <CFormLabel htmlFor="validationDefault01">Language</CFormLabel>
-                    <Controller
+                    <CFormLabel>Language</CFormLabel>
+                    <CFormSelect
+                      id="languages"
                       name="languages"
-                      control={control}
-                      rules={{ required: 'Language name is required' }}
-                      render={({ field }) => (
-                        <>
-                          <Select
-                            {...field}
-                            style={{
-                              width: '100%',
-                              height: '36px',
-                              borderRadius: '0.375rem',
-                            }}
-                            id="languages"
-                            labelId="languages"
-                            autoWidth={false}
-                          >
-                            <option value="" disabled selected>
-                              Select Language
-                            </option>
-                            {languageOptions?.map((option) => (
-                              <MenuItem key={option._id} value={option._id}>
-                                {option?.languagesName}
-                              </MenuItem>
-                            ))}
-                          </Select>
-                        </>
-                      )}
-                    />
+                      {...register('languages', { required: 'Language is required' })}
+                      invalid={!!errors.languages}
+                    >
+                      <option value="">Select Language</option>
+                      {languageOptions?.map((option) => (
+                        <option key={option._id} value={option._id}>
+                          {option.languagesName}
+                        </option>
+                      ))}
+                    </CFormSelect>
+
                     {errors.languages && <div className="errors">{errors.languages.message}</div>}
                   </CCol>
 

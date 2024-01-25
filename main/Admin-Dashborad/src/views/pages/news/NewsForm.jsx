@@ -17,30 +17,33 @@ import {
 import { Controller, useForm } from 'react-hook-form'
 import {
   addNews,
-  getAllCategory,
   getAllLanguage,
   getAllLocation,
-  getAllSubCategory,
   getAllTag,
   getCatByLanguage,
+  getSubCatByCategory,
   updateNews,
 } from 'src/redux/api/api'
+import ReactQuill from 'react-quill'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
-import { MenuItem, Select } from '@mui/material'
+import { Paper, Typography } from '@mui/material'
+import 'react-quill/dist/quill.snow.css'
 
 const NewsForm = () => {
   const {
     register,
     setValue,
     handleSubmit,
-    control,
     formState: { errors },
     clearErrors,
+    control,
+    getValues,
   } = useForm()
 
   const navigate = useNavigate()
+
   const [isUpdate, setIsUpdate] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const [languageOptions, setLanguageOptions] = useState([])
@@ -50,8 +53,7 @@ const NewsForm = () => {
   const [tagOptions, setTagOptions] = useState([])
   const [singleImageUrl, setSingleImageUrl] = useState(null)
   const [multipleImageUrls, setMultipleImageUrls] = useState([])
-  const [selectedLanguage, setSelectedLanguage] = useState('')
-
+  const [selectedDate, setSelectedDate] = useState(null)
   const { state } = useLocation()
 
   const handleSingleImgChange = (e) => {
@@ -71,10 +73,22 @@ const NewsForm = () => {
     setMultipleImageUrls(multipleImgPreviews)
     clearErrors('multipleImage')
   }
+  // const handleDateChange = (expiry_date) => {
+  //   const formattedDate = expiry_date.toISOString().split('T')[0]
+  //   setValue('expiry_date', formattedDate)
+  //   setSelectedDate(formattedDate)
+  // }
 
+  /* language on change event*/
   const handleLangChange = async (languageId) => {
     setValue('languages', languageId)
     await CategoryList(languageId)
+  }
+
+  /**category on change event */
+  const handleChangeCategory = async (categoryId) => {
+    setValue('category', categoryId)
+    await subCategoryList(categoryId)
   }
 
   /* list of languages data*/
@@ -87,33 +101,25 @@ const NewsForm = () => {
         toast.error(err)
       })
   }
+
   /** list of Category data */
   const CategoryList = async (languageId, data) => {
     try {
-      const res = await getCatByLanguage(languageId, data)
-      console.log(res)
+      const res = await getCatByLanguage(languageId, data) //selected language id through show category list
       setCategoryOptions(res.data.category)
     } catch (err) {
-      console.error(err)
+      toast.error(err)
     }
-    // getAllCategory()
-    //   .then((res) => {
-    //     setCategoryOptions(res.data.category)
-    //   })
-    //   .catch((err) => {
-    //     toast.error(err)
-    //   })
   }
 
   /**list of sub category data */
-  const subCategoryList = () => {
-    getAllSubCategory()
-      .then((res) => {
-        setSubCatOptions(res.data.subCategory)
-      })
-      .catch((err) => {
-        toast.error(err)
-      })
+  const subCategoryList = async (categoryId, data) => {
+    try {
+      const res = await getSubCatByCategory(categoryId, data)
+      setSubCatOptions(res.data.subCategory)
+    } catch (err) {
+      toast.error(err)
+    }
   }
   /* list of Location data*/
   const LocationList = () => {
@@ -181,15 +187,25 @@ const NewsForm = () => {
           })
   }
   useEffect(() => {
-    // if (state) {
-    //   const { editdata, imageUrl } = state
-    //   setIsUpdate(editdata._id)
-    //   setValue('categoryName', editdata.categoryName)
-    //   setValue('languages', editdata.languages)
-    //   setNewUrl(imageUrl + editdata.flagImage)
-    // }
-    LanguagesList()
+    if (state) {
+      const { editData, imageUrl } = state
+      setIsUpdate(editData._id)
+      setValue('title', editData.title)
+      setValue('category', editData.category._id)
+      setValue('languages', editData.languages._id)
+      setValue('subcategory', editData.subcategory._id)
+      setValue('tag', editData.tag._id)
+      setValue('location', editData.location._id)
+      setSingleImageUrl(imageUrl + editData.newsImage)
 
+      const expiry_date = new Date(editData.expiry_date)
+      setValue('expiry_date', expiry_date)
+      const formattedDate = expiry_date.toISOString().split('T')[0]
+      setValue('expiry_date', formattedDate)
+      setSelectedDate(formattedDate)
+      // setMultipleImageUrls(imageUrl + editData.multipleImage)
+    }
+    LanguagesList()
     CategoryList()
     subCategoryList()
     LocationList()
@@ -210,13 +226,14 @@ const NewsForm = () => {
                 <CForm className="row g-3 " onSubmit={handleSubmit(onSubmit)}>
                   {/* start language */}
                   <CCol md={6}>
-                    <CFormLabel htmlFor="validationDefault01">Language</CFormLabel>
+                    <CFormLabel>Language</CFormLabel>
                     <CFormSelect
                       id="languages"
                       name="languages"
                       {...register('languages', { required: 'Language is required' })}
                       onChange={(e) => handleLangChange(e.target.value)}
                       invalid={!!errors.languages}
+                      value={getValues('languages')}
                     >
                       <option value="">Select Language</option>
                       {languageOptions?.map((option) => (
@@ -237,6 +254,8 @@ const NewsForm = () => {
                       name="category"
                       {...register('category', { required: 'category is required' })}
                       invalid={!!errors.category}
+                      value={getValues('category')}
+                      onChange={(e) => handleChangeCategory(e.target.value)}
                     >
                       <option value="">Select category</option>
                       {categoryOptions?.map((option) => (
@@ -257,6 +276,7 @@ const NewsForm = () => {
                       name="subcategory"
                       {...register('subcategory', { required: 'Sub category is required' })}
                       invalid={!!errors.subcategory}
+                      value={getValues('subcategory')}
                     >
                       <option value="">Select Sub Category</option>
                       {subCatOptions?.map((option) => (
@@ -274,7 +294,7 @@ const NewsForm = () => {
                     <CFormLabel htmlFor="validationDefault01">Title</CFormLabel>
                     <CFormInput
                       type="text"
-                      id="validationDefault01"
+                      id="Title"
                       {...register('title', {
                         required: 'Title is required',
                       })}
@@ -287,15 +307,19 @@ const NewsForm = () => {
 
                   {/* Start Expiry Date */}
                   <CCol md={6}>
-                    <CFormLabel htmlFor="validationDefault01">Expiry Date</CFormLabel>
+                    <CFormLabel>Expiry Date</CFormLabel>
                     <CFormInput
                       type="date"
-                      id="validationDefault01"
+                      id="expiry_date"
+                      dateFormat="dd/MM/yyyy"
+                      value={getValues('expiry_date')}
                       {...register('expiry_date', {
                         required: 'Expiry Date is required',
                       })}
                       placeholder="Expiry Date"
                       invalid={!!errors.expiry_date}
+                      selected={selectedDate}
+                      onChange={(e) => setValue(e.target.value)}
                     />
                     <CFormFeedback invalid>Expiry Date is required</CFormFeedback>
                   </CCol>
@@ -309,6 +333,7 @@ const NewsForm = () => {
                       name="location"
                       {...register('location', { required: 'Location is required' })}
                       invalid={!!errors.location}
+                      value={getValues('location')}
                     >
                       <option value="">Select Location</option>
                       {locationOptions?.map((option) => (
@@ -329,6 +354,7 @@ const NewsForm = () => {
                       name="tag"
                       {...register('tag', { required: 'Tag is required' })}
                       invalid={!!errors.tag}
+                      value={getValues('tag')}
                     >
                       <option value="">Select Tag</option>
                       {tagOptions?.map((option) => (
@@ -368,11 +394,10 @@ const NewsForm = () => {
 
                   {/* start multiple image field */}
                   <CCol md={6}>
-                    <CFormLabel htmlFor="validationDefault01">
+                    <CFormLabel>
                       Other Images
                       <span className="errors">Only png, jpg, webp and jpeg image allow</span>
                     </CFormLabel>
-
                     <CFormInput
                       type="file"
                       id="multipleImage"
@@ -399,7 +424,22 @@ const NewsForm = () => {
                     {errors.newsImage && <CFormFeedback invalid> Image is required</CFormFeedback>}
                   </CCol>
                   {/* end image */}
+                  <CCol md={12}>
+                    <CFormLabel>Description</CFormLabel>
 
+                    <Controller
+                      name="description"
+                      control={control}
+                      defaultValue={getValues('description')}
+                      render={({ field }) => (
+                        <ReactQuill
+                          value={field.value || ''}
+                          onChange={field.onChange}
+                          style={{ height: '200px', border: 'none' }}
+                        />
+                      )}
+                    />
+                  </CCol>
                   <CCol md={12} className="text-center submitButton">
                     {isLoading ? (
                       <CButton disabled>

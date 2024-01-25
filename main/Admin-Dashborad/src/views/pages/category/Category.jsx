@@ -112,7 +112,6 @@ const Category = () => {
                 className="editButton"
                 onClick={() => {
                   const editdata = dataTableData.find((data) => data._id === value)
-                  console.log(editdata)
                   navigate('/category-form', { state: { editdata: editdata, imageUrl: baseUrl } })
                 }}
               ></Icons.EditRounded>

@@ -43,7 +43,6 @@ const Tag = () => {
       options: {
         filter: true,
         sort: true,
-        customHeadRender: (columnMeta) => <th style={{ textAlign: 'left' }}>{columnMeta.label}</th>,
       },
     },
     {

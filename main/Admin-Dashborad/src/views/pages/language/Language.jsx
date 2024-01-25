@@ -117,9 +117,9 @@ const Language = () => {
               <Icons.EditRounded
                 className="editButton"
                 onClick={() => {
-                  const editdata = dataTableData.find((data) => data._id === value)
-                  console.log(editdata)
-                  navigate('/language-form', { state: { editdata: editdata, imageUrl: baseUrl } })
+                  const editData = dataTableData.find((data) => data._id === value)
+                  console.log(editData)
+                  navigate('/language-form', { state: { editData: editData, imageUrl: baseUrl } })
                 }}
               ></Icons.EditRounded>
               <Icons.DeleteRounded

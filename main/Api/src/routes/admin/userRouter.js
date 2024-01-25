@@ -10,6 +10,6 @@ router.get("/get-user", allUserList);
 
 router.delete("/delete-user/:id", deleteUser);
 
-router.put("/update-user/:id", updateUser);
+router.put("/update-user/:id",singleFileUpload("/userImg/", "ProfileImg"), updateUser);
 
 module.exports = router;

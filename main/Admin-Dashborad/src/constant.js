@@ -131,3 +131,5 @@ export const UPDATE_USER_API = '/admin/update-user/'
 /* ---------------------------- END User API ---------------------------- */
 
 export const GET_CATEGORY_BY_LANGUAGE_API = '/admin/category/getCatByLanguage/'
+
+export const GET_SUBCATE_BY_CATEGORY_API = '/admin/subcategory/getSubCatByCate/'

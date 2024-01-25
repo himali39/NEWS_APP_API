@@ -112,19 +112,19 @@ const updateCategory = async (req, res) => {
   }
 };
 
+
+/* ----------- selected languageId through get category data list in news form----------- */
 const getCategoryByLanguage = async (req, res) => {
   try {
     // Get language ID from the request parameters or query string
     const languageId = req.params.languageId || req.query.languageId;
-
-    // Check if languageId is provided
+    
     if (!languageId) {
       return res
         .status(400)
         .json({ message: "Language ID is required for filtering categories" });
     }
-
-    // Find categories and populate based on the provided language ID
+   
     const CategoryData = await Category.find({
       languages: languageId,
     }).populate("languages");

@@ -30,10 +30,9 @@ const LanguageForm = () => {
   const navigate = useNavigate()
   const [newUrl, setNewUrl] = useState()
   const [isUpdate, setIsUpdate] = useState('')
-  var [isLoading, setIsLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
 
   const { state } = useLocation()
-  console.log(state)
 
   const handleFileUpload = (event) => {
     const file = event.target.files[0]
@@ -84,15 +83,13 @@ const LanguageForm = () => {
   }
   useEffect(() => {
     if (state) {
-      const { editdata, imageUrl } = state
-      console.log(state)
-      setIsUpdate(editdata._id)
-      setValue('languagesName', editdata.languagesName)
-      setValue('displayName', editdata.displayName)
-      setValue('code', editdata.code)
-      setValue(imageUrl + editdata.jsonFile)
-      setNewUrl(imageUrl + editdata.flagImage)
-      console.log(editdata.flagImage)
+      const { editData, imageUrl } = state
+      setIsUpdate(editData._id)
+      setValue('languagesName', editData.languagesName)
+      setValue('displayName', editData.displayName)
+      setValue('code', editData.code)
+      setNewUrl(imageUrl + editData.jsonFile)
+      setNewUrl(imageUrl + editData.flagImage)
     }
     // setdefaultLoading(false)
   })
@@ -170,6 +167,10 @@ const LanguageForm = () => {
                       invalid={!!errors.flagImage}
                       onChange={handleFileUpload}
                     />
+                    {errors.newUrl && (
+                      <img src={newUrl} alt="flag Img" style={{ maxWidth: '20%' }} />
+                    )}
+
                     <CFormFeedback invalid>Flag Image is required</CFormFeedback>
                   </CCol>
                   <CCol md={12} className="text-center submitButton">

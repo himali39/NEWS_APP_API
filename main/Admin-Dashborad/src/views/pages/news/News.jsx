@@ -18,11 +18,11 @@ const News = () => {
         console.log(res)
         const transformedData = res.data.news.map((news) => ({
           ...news,
-          languages: news.languages.map((language) => language.languagesName),
-          tag: news.tag.map((tag) => tag.tagName),
-          location: news.location.map((location) => location.locationName),
-          category: news.category.map((category) => category.categoryName),
-          subcategory: news.subcategory.map((subcategory) => subcategory.subCategoryName),
+          languagesName: news.languages.languagesName,
+          categoryName: news.category.categoryName,
+          subCategoryName: news.subcategory.subCategoryName,
+          tagName: news.tag.tagName,
+          locationName: news.location.locationName,
         }))
         setDataTable(transformedData)
         setBaseUrl(`${process.env.REACT_APP_NEWS_IMAGE_PATH}`)
@@ -32,7 +32,7 @@ const News = () => {
           if (err.response.data.status === 401) {
             toast.error(err.response.data.message)
           } else {
-            console.log(err.response.data, 'else')
+            toast.error(err.response.data, 'else')
           }
         }
       })
@@ -43,7 +43,7 @@ const News = () => {
 
   const columns = [
     {
-      name: 'category',
+      name: 'categoryName',
       label: 'Category',
       options: {
         filter: true,
@@ -51,7 +51,7 @@ const News = () => {
       },
     },
     {
-      name: 'subcategory',
+      name: 'subCategoryName',
       label: 'sub category',
       options: {
         filter: true,
@@ -83,7 +83,7 @@ const News = () => {
       },
     },
     {
-      name: 'languages',
+      name: 'languagesName',
       label: 'languages',
       options: {
         filter: true,
@@ -91,7 +91,7 @@ const News = () => {
       },
     },
     {
-      name: 'tag',
+      name: 'tagName',
       label: 'Tag',
       options: {
         filter: true,
@@ -99,7 +99,7 @@ const News = () => {
       },
     },
     {
-      name: 'location',
+      name: 'locationName',
       label: 'Location',
       options: {
         filter: true,
@@ -155,9 +155,8 @@ const News = () => {
               <Icons.EditRounded
                 className="editButton"
                 onClick={() => {
-                  const editdata = dataTableData.find((data) => data._id === value)
-                  console.log(editdata)
-                  navigate('/news-form', { state: { editdata: editdata, imageUrl: baseUrl } })
+                  const editData = dataTableData.find((data) => data._id === value)
+                  navigate('/news-form', { state: { editData: editData, imageUrl: baseUrl } })
                 }}
               ></Icons.EditRounded>
               <Icons.DeleteRounded

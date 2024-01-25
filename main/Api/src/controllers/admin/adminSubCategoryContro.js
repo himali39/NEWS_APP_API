@@ -108,9 +108,52 @@ const updateSubCategory = async (req, res) => {
 };
 
 
+/* ----------- selected categoryId through get subcategory data list in news form----------- */
+const getSubCateByCategory = async (req, res) => {
+  try {
+
+    // Get category Id  from the request parameters 
+    const categoryId = req.params.categoryId;
+
+    if (!categoryId) {
+      return res
+        .status(400)
+        .json({
+          message: "category ID is required for filtering subCategories",
+        });
+    }
+
+    const subCategoryData = await subCategory
+      .find({
+        categoryName: categoryId,
+      })
+      .populate("categoryName");
+
+    if (!subCategoryData || subCategoryData.length === 0) {
+      return res
+        .status(404)
+        .json({
+          message: "No subCategories found for the given category ID",
+        });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "Get subCategory data based on category ID",
+      subCategory: subCategoryData,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
 module.exports = {
   addSubCategory,
   getSubCategory,
   deleteSubCategory,
   updateSubCategory,
+  getSubCateByCategory,
 };

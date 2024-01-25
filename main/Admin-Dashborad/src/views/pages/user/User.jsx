@@ -8,7 +8,7 @@ import { deleteUser, getAllUser, updateUser } from 'src/redux/api/api'
 import swal from 'sweetalert'
 import defaultImg from '../../../../src/assets/images/default.png'
 
-const Language = () => {
+const User = () => {
   const [dataTableData, setDataTable] = useState([])
   const navigate = useNavigate()
   const [baseUrl, setBaseUrl] = useState([])
@@ -16,12 +16,10 @@ const Language = () => {
   const list = async () => {
     await getAllUser()
       .then((res) => {
-        console.log(res.data.user)
         setDataTable(res.data.user)
         setBaseUrl(`${process.env.REACT_APP_USER_PROFILE_PATH}`)
       })
       .catch((err) => {
-        console.log(err)
         if (!err.response.data.success) {
           if (err.response.data.status === 401) {
             toast.error(err.response.data.message)
@@ -91,6 +89,7 @@ const Language = () => {
                 const data = { id: _id, status: !status }
                 updateUser(data, _id)
                   .then(() => {
+                    console.log(_id)
                     toast.success('status changed successfully!', {
                       key: data._id,
                     })
@@ -118,9 +117,9 @@ const Language = () => {
               <Icons.EditRounded
                 className="editButton"
                 onClick={() => {
-                  const editdata = dataTableData.find((data) => data._id === value)
-                  console.log(editdata)
-                  navigate('/user-form', { state: { editdata: editdata, imageUrl: baseUrl } })
+                  const editData = dataTableData.find((data) => data._id === value)
+                  console.log(editData)
+                  navigate('/user-form', { state: { editData: editData, imageUrl: baseUrl } })
                 }}
               ></Icons.EditRounded>
               <Icons.DeleteRounded
@@ -180,4 +179,4 @@ const Language = () => {
   )
 }
 
-export default Language
+export default User

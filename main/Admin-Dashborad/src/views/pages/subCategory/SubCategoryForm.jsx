@@ -32,10 +32,8 @@ import { MenuItem, Select } from '@mui/material'
 const SubCategoryForm = () => {
   const {
     register,
-    getValues,
     setValue,
     handleSubmit,
-    control,
     formState: { errors },
   } = useForm()
 
@@ -130,74 +128,42 @@ const SubCategoryForm = () => {
                   </CCol>
 
                   <CCol md={6}>
-                    <CFormLabel htmlFor="validationDefault01">Language</CFormLabel>
-                    <Controller
+                    <CFormLabel>Language</CFormLabel>
+                    <CFormSelect
+                      id="languages"
                       name="languages"
-                      control={control}
-                      rules={{ required: 'Language name is required' }}
-                      render={({ field }) => (
-                        <>
-                          <Select
-                            {...field}
-                            style={{
-                              width: '100%',
-                              height: '36px',
-                              borderRadius: '0.375rem',
-                            }}
-                            id="languages"
-                            labelId="languages"
-                            autoWidth={false}
-                          >
-                            <option value="" disabled selected>
-                              Select Language
-                            </option>
-                            {languageOptions?.map((option) => (
-                              <MenuItem key={option._id} value={option._id}>
-                                {option?.languagesName}
-                              </MenuItem>
-                            ))}
-                          </Select>
-                        </>
-                      )}
-                    />
+                      {...register('languages', { required: 'Language is required' })}
+                      invalid={!!errors.languages}
+                    >
+                      <option value="">Select Language</option>
+                      {languageOptions?.map((option) => (
+                        <option key={option._id} value={option._id}>
+                          {option.languagesName}
+                        </option>
+                      ))}
+                    </CFormSelect>
+
                     {errors.languages && <div className="errors">{errors.languages.message}</div>}
                   </CCol>
 
                   <CCol md={6}>
-                    <CFormLabel htmlFor="validationDefault01">Category</CFormLabel>
-                    <Controller
-                      name="categoryName"
-                      control={control}
-                      rules={{ required: 'category is required' }}
-                      render={({ field }) => (
-                        <>
-                          <Select
-                            {...field}
-                            style={{
-                              width: '100%',
-                              height: '36px',
-                              borderRadius: '0.375rem',
-                            }}
-                            id="categoryName"
-                            labelId="categoryName"
-                            autoWidth={false}
-                          >
-                            <option value="" disabled selected>
-                              Select Category
-                            </option>
-                            {categoryOptions?.map((option) => (
-                              <MenuItem key={option._id} value={option._id}>
-                                {option?.categoryName}
-                              </MenuItem>
-                            ))}
-                          </Select>
-                        </>
-                      )}
-                    />
-                    {errors.categoryName && (
-                      <div className="errors">{errors.categoryName.message}</div>
-                    )}
+                    <CFormLabel>Category</CFormLabel>
+                    <CFormSelect
+                      id="category"
+                      name="category"
+                      {...register('category', { required: 'category is required' })}
+                      invalid={!!errors.category}
+                    >
+                      <option value="">Select category</option>
+                      {categoryOptions?.map((option) => (
+                        <option key={option._id} value={option._id}>
+                          {option.categoryName}
+                        </option>
+                      ))}
+                    </CFormSelect>
+                    <CFormFeedback invalid>category Name is required</CFormFeedback>
                   </CCol>
+
                   <CCol md={12} className="text-center submitButton">
                     {isLoading ? (
                       <CButton disabled>
