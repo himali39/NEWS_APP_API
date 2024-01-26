@@ -112,6 +112,7 @@ html:not([dir='rtl']) .ms-2 {
 .submitButton {
   display: flex;
   justify-content: flex-end;
+  margin-top: 40px;
 }
 
 .gender {
@@ -128,15 +129,15 @@ html:not([dir='rtl']) .ms-2 {
 }
 
 .card-header:first-child {
-    border-radius: var(--cui-card-inner-border-radius) var(--cui-card-inner-border-radius) 0 0;
+  border-radius: var(--cui-card-inner-border-radius) var(--cui-card-inner-border-radius) 0 0;
 }
 .card-header {
   background-color: rgba(21, 179, 206, 0.2);
 }
+ /* ---------------------------- sidebar color css --------------------------- */
 .sidebar {
   // --cui-sidebar-bg: rgba(21, 179, 206, 0.4) !important;
-  --cui-sidebar-bg: rgba(21, 179, 206,0.6) !important;
-  
+  --cui-sidebar-bg: rgba(21, 179, 206, 0.6) !important;
   // --cui-sidebar-brand-bg: rgba(0, 0, 21, 0.4) !important;
   // --cui-sidebar-toggler-bg: rgba(0, 0, 21, 0.4) !important;
   // --cui-sidebar-toggler-hover-bg: rgba(0, 0, 0, 0.3) !important;
@@ -155,6 +156,5 @@ html:not([dir='rtl']) .ms-2 {
 }
 
 .sidebar-nav .nav-item {
- padding-top: 4px;
+  padding-top: 4px;
 }
-

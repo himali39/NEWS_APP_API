@@ -15,14 +15,14 @@ const News = () => {
   const newsList = async () => {
     await getAllNews()
       .then((res) => {
-        console.log(res)
+        console.log(res.data.news)
         const transformedData = res.data.news.map((news) => ({
           ...news,
-          languagesName: news.languages.languagesName,
-          categoryName: news.category.categoryName,
-          subCategoryName: news.subcategory.subCategoryName,
-          tagName: news.tag.tagName,
-          locationName: news.location.locationName,
+          languagesName: news.languages == null ? '' : news.languages.languagesName,
+          categoryName: news.category == null ? '' : news.category.categoryName,
+          subCategoryName: news.subcategory == null ? '' : news.subcategory.subCategoryName,
+          tagName: news.tag == null ? '' : news.tag.tagName,
+          locationName: news.location == null ? '' : news.location.locationName,
         }))
         setDataTable(transformedData)
         setBaseUrl(`${process.env.REACT_APP_NEWS_IMAGE_PATH}`)
@@ -84,7 +84,7 @@ const News = () => {
     },
     {
       name: 'languagesName',
-      label: 'languages',
+      label: 'language',
       options: {
         filter: true,
         sort: true,

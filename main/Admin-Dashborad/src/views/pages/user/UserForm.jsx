@@ -185,19 +185,6 @@ const UserForm = () => {
                   </CCol>
 
                   <CCol md={6}>
-                    <CFormLabel>Your Bio</CFormLabel>
-                    <CFormTextarea
-                      id="bioTextarea1"
-                      rows="4"
-                      type="text"
-                      placeholder="Enter your Bio"
-                      {...register('yourBio', { required: 'your Bio  is required' })}
-                      invalid={!!errors.yourBio}
-                    />
-                    <CFormFeedback invalid>your Bio is required</CFormFeedback>
-                  </CCol>
-
-                  <CCol md={6}>
                     <CFormLabel>Profile</CFormLabel>
                     <CFormInput
                       type="file"
@@ -206,17 +193,30 @@ const UserForm = () => {
                       invalid={!!errors.ProfileImg}
                       onChange={handleFileUpload}
                     />
-                  </CCol>
-                  <CCol md={6}>
-                    {singleImageUrl && (
-                      <div>
-                        <p>Profile img :</p>
-                        <img src={singleImageUrl} alt="Single Image" className="user-profile" />
-                      </div>
-                    )}
-                  </CCol>
-                  <CFormFeedback invalid> Profile Img is required</CFormFeedback>
 
+                    {/* <CCol md={6}> */}
+                    {singleImageUrl && (
+                      // <div>
+                      // <p>Profile img :</p>
+                      <img src={singleImageUrl} alt="Single Image" className="user-profile" />
+                      // </div>
+                    )}
+                    {/* </CCol> */}
+                    <CFormFeedback invalid> Profile Img is required</CFormFeedback>
+                  </CCol>
+
+                  <CCol md={6}>
+                    <CFormLabel>Your Bio</CFormLabel>
+                    <CFormTextarea
+                      id="bioTextarea1"
+                      rows="6"
+                      type="text"
+                      placeholder="Enter your Bio"
+                      {...register('yourBio', { required: 'your Bio  is required' })}
+                      invalid={!!errors.yourBio}
+                    />
+                    <CFormFeedback invalid>your Bio is required</CFormFeedback>
+                  </CCol>
                   <CCol md={12} className="text-center submitButton">
                     {isLoading ? (
                       <CButton disabled>

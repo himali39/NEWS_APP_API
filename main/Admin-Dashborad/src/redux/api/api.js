@@ -159,6 +159,7 @@ export const getAllSubCategory = (data) =>
     headers: { Authorization: `Bearer ${Cookies.get('accessToken')}` },
   })
 
+/** add subcategory*/
 export const addSubCategory = (data) =>
   axios.post(MAIN_URL + ADD_SUBCATEGORY_API, data, {
     headers: { Authorization: `Bearer ${Cookies.get('accessToken')}` },
@@ -179,25 +180,25 @@ export const updateSubCategory = (data, id) =>
 /* ---------------------------- END SUB CATEGORY API ---------------------------- */
 
 /* ---------------------------- ALL TAG API ---------------------------- */
-
-/* Get All subCategory  */
+/* Get All Tag  */
 export const getAllTag = (data) =>
   axios.get(MAIN_URL + All_TAG_LIST_API, data, {
     headers: { Authorization: `Bearer ${Cookies.get('accessToken')}` },
   })
 
+/** add Tag */
 export const addTag = (data) =>
   axios.post(MAIN_URL + ADD_TAG_API, data, {
     headers: { Authorization: `Bearer ${Cookies.get('accessToken')}` },
   })
 
-/* delete Category */
+/* delete tag */
 export const deleteTag = (id) =>
   axios.delete(MAIN_URL + DELETE_TAG_API + id, {
     headers: { Authorization: `Bearer ${Cookies.get('accessToken')}` },
   })
 
-/* update Category  */
+/* update Tag  */
 export const updateTag = (data, id) =>
   axios.put(MAIN_URL + UPDATE_TAG_API + id, data, {
     headers: { Authorization: `Bearer ${Cookies.get('accessToken')}` },

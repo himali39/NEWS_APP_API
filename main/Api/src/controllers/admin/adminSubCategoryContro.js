@@ -30,7 +30,7 @@ const getSubCategory = async (req, res) => {
     const subCategoryData = await subCategory
       .find()
       .populate("languages")
-      .populate("categoryName");
+      .populate("category");
 
     if (!subCategoryData) {
       return res.status(404).json({ message: "sub Category  data not found" });
@@ -59,7 +59,7 @@ const deleteSubCategory = async (req, res) => {
         .status(404)
         .json({ message: "subCategoryData  data not found" });
     }
-     
+
     const deleteCateData = await subCategory.findByIdAndDelete(req.params.id);
 
     res.status(200).json({
@@ -78,14 +78,13 @@ const deleteSubCategory = async (req, res) => {
 /* ----------------------------- update Category data ----------------------------- */
 const updateSubCategory = async (req, res) => {
   try {
-    
     const id = req.params.id;
     const CategoryData = await subCategory.findById(id);
 
     if (!CategoryData) {
       return res.status(404).json({ message: "sub Category data not found" });
     }
-   
+
     const updateCateData = await subCategory.findByIdAndUpdate(id, req.body, {
       new: true,
     });
@@ -107,20 +106,16 @@ const updateSubCategory = async (req, res) => {
   }
 };
 
-
 /* ----------- selected categoryId through get subcategory data list in news form----------- */
 const getSubCateByCategory = async (req, res) => {
   try {
-
-    // Get category Id  from the request parameters 
+    // Get category Id  from the request parameters
     const categoryId = req.params.categoryId;
 
     if (!categoryId) {
-      return res
-        .status(400)
-        .json({
-          message: "category ID is required for filtering subCategories",
-        });
+      return res.status(400).json({
+        message: "category ID is required for filtering subCategories",
+      });
     }
 
     const subCategoryData = await subCategory
@@ -130,11 +125,9 @@ const getSubCateByCategory = async (req, res) => {
       .populate("categoryName");
 
     if (!subCategoryData || subCategoryData.length === 0) {
-      return res
-        .status(404)
-        .json({
-          message: "No subCategories found for the given category ID",
-        });
+      return res.status(200).json({
+        message: "No subCategories found for the given category ID",
+      });
     }
 
     res.status(200).json({

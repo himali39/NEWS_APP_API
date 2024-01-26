@@ -112,26 +112,25 @@ const updateCategory = async (req, res) => {
   }
 };
 
-
 /* ----------- selected languageId through get category data list in news form----------- */
 const getCategoryByLanguage = async (req, res) => {
   try {
     // Get language ID from the request parameters or query string
-    const languageId = req.params.languageId || req.query.languageId;
-    
+    const languageId = req.params.languageId;
+
     if (!languageId) {
       return res
         .status(400)
         .json({ message: "Language ID is required for filtering categories" });
     }
-   
+
     const CategoryData = await Category.find({
       languages: languageId,
     }).populate("languages");
 
     if (!CategoryData || CategoryData.length === 0) {
       return res
-        .status(404)
+        .status(200)
         .json({ message: "No categories found for the given language ID" });
     }
 
@@ -147,7 +146,6 @@ const getCategoryByLanguage = async (req, res) => {
     });
   }
 };
-
 
 module.exports = {
   addCategory,

@@ -7,20 +7,15 @@ const subCategorySchema = mongoose.Schema(
       required: [true, "Name is required."],
       trim: true,
     },
-    categoryName: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "category",
-        required: [true, "language name is required."],
-      },
-    ],
-    languages: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "languages",
-        required: [true, "language name is required."],
-      },
-    ],
+    category: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "category",
+    },
+
+    languages: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "languages",
+    },
   },
   {
     timestamps: true,

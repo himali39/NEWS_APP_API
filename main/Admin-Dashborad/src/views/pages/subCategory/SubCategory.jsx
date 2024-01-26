@@ -14,10 +14,11 @@ const SubCategory = () => {
   const subCategoryList = async () => {
     await getAllSubCategory()
       .then((res) => {
+        console.log(res.data.subCategory)
         const transformedData = res.data.subCategory.map((subCategory) => ({
           ...subCategory,
-          languages: subCategory.languages?.map((language) => language.languagesName),
-          categoryName: subCategory.categoryName?.map((category) => category.categoryName),
+          languagesName: subCategory.languages == null ? '' : subCategory.languages.languagesName,
+          categoryName: subCategory.category == null ? '' : subCategory.category.categoryName,
         }))
 
         setDataTable(transformedData)
@@ -58,7 +59,7 @@ const SubCategory = () => {
       },
     },
     {
-      name: 'languages',
+      name: 'languagesName',
       label: 'Languages',
       options: {
         filter: true,
