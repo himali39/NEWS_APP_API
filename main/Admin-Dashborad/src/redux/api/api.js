@@ -2,6 +2,7 @@ import axios from 'axios'
 import Cookies from 'js-cookie'
 import {
   ADD_CATEGORY_API,
+  ADD_FAQS_API,
   ADD_LANGUAGE_API,
   ADD_LOCATION_API,
   ADD_NEWS_API,
@@ -27,6 +28,7 @@ import {
   DELETE_TAG_API,
   DELETE_USER_API,
   GET_CATEGORY_BY_LANGUAGE_API,
+  GET_FAQS_API,
   GET_SUBCATE_BY_CATEGORY_API,
   MAIN_URL,
   UPDATE_CATEGORY_API,
@@ -296,5 +298,17 @@ export const getCatByLanguage = (languageId, data) =>
 /* Get All subCategory By category Id*/
 export const getSubCatByCategory = (categoryId, data) =>
   axios.get(MAIN_URL + GET_SUBCATE_BY_CATEGORY_API + categoryId, data, {
+    headers: { Authorization: `Bearer ${Cookies.get('accessToken')}` },
+  })
+
+/* Get All Faqs */
+export const getFaqs = (data) =>
+  axios.get(MAIN_URL + GET_FAQS_API, data, {
+    headers: { Authorization: `Bearer ${Cookies.get('accessToken')}` },
+  })
+
+/* add Faqs*/
+export const addFaqs = (data) =>
+  axios.post(MAIN_URL + ADD_FAQS_API, data, {
     headers: { Authorization: `Bearer ${Cookies.get('accessToken')}` },
   })

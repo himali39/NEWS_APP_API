@@ -33,7 +33,7 @@ const getAllFaqs = async (req, res, next) => {
     res.status(200).json({
       success: true,
       message: "FAQS get successfully ",
-      result: faqs,
+      faqs: faqs,
     });
       } catch (err) {
     next(err);

@@ -120,12 +120,12 @@ const getSubCateByCategory = async (req, res) => {
 
     const subCategoryData = await subCategory
       .find({
-        categoryName: categoryId,
+        category: categoryId,
       })
-      .populate("categoryName");
+      .populate("category");
 
     if (!subCategoryData || subCategoryData.length === 0) {
-      return res.status(200).json({
+      return res.status(400).json({
         message: "No subCategories found for the given category ID",
       });
     }

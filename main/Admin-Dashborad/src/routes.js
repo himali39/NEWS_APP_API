@@ -18,6 +18,8 @@ const News = React.lazy(() => import('./views/pages/news/News'))
 const NewsForm = React.lazy(() => import('./views/pages/news/NewsForm'))
 const User = React.lazy(() => import('./views/pages/user/User'))
 const UserForm = React.lazy(() => import('./views/pages/user/UserForm'))
+const Faqs = React.lazy(() => import('./views/pages/setting/Faqs'))
+const Feedback = React.lazy(() => import('./views/pages/setting/Feedback'))
 
 // const Colors = React.lazy(() => import('./views/theme/colors/Colors'))
 // const Typography = React.lazy(() => import('./views/theme/typography/Typography'))
@@ -88,6 +90,8 @@ const routes = [
   { path: '/news-form', name: 'news-form', element: NewsForm },
   { path: '/user', name: 'user', element: User },
   { path: '/user-form', name: 'user-form', element: UserForm },
+  { path: '/faqs', name: 'faqs', element: Faqs },
+  { path: '/feedback', name: 'feedback', element: Feedback },
 
   // { path: '/theme', name: 'Theme', element: Colors, exact: true },
   // { path: '/theme/colors', name: 'Colors', element: Colors },

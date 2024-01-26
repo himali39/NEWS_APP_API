@@ -80,11 +80,13 @@ const NewsForm = () => {
 
   /* language on change event*/
   const handleLangChange = async (languageId) => {
+    await setValue('languages', languageId)
     await CategoryList(languageId)
   }
 
   /**category on change event */
   const handleChangeCategory = async (categoryId) => {
+    await setValue('category', categoryId)
     await subCategoryList(categoryId)
   }
 
@@ -117,14 +119,15 @@ const NewsForm = () => {
 
   /**list of sub category data */
   const subCategoryList = async (categoryId, data) => {
+    console.log(categoryId)
     try {
       setValue('category', categoryId)
 
       const res = await getSubCatByCategory(categoryId, data)
       if (res) {
-        await setSubCatOptions(res.data.subCategory)
+        setSubCatOptions(res.data.subCategory)
       } else {
-        await setSubCatOptions([])
+        setSubCatOptions([])
       }
     } catch (err) {
       toast.error(err)
@@ -143,26 +146,8 @@ const NewsForm = () => {
   /* list of Tag data*/
 
   const onSubmit = (data) => {
-    let formData = new FormData() // FormData object
-
-    Object.keys(data).forEach(function (key) {
-      if (key === 'newsImage') {
-        if (data[key][0] !== undefined) {
-          formData.append(key, data[key][0])
-        }
-      } else if (key === 'multipleImage') {
-        if (data[key] !== undefined) {
-          for (let i = 0; i < data[key].length; i++) {
-            formData.append('multipleImage', data[key][i])
-          }
-        }
-      } else {
-        formData.append(key, data[key])
-      }
-    })
-
     isUpdate === ''
-      ? addNews(formData)
+      ? addNews(data)
           .then((res) => {
             navigate('/news')
           })
@@ -173,7 +158,7 @@ const NewsForm = () => {
               setIsLoading(false)
             }
           })
-      : updateNews(formData, isUpdate)
+      : updateNews(data, isUpdate)
           .then((res) => {
             navigate('/news')
           })
@@ -191,16 +176,13 @@ const NewsForm = () => {
       const { editData, imageUrl } = state
       setIsUpdate(editData._id)
 
-      setValue('category', editData.category._id)
-      setValue('languages', editData.languages._id)
-      setValue('subcategory', editData.subcategory._id)
-
-      setSingleImageUrl(imageUrl + editData.newsImage)
-      setMultipleImageUrls(imageUrl + editData.multipleImage)
+      // setValue('category', editData.category._id)
+      // setValue('languages', editData.languages._id)
+      // setValue('subcategory', editData.subcategory._id)
     }
     LanguagesList()
     CategoryList()
-    subCategoryList()
+    // subCategoryList()
 
     // setValue('languages', '65a6724f08068a8b9ffca92d')
   }, [])
@@ -260,7 +242,7 @@ const NewsForm = () => {
                   </CCol>
                   {/* end category */}
                   {/* start subcategory */}
-                  {/* <CCol md={4}>
+                  <CCol md={4}>
                     <CFormLabel>Sub Category</CFormLabel>
                     <CFormSelect
                       id="subcategory"
@@ -278,7 +260,7 @@ const NewsForm = () => {
                       ))}
                     </CFormSelect>
                     <CFormFeedback invalid>Sub category is required</CFormFeedback>
-                  </CCol> */}
+                  </CCol>
                   {/* end subcategory */}
 
                   {/* submit button */}

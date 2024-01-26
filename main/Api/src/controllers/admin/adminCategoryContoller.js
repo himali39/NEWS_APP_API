@@ -130,7 +130,7 @@ const getCategoryByLanguage = async (req, res) => {
 
     if (!CategoryData || CategoryData.length === 0) {
       return res
-        .status(200)
+        .status(400)
         .json({ message: "No categories found for the given language ID" });
     }
 

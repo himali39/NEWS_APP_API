@@ -133,3 +133,13 @@ export const UPDATE_USER_API = '/admin/update-user/'
 export const GET_CATEGORY_BY_LANGUAGE_API = '/admin/category/getCatByLanguage/'
 
 export const GET_SUBCATE_BY_CATEGORY_API = '/admin/subcategory/getSubCatByCate/'
+
+/* ---------------------------- ALL FAQS API ---------------------------- */
+
+/*  add  FAQS data */
+export const ADD_FAQS_API = '/admin/faqs/add-Faqs'
+
+/**list of Faqs data */
+export const GET_FAQS_API = '/admin/faqs/get-Faqs'
+
+/* ---------------------------- END FAQS API ---------------------------- */
