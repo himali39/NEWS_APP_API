@@ -2,17 +2,24 @@ const express = require("express");
 const {
   addNotification,
   deleteNotification,
+  updateNotification,
+  getAllNotification,
 } = require("../../controllers/admin/adminNotificationController");
 const { singleFileUpload } = require("../../helper/upload");
 
 const router = express.Router();
 
-/* ----------------------- add sub category route ----------------------- */
+/* ----------------------- add Notification route ----------------------- */
 router.post(
-  "/add-Notifi",
+  "/add-Notification",
   singleFileUpload("/notifImages", "notifiImage"),
   addNotification
 );
-router.delete("/delete-Notifi/:id", deleteNotification);
+
+router.get("/get-Notification", getAllNotification);
+
+router.delete("/delete-Notifification/:id", deleteNotification);
+
+router.put("/update-Notification/:id", updateNotification);
 
 module.exports = router;

@@ -130,16 +130,47 @@ export const UPDATE_USER_API = '/admin/update-user/'
 
 /* ---------------------------- END User API ---------------------------- */
 
+/* ---------------------------- ALL news page listing API ---------------------------- */
 export const GET_CATEGORY_BY_LANGUAGE_API = '/admin/category/getCatByLanguage/'
 
 export const GET_SUBCATE_BY_CATEGORY_API = '/admin/subcategory/getSubCatByCate/'
+/* ---------------------------- END news page listing API ---------------------------- */
 
 /* ---------------------------- ALL FAQS API ---------------------------- */
-
 /*  add  FAQS data */
 export const ADD_FAQS_API = '/admin/faqs/add-Faqs'
 
 /**list of Faqs data */
 export const GET_FAQS_API = '/admin/faqs/get-Faqs'
 
+/*  delete FAQS  */
+export const DELETE_FAQS_API = '/admin/faqs/delete-Faqs/'
+
+/*  update FAQS  */
+export const UPDATE_FAQS_API = '/admin/faqs/update-Faqs/'
+
 /* ---------------------------- END FAQS API ---------------------------- */
+
+/* ---------------------------- ALL Feedback API ---------------------------- */
+/**list of feedback data */
+export const GET_FEEDBACK_API = '/admin/feedback/get-Feedback'
+
+/*  delete Feedback  */
+export const DELETE_FEEDBACK_API = '/admin/feedback/delete-Feedback/'
+
+/* ---------------------------- END Feedback API ---------------------------- */
+
+/* ---------------------------- ALL Notification API ---------------------------- */
+/** list of notification data */
+export const GET_NOTIFICATION_API = '/admin/notification/get-Notification'
+
+/* add Notification data */
+export const ADD_NOTIFICATION_API_API = '/admin/notification/add-Notification'
+
+/*  delete Notification  */
+export const DELETE_NOTIFICATION_API = '/admin/notification/delete-Notification/'
+
+/*  update Notification  */
+export const UPDATE_NOTIFICATION_API = '/admin/notification/update-Notification/'
+
+/* ---------------------------- END Notification API ---------------------------- */

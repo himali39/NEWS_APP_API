@@ -6,6 +6,7 @@ import {
   ADD_LANGUAGE_API,
   ADD_LOCATION_API,
   ADD_NEWS_API,
+  ADD_NOTIFICATION_API_API,
   ADD_SUBCATEGORY_API,
   ADD_TAG_API,
   ADD_USER_API,
@@ -21,20 +22,27 @@ import {
   All_TAG_LIST_API,
   All_USER_LIST_API,
   DELETE_CATEGORY_API,
+  DELETE_FAQS_API,
+  DELETE_FEEDBACK_API,
   DELETE_LANGUAGE_API,
   DELETE_LOCATION_API,
   DELETE_NEWS_API,
+  DELETE_NOTIFICATION_API,
   DELETE_SUBCATEGORY_API,
   DELETE_TAG_API,
   DELETE_USER_API,
   GET_CATEGORY_BY_LANGUAGE_API,
   GET_FAQS_API,
+  GET_FEEDBACK_API,
+  GET_NOTIFICATION_API,
   GET_SUBCATE_BY_CATEGORY_API,
   MAIN_URL,
   UPDATE_CATEGORY_API,
+  UPDATE_FAQS_API,
   UPDATE_LANGUAGE_API,
   UPDATE_LOCATION_API,
   UPDATE_NEWS_API,
+  UPDATE_NOTIFICATION_API,
   UPDATE_SUBCATEGORY_API,
   UPDATE_TAG_API,
   UPDATE_USER_API,
@@ -97,7 +105,6 @@ export const UpdateProfile = (data) =>
   axios.post(MAIN_URL + ADMIN_EDIT_PROFILE_PASSWORD_API, data, {
     headers: { Authorization: `Bearer ${Cookies.get('accessToken')}` },
   })
-
 /* ------------------------------ END ADMIN API ----------------------------- */
 
 /* ---------------------------- ALL LANGUAGE API ---------------------------- */
@@ -124,7 +131,6 @@ export const deleteLanguage = (id) =>
   axios.delete(MAIN_URL + DELETE_LANGUAGE_API + id, {
     headers: { Authorization: `Bearer ${Cookies.get('accessToken')}` },
   })
-
 /* ----------------------------------- END LANGUAGE API ---------------------------------- */
 
 /* ---------------------------- ALL CATEGORY API ---------------------------- */
@@ -154,7 +160,6 @@ export const updateCategory = (data, id) =>
 /* ---------------------------- END CATEGORY API ---------------------------- */
 
 /* ---------------------------- ALL  SUB CATEGORY API ---------------------------- */
-
 /* Get All subCategory  */
 export const getAllSubCategory = (data) =>
   axios.get(MAIN_URL + All_SUBCATEGORY_LIST_API, data, {
@@ -205,11 +210,9 @@ export const updateTag = (data, id) =>
   axios.put(MAIN_URL + UPDATE_TAG_API + id, data, {
     headers: { Authorization: `Bearer ${Cookies.get('accessToken')}` },
   })
-
 /* ---------------------------- ENDTAG API ---------------------------- */
 
 /* ---------------------------- ALL Location API ---------------------------- */
-
 /* Get All location  */
 export const getAllLocation = (data) =>
   axios.get(MAIN_URL + All_LOCATION_LIST_API, data, {
@@ -233,11 +236,9 @@ export const updateLocation = (data, id) =>
   axios.put(MAIN_URL + UPDATE_LOCATION_API + id, data, {
     headers: { Authorization: `Bearer ${Cookies.get('accessToken')}` },
   })
-
 /* ---------------------------- END Location API ---------------------------- */
 
 /* ---------------------------- ALL News API ---------------------------- */
-
 /* Get All news  */
 export const getAllNews = (data) =>
   axios.get(MAIN_URL + All_NEWS_LIST_API, data, {
@@ -288,19 +289,20 @@ export const updateUser = (data, id) =>
   axios.put(MAIN_URL + UPDATE_USER_API + id, data, {
     headers: { Authorization: `Bearer ${Cookies.get('accessToken')}` },
   })
+/* ---------------------------- END User API ---------------------------- */
 
-/* Get All Category By languageId*/
+/* --------------------- Get All Category By languageId --------------------- */
 export const getCatByLanguage = (languageId, data) =>
   axios.get(MAIN_URL + GET_CATEGORY_BY_LANGUAGE_API + languageId, data, {
     headers: { Authorization: `Bearer ${Cookies.get('accessToken')}` },
   })
-
-/* Get All subCategory By category Id*/
+/* ------------------- Get All subCategory By category Id ------------------- */
 export const getSubCatByCategory = (categoryId, data) =>
   axios.get(MAIN_URL + GET_SUBCATE_BY_CATEGORY_API + categoryId, data, {
     headers: { Authorization: `Bearer ${Cookies.get('accessToken')}` },
   })
 
+/* ---------------------------- ALL FAQS API ---------------------------- */
 /* Get All Faqs */
 export const getFaqs = (data) =>
   axios.get(MAIN_URL + GET_FAQS_API, data, {
@@ -310,5 +312,58 @@ export const getFaqs = (data) =>
 /* add Faqs*/
 export const addFaqs = (data) =>
   axios.post(MAIN_URL + ADD_FAQS_API, data, {
+    headers: { Authorization: `Bearer ${Cookies.get('accessToken')}` },
+  })
+
+/* delete FAQS  */
+export const deleteFaqs = (id) =>
+  axios.delete(MAIN_URL + DELETE_FAQS_API + id, {
+    headers: { Authorization: `Bearer ${Cookies.get('accessToken')}` },
+  })
+
+/* update FAQS  */
+export const updateFaqs = (data, id) =>
+  axios.put(MAIN_URL + UPDATE_FAQS_API + id, data, {
+    headers: { Authorization: `Bearer ${Cookies.get('accessToken')}` },
+  })
+
+/* ---------------------------- END FAQS API ---------------------------- */
+
+/* ---------------------------- ALL Feedback API ---------------------------- */
+/* Get All Feedback */
+export const getFeedback = (data) =>
+  axios.get(MAIN_URL + GET_FEEDBACK_API, data, {
+    headers: { Authorization: `Bearer ${Cookies.get('accessToken')}` },
+  })
+
+/* delete Feedback  */
+export const deleteFeedback = (id) =>
+  axios.delete(MAIN_URL + DELETE_FEEDBACK_API + id, {
+    headers: { Authorization: `Bearer ${Cookies.get('accessToken')}` },
+  })
+
+/* ---------------------------- ALL Notification API ---------------------------- */
+
+/* Get All Notification */
+export const getNotification = (data) =>
+  axios.get(MAIN_URL + GET_NOTIFICATION_API, data, {
+    headers: { Authorization: `Bearer ${Cookies.get('accessToken')}` },
+  })
+
+/* add Notification*/
+export const addNotification = (data) =>
+  axios.post(MAIN_URL + ADD_NOTIFICATION_API_API, data, {
+    headers: { Authorization: `Bearer ${Cookies.get('accessToken')}` },
+  })
+
+/* delete Notification  */
+export const deleteNotification = (id) =>
+  axios.delete(MAIN_URL + DELETE_NOTIFICATION_API + id, {
+    headers: { Authorization: `Bearer ${Cookies.get('accessToken')}` },
+  })
+
+/* update Notification  */
+export const updateNotification = (data, id) =>
+  axios.put(MAIN_URL + UPDATE_NOTIFICATION_API + id, data, {
     headers: { Authorization: `Bearer ${Cookies.get('accessToken')}` },
   })

@@ -5,20 +5,23 @@ import { useNavigate } from 'react-router-dom'
 import * as Icons from '@mui/icons-material'
 import { ToastContainer, toast } from 'react-toastify'
 import swal from 'sweetalert'
-import { deleteFaqs, getFaqs, updateFaqs } from 'src/redux/api/api'
+import { deleteNotification, getNotification, updateNotification } from 'src/redux/api/api'
 
-const Faqs = () => {
+const Notification = () => {
   const navigate = useNavigate()
   const [dataTableData, setDataTable] = useState([])
 
-  const faqsList = async () => {
-    await getFaqs()
+  const notificationList = async () => {
+    await getNotification()
       .then((res) => {
-        console.log(res.data.faqs)
-        setDataTable(res.data.faqs)
+        const transformedData = res.data.notification.map((notification) => ({
+          ...notification,
+          languagesName: notification.languages == null ? '' : notification.languages.languagesName,
+        }))
+        console.log(res.data.notification)
+        setDataTable(transformedData)
       })
       .catch((err) => {
-        console.log(err)
         if (!err.response.data.success) {
           if (err.response.data.status === 401) {
             toast.error(err.response.data.message)
@@ -29,7 +32,7 @@ const Faqs = () => {
       })
   }
   useEffect(() => {
-    faqsList()
+    notificationList()
   }, [])
 
   const columns = [
@@ -43,8 +46,8 @@ const Faqs = () => {
       },
     },
     {
-      name: 'question',
-      label: 'Question ',
+      name: 'languagesName',
+      label: 'Languages ',
       options: {
         filter: true,
         sort: false,
@@ -52,8 +55,8 @@ const Faqs = () => {
     },
 
     {
-      name: 'answer',
-      label: 'Answer',
+      name: 'title',
+      label: 'Title',
       options: {
         filter: true,
         sort: false,
@@ -73,12 +76,12 @@ const Faqs = () => {
               checked={status}
               onChange={() => {
                 const data = { id: _id, status: !status }
-                updateFaqs(data, _id)
+                updateNotification(data, _id)
                   .then(() => {
                     toast.success('status changed successfully!', {
                       key: data._id,
                     })
-                    faqsList()
+                    notificationList()
                   })
                   .catch(() => {
                     toast.error('something went wrong!', {
@@ -102,7 +105,7 @@ const Faqs = () => {
                 className="editButton"
                 onClick={() => {
                   const editData = dataTableData.find((data) => data._id === value)
-                  navigate('/faqs-form', {
+                  navigate('/notification-form', {
                     state: { editData: editData },
                   })
                 }}
@@ -118,12 +121,12 @@ const Faqs = () => {
                     dangerMode: true,
                   })
                   if (confirm) {
-                    deleteFaqs(value)
+                    deleteNotification(value)
                       .then(() => {
                         toast.success('deleted successfully!', {
                           key: value,
                         })
-                        faqsList()
+                        notificationList()
                       })
                       .catch(() => {
                         toast.error('something went wrong!', {
@@ -155,12 +158,17 @@ const Faqs = () => {
           className="AddButton"
           onClick={() => navigate('/faqs-form')}
         >
-          Add FAQs
+          Add Notification
         </Button>
       </div>
-      <MUIDataTable title={'FAQs List'} data={dataTableData} columns={columns} options={options} />
+      <MUIDataTable
+        title={'Notification List'}
+        data={dataTableData}
+        columns={columns}
+        options={options}
+      />
     </>
   )
 }
 
-export default Faqs
+export default Notification

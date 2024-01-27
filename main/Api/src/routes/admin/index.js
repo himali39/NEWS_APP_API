@@ -6,6 +6,7 @@ const tagRouter = require("../admin/tagRouter");
 const subcategoryRouter = require("../admin/adminSubcategoryRouter");
 const locationRouter = require("../admin/adminLocationRoute");
 const faqsRouter = require("../admin/adminFaqsRouter");
+const feedbackRouter = require("../admin/adminFeedbackRouter");
 const notifiRouter = require("../admin/adminNotificationRouter");
 const adminRouter = require("../admin/adminRouter");
 const userRouter = require("../admin/userRouter");
@@ -36,6 +37,9 @@ router.use("/admin/location", locationRouter);
 
 /* ---------------------------- FAQS Routers ---------------------------- */
 router.use("/admin/faqs", faqsRouter);
+
+/* ---------------------------- Feedback Routers ---------------------------- */
+router.use("/admin/feedback", feedbackRouter);
 
 /* ---------------------------- Notification Routers ---------------------------- */
 router.use("/admin/notification", notifiRouter);

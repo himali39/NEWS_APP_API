@@ -25,6 +25,24 @@ const addNotification = async (req, res, next) => {
   }
 };
 
+/* ---------------------------- Get All notification --------------------------- */
+const getAllNotification = async (req, res, next) => {
+  try {
+    const notification = await Notification.find().populate("languages");
+
+    if (!notification) {
+      return res.status(404).json({ message: "Notification not found" });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "Notification get successfully ",
+      notification: notification,
+    });
+  } catch (err) {
+    next(err);
+  }
+};
 /* ----------------------- Delete Single Notification ----------------------- */
 const deleteNotification = async (req, res, next) => {
   try {
@@ -46,4 +64,36 @@ const deleteNotification = async (req, res, next) => {
   }
 };
 
-module.exports = { addNotification, deleteNotification };
+/* ------------------------------- Update FAQs ------------------------------ */
+const updateNotification = async (req, res, next) => {
+  try {
+    const notification = await Notification.findById(req.params.id);
+
+    if (!notification) {
+      return res.status(404).json({ message: "Notification not found" });
+    }
+
+     const updateData = await Notification.findByIdAndUpdate(
+       req.params.id,
+       req.body,
+       {
+         new: true,
+       }
+     );
+   
+
+    res.status(200).json({
+      success: true,
+      message: "Notification get successfully ",
+      notification: updateData,
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+module.exports = {
+  addNotification,
+  deleteNotification,
+  getAllNotification,
+  updateNotification,
+};

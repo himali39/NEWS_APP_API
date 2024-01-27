@@ -20,7 +20,7 @@ import { useLocation, useNavigate } from 'react-router-dom'
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
-const FaqsForm = () => {
+const NotificationForm = () => {
   const {
     register,
     setValue,
@@ -37,7 +37,7 @@ const FaqsForm = () => {
     isUpdate === ''
       ? addFaqs(data)
           .then((res) => {
-            navigate('/faqs')
+            navigate('/notification')
           })
           .catch((err) => {
             if (!err.response.data.success) {
@@ -48,7 +48,7 @@ const FaqsForm = () => {
           })
       : updateFaqs(data, isUpdate)
           .then((res) => {
-            navigate('/faqs')
+            navigate('/notification')
           })
           .catch((err) => {
             if (!err.response.data.success) {
@@ -131,4 +131,4 @@ const FaqsForm = () => {
   )
 }
 
-export default FaqsForm
+export default NotificationForm

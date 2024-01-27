@@ -5,25 +5,25 @@ const notificationSchema = mongoose.Schema(
     languages: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "languages",
-         },
-    category: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "category",
     },
-    subcategory: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "subcategory", //model name
-    },
-    location: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "location",
-    },
+    // category: {
+    //   type: mongoose.Schema.Types.ObjectId,
+    //   ref: "category",
+    // },
+    // subcategory: {
+    //   type: mongoose.Schema.Types.ObjectId,
+    //   ref: "subcategory", //model name
+    // },
+    // location: {
+    //   type: mongoose.Schema.Types.ObjectId,
+    //   ref: "location",
+    // },
     title: {
       type: String,
       required: [true, "Title is required."],
     },
-    notifiImage:{
-       type: String,
+    notifiImage: {
+      type: String,
     },
     description: {
       type: String,

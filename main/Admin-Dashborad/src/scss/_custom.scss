@@ -83,11 +83,16 @@ html:not([dir='rtl']) .ms-2 {
 .MuiTableCell-head {
   padding-left: 0 !important;
 }
+
 // .MuiTableCell-body{
 //   padding-left: 0 !important;
-
 // }
 
+// .tss-1937jnc-MUIDataTableHead-main
+.css-15wwp11-MuiTableHead-root {
+  border: 2px solid #813939 !important;
+  background-color: #3c4b64 !important;
+}
 /* ---------------------------- delete button css --------------------------- */
 .deleteButton {
   color: #ffff;
@@ -134,7 +139,7 @@ html:not([dir='rtl']) .ms-2 {
 .card-header {
   background-color: rgba(21, 179, 206, 0.2);
 }
- /* ---------------------------- sidebar color css --------------------------- */
+/* ---------------------------- sidebar color css --------------------------- */
 .sidebar {
   // --cui-sidebar-bg: rgba(21, 179, 206, 0.4) !important;
   --cui-sidebar-bg: rgba(21, 179, 206, 0.6) !important;

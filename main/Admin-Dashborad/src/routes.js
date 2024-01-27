@@ -19,7 +19,10 @@ const NewsForm = React.lazy(() => import('./views/pages/news/NewsForm'))
 const User = React.lazy(() => import('./views/pages/user/User'))
 const UserForm = React.lazy(() => import('./views/pages/user/UserForm'))
 const Faqs = React.lazy(() => import('./views/pages/setting/Faqs'))
+const FaqsForm = React.lazy(() => import('./views/pages/setting/FaqsForm'))
 const Feedback = React.lazy(() => import('./views/pages/setting/Feedback'))
+const Notification = React.lazy(() => import('./views/pages/setting/Notification'))
+const NotificationForm = React.lazy(() => import('./views/pages/setting/NotificationForm'))
 
 // const Colors = React.lazy(() => import('./views/theme/colors/Colors'))
 // const Typography = React.lazy(() => import('./views/theme/typography/Typography'))
@@ -91,7 +94,10 @@ const routes = [
   { path: '/user', name: 'user', element: User },
   { path: '/user-form', name: 'user-form', element: UserForm },
   { path: '/faqs', name: 'faqs', element: Faqs },
+  { path: '/faqs-form', name: 'faqs-form', element: FaqsForm },
   { path: '/feedback', name: 'feedback', element: Feedback },
+  { path: '/notification', name: 'notification', element: Notification },
+  { path: '/notification-form', name: 'notification-form', element: NotificationForm },
 
   // { path: '/theme', name: 'Theme', element: Colors, exact: true },
   // { path: '/theme/colors', name: 'Colors', element: Colors },

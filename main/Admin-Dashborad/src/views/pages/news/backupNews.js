@@ -55,6 +55,10 @@ const NewsForm = () => {
   const [selectedDate, setSelectedDate] = useState(null)
   const [videoeUrl, setVideoUrl] = useState(null)
 
+  const [selectedLanguage, setSelectedLanguage] = useState('')
+  const [selectedCategory, setSelectedCategory] = useState('')
+  const [selectedSubCategory, setSelectedSubCategory] = useState('')
+
   const { state } = useLocation()
 
   /**Single image url handle change */
@@ -63,7 +67,6 @@ const NewsForm = () => {
     if (files) {
       const imageUrl = URL.createObjectURL(files)
       setSingleImageUrl(imageUrl)
-
       clearErrors('newsImage')
     } else {
       setSingleImageUrl(null)
@@ -78,6 +81,12 @@ const NewsForm = () => {
     clearErrors('multipleImage')
   }
 
+  /* language on change event*/
+  const handleLangChange = async (languageId) => {
+    setSelectedLanguage(languageId)
+    await CategoryList(languageId)
+  }
+
   /**video url handle change */
   const handleVideoChange = (e) => {
     const files = e.target.files[0]
@@ -90,14 +99,9 @@ const NewsForm = () => {
       setVideoUrl(null)
     }
   }
-
-  /* language on change event*/
-  const handleLangChange = async (languageId) => {
-    await CategoryList(languageId)
-  }
-
   /**category on change event */
   const handleChangeCategory = async (categoryId) => {
+    setSelectedCategory(categoryId)
     await subCategoryList(categoryId)
   }
 
@@ -118,10 +122,12 @@ const NewsForm = () => {
       setValue('languages', languageId)
       const res = await getCatByLanguage(languageId, data)
       if (res) {
-        await setCategoryOptions(res.data.category)
+        setCategoryOptions(res.data.category)
+
+        setSubCatOptions([])
       } else {
-        await setCategoryOptions([])
-        await setSubCatOptions([])
+        setCategoryOptions([])
+        setSubCatOptions([])
       }
     } catch (err) {
       toast.error(err)
@@ -130,14 +136,15 @@ const NewsForm = () => {
 
   /**list of sub category data */
   const subCategoryList = async (categoryId, data) => {
+    console.log(categoryId)
     try {
       setValue('category', categoryId)
 
       const res = await getSubCatByCategory(categoryId, data)
       if (res) {
-        await setSubCatOptions(res.data.subCategory)
+        setSubCatOptions(res.data.subCategory)
       } else {
-        await setSubCatOptions([])
+        setSubCatOptions([])
       }
     } catch (err) {
       toast.error(err)
@@ -148,6 +155,7 @@ const NewsForm = () => {
     getAllLocation()
       .then((res) => {
         setLocationOptions(res.data.location)
+        setValue('location', res.data.location)
       })
       .catch((err) => {
         toast.error(err)
@@ -158,11 +166,13 @@ const NewsForm = () => {
     getAllTag()
       .then((res) => {
         setTagOptions(res.data.tag)
+        setValue('tag', res.data.tag)
       })
       .catch((err) => {
         toast.error(err)
       })
   }
+  /* list of Tag data*/
 
   const onSubmit = (data) => {
     let formData = new FormData() // FormData object
@@ -182,9 +192,8 @@ const NewsForm = () => {
         formData.append(key, data[key])
       }
     })
-
     isUpdate === ''
-      ? addNews(formData)
+      ? addNews(data)
           .then((res) => {
             navigate('/news')
           })
@@ -195,7 +204,7 @@ const NewsForm = () => {
               setIsLoading(false)
             }
           })
-      : updateNews(formData, isUpdate)
+      : updateNews(data, isUpdate)
           .then((res) => {
             navigate('/news')
           })
@@ -212,7 +221,6 @@ const NewsForm = () => {
     if (state) {
       const { editData, imageUrl } = state
       setIsUpdate(editData._id)
-      setValue('title', editData.title)
       setValue('category', editData.category._id)
       setValue('languages', editData.languages._id)
       setValue('subcategory', editData.subcategory._id)
@@ -231,7 +239,6 @@ const NewsForm = () => {
     subCategoryList()
     LocationList()
     TagList()
-    // setValue('languages', '65a6724f08068a8b9ffca92d')
   }, [])
 
   return (
@@ -252,12 +259,10 @@ const NewsForm = () => {
                     <CFormSelect
                       id="languages"
                       name="languages"
-                      {...register('languages', {
-                        required: 'Language is required',
-                      })}
+                      {...register('languages', { required: 'Language is required' })}
                       onChange={(e) => handleLangChange(e.target.value)}
                       invalid={!!errors.languages}
-                      value={getValues('languages')}
+                      value={getValues(selectedLanguage)}
                     >
                       <option value="">Select Language</option>
                       {languageOptions?.map((option) => (
@@ -275,11 +280,9 @@ const NewsForm = () => {
                     <CFormSelect
                       id="category"
                       name="category"
-                      {...register('category', {
-                        required: 'category is required',
-                      })}
+                      {...register('category', { required: 'category is required' })}
                       invalid={!!errors.category}
-                      value={getValues('category')}
+                      value={getValues(selectedCategory)}
                       onChange={(e) => handleChangeCategory(e.target.value)}
                     >
                       <option value="">Select category</option>
@@ -298,12 +301,11 @@ const NewsForm = () => {
                     <CFormSelect
                       id="subcategory"
                       name="subcategory"
-                      {...register('subcategory', {
-                        required: 'Sub category is required',
-                      })}
+                      {...register('subcategory', { required: 'Sub category is required' })}
                       invalid={!!errors.subcategory}
-                      onChange={(e) => console.log(e.target.value)}
-                      value={getValues('subcategory')}
+                      // value={selectedSubCategory}
+                      onChange={(e) => setSelectedSubCategory(e.target.value)}
+                      value={getValues(selectedSubCategory)}
                     >
                       <option value="">Select Sub Category</option>
                       {subCatOptions?.map((option) => (
@@ -315,9 +317,10 @@ const NewsForm = () => {
                     <CFormFeedback invalid>Sub category is required</CFormFeedback>
                   </CCol>
                   {/* end subcategory */}
+
                   {/* start Title */}
                   <CCol md={6}>
-                    <CFormLabel htmlFor="validationDefault01">Title</CFormLabel>
+                    <CFormLabel>Title</CFormLabel>
                     <CFormInput
                       type="text"
                       id="Title"
