@@ -44,29 +44,42 @@ const NewsForm = () => {
   const navigate = useNavigate()
 
   const [isUpdate, setIsUpdate] = useState('')
+  const [defaultLoading, setDefaultLoading] = useState(true)
   const [isLoading, setIsLoading] = useState(false)
   const [languageOptions, setLanguageOptions] = useState([])
   const [categoryOptions, setCategoryOptions] = useState([])
   const [subCatOptions, setSubCatOptions] = useState([])
+  const [selectedDate, setSelectedDate] = useState(null)
   const [locationOptions, setLocationOptions] = useState([])
   const [tagOptions, setTagOptions] = useState([])
   const [singleImageUrl, setSingleImageUrl] = useState(null)
   const [multipleImageUrls, setMultipleImageUrls] = useState([])
-  const [selectedDate, setSelectedDate] = useState(null)
-  const [videoeUrl, setVideoUrl] = useState(null)
+  const [videoDiv, setVideoDiv] = useState(false)
+  const [videoFile, setVideoFile] = useState(null)
 
-  const [selectedLanguage, setSelectedLanguage] = useState('')
-  const [selectedCategory, setSelectedCategory] = useState('')
-  const [selectedSubCategory, setSelectedSubCategory] = useState('')
-  const [tagvalue, settagvalue] = useState('')
-  const [location, setlocation] = useState('')
-
-  const [formData, setFormData] = useState({
-    contentType: '',
-    selectedVideo: null,
-  })
   const { state } = useLocation()
 
+  /* language on change event*/
+  const handleChange = async (fieldName, fieldValue) => {
+    console.log(fieldName)
+    clearErrors(fieldName, fieldValue)
+    setValue(fieldName, fieldValue)
+    if (fieldName == 'languages') {
+      await CategoryList(fieldValue)
+    }
+    if (fieldName == 'category') {
+      await subCategoryList(fieldValue)
+    }
+    if (fieldName == 'contentType') {
+      const newVal = fieldValue == 2 ? true : false
+      setVideoDiv(newVal)
+    }
+  }
+
+  const handleVideoChange = (e) => {
+    const file = e.target.files[0]
+    setVideoFile(file)
+  }
   /**Single image url handle change */
   const handleSingleImgChange = (e) => {
     const files = e.target.files[0]
@@ -86,27 +99,6 @@ const NewsForm = () => {
     setMultipleImageUrls(multipleImgPreviews)
     clearErrors('multipleImage')
   }
-
-  /* language on change event*/
-  const handleLangChange = async (languageId) => {
-    setSelectedLanguage(languageId)
-    await CategoryList(languageId)
-  }
-  /**category on change event */
-  const handleChangeCategory = async (categoryId) => {
-    setSelectedCategory(categoryId)
-    await subCategoryList(categoryId)
-  }
-
-  /**video url handle change */
-  const handleVideoChange = (e) => {
-    const { name, value, files } = e.target
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: files ? files[0] : value,
-    }))
-  }
-
   /* list of languages data*/
   const LanguagesList = () => {
     getAllLanguage()
@@ -119,38 +111,37 @@ const NewsForm = () => {
   }
 
   /** list of Category data */
-  const CategoryList = async (languageId, data) => {
+  const CategoryList = async (languageId) => {
     try {
-      setSelectedLanguage(languageId)
-
-      const res = await getCatByLanguage(languageId, data)
+      const res = await getCatByLanguage(languageId)
       if (res) {
         setCategoryOptions(res.data.category)
-
-        setSubCatOptions([])
       } else {
         setCategoryOptions([])
-        setSubCatOptions([])
       }
+      setSubCatOptions([])
     } catch (err) {
-      toast.error(err)
+      setCategoryOptions([])
+      setSubCatOptions([])
+      toast.error(err.response.data.message)
     }
   }
 
   /**list of sub category data */
-  const subCategoryList = async (categoryId, data) => {
+  const subCategoryList = async (categoryId) => {
     try {
-      setSelectedCategory(categoryId)
-      const res = await getSubCatByCategory(categoryId, data)
+      const res = await getSubCatByCategory(categoryId)
       if (res) {
         setSubCatOptions(res.data.subCategory)
       } else {
         setSubCatOptions([])
       }
     } catch (err) {
-      toast.error(err)
+      setSubCatOptions([])
+      toast.error(err.response.data.message)
     }
   }
+
   /* list of Location data*/
   const LocationList = () => {
     getAllLocation()
@@ -161,6 +152,7 @@ const NewsForm = () => {
         toast.error(err)
       })
   }
+
   /* list of Tag data*/
   const TagList = () => {
     getAllTag()
@@ -171,8 +163,8 @@ const NewsForm = () => {
         toast.error(err)
       })
   }
-  /* list of Tag data*/
 
+  /* list of Tag data*/
   const onSubmit = (data) => {
     let formData = new FormData() // FormData object
     Object.keys(data).forEach(function (key) {
@@ -184,6 +176,8 @@ const NewsForm = () => {
             formData.append('multipleImage', data[key][i])
           }
         }
+      } else if (key === 'video') {
+        formData.append(key, data[key][0])
       } else {
         formData.append(key, data[key])
       }
@@ -213,32 +207,32 @@ const NewsForm = () => {
             setIsLoading(false)
           })
   }
+
   useEffect(() => {
     LanguagesList()
     LocationList()
     TagList()
     if (state) {
       const { editData, imageUrl } = state
-
-      CategoryList(editData.languages._id)
-      subCategoryList(editData.category._id)
-      setSelectedSubCategory(editData.subcategory._id)
-      settagvalue(editData.tag._id)
-      setlocation(editData.location._id)
       setIsUpdate(editData._id)
-
+      setValue('languages', editData.languages._id)
+      CategoryList(editData.languages._id)
+      setValue('category', editData.category._id)
+      subCategoryList(editData.category._id)
+      setValue('subcategory', editData.subcategory._id)
       setValue('title', editData.title)
-      // setValue('tag', editData.tag._id)
-      // setValue('location', editData.location._id)
+      setValue('tag', editData.tag._id)
+      setValue('location', editData.location._id)
       const expiry_date = new Date(editData.expiry_date)
       setValue('expiry_date', expiry_date)
       const formattedDate = expiry_date.toISOString().split('T')[0]
       setValue('expiry_date', formattedDate)
       setSelectedDate(formattedDate)
       setSingleImageUrl(imageUrl + editData.newsImage)
-      setMultipleImageUrls(imageUrl + editData.multipleImage)
-      setFormData(imageUrl + editData.video)
+      // setMultipleImageUrls(imageUrl + editData.multipleImage)
+      // setFormData(imageUrl + editData.video)
     }
+    setDefaultLoading(false)
   }, [])
 
   return (
@@ -252,272 +246,184 @@ const NewsForm = () => {
               </CCardHeader>
               <CCardBody>
                 <ToastContainer />
-                <CForm className="row g-3 " onSubmit={handleSubmit(onSubmit)}>
-                  {/* start language */}
-                  <CCol md={4}>
-                    <CFormLabel>Language</CFormLabel>
-                    <CFormSelect
-                      id="languages"
-                      name="languages"
-                      {...register('languages', { required: 'Language is required' })}
-                      onChange={(e) => handleLangChange(e.target.value)}
-                      invalid={!!errors.languages}
-                      value={selectedLanguage}
-                    >
-                      <option value="">Select Language</option>
-                      {languageOptions?.map((option) => (
-                        <option key={option._id} value={option._id}>
-                          {option.languagesName}
-                        </option>
-                      ))}
-                    </CFormSelect>
-                    {errors.languages && <div className="errors">{errors.languages.message}</div>}
-                  </CCol>
-                  {/* end language */}
-                  {/* start-category field */}
-                  <CCol md={4}>
-                    <CFormLabel>Category</CFormLabel>
-                    <CFormSelect
-                      id="category"
-                      name="category"
-                      {...register('category', { required: 'category is required' })}
-                      invalid={!!errors.category}
-                      value={selectedCategory}
-                      onChange={(e) => handleChangeCategory(e.target.value)}
-                    >
-                      <option value="">Select category</option>
-                      {categoryOptions?.map((option) => (
-                        <option key={option._id} value={option._id}>
-                          {option.categoryName}
-                        </option>
-                      ))}
-                    </CFormSelect>
-                    <CFormFeedback invalid>category Name is required</CFormFeedback>
-                  </CCol>
-                  {/* end category */}
-                  {/* start subcategory */}
-                  <CCol md={4}>
-                    <CFormLabel>Sub Category</CFormLabel>
-                    <CFormSelect
-                      id="subcategory"
-                      name="subcategory"
-                      {...register('subcategory', { required: 'Sub category is required' })}
-                      invalid={!!errors.subcategory}
-                      // value={selectedSubCategory}
-                      onChange={(e) => setSelectedSubCategory(e.target.value)}
-                      value={selectedSubCategory}
-                    >
-                      <option value="">Select Sub Category</option>
-                      {subCatOptions?.map((option) => (
-                        <option key={option._id} value={option._id}>
-                          {option.subCategoryName}
-                        </option>
-                      ))}
-                    </CFormSelect>
-                    <CFormFeedback invalid>Sub category is required</CFormFeedback>
-                  </CCol>
-                  {/* end subcategory */}
+                {defaultLoading ? (
+                  <CButton disabled>
+                    <CSpinner component="span" size="sm" aria-hidden="true" />
+                    Loading...
+                  </CButton>
+                ) : (
+                  <CForm className="row g-3 " onSubmit={handleSubmit(onSubmit)}>
+                    {/* start language */}
+                    <CCol md={4}>
+                      <CFormLabel>Language</CFormLabel>
+                      <CFormSelect
+                        id="languages"
+                        name="languages"
+                        {...register('languages', { required: 'Language is required' })}
+                        onChange={(e) => handleChange('languages', e.target.value)}
+                        invalid={!!errors.languages}
+                        value={getValues('languages')}
+                      >
+                        <option value="">Select Language</option>
+                        {languageOptions?.map((option) => (
+                          <option key={option._id} value={option._id}>
+                            {option.languagesName}
+                          </option>
+                        ))}
+                      </CFormSelect>
+                      {errors.languages && <div className="errors">{errors.languages.message}</div>}
+                    </CCol>
+                    {/* end language */}
 
-                  {/* start Title */}
-                  <CCol md={6}>
-                    <CFormLabel>Title</CFormLabel>
-                    <CFormInput
-                      type="text"
-                      id="Title"
-                      {...register('title', {
-                        required: 'Title is required',
-                      })}
-                      placeholder="Title name"
-                      invalid={!!errors.title}
-                    />
-                    <CFormFeedback invalid>Title is required</CFormFeedback>
-                  </CCol>
-                  {/* end title */}
-                  {/* Start Expiry Date */}
-                  <CCol md={6}>
-                    <CFormLabel>Expiry Date</CFormLabel>
-                    <CFormInput
-                      type="date"
-                      id="expiry_date"
-                      dateFormat="dd/MM/yyyy"
-                      defaultValue={selectedDate || ''}
-                      // value={getValues('expiry_date')}
-                      {...register('expiry_date', {
-                        required: 'Expiry Date is required',
-                      })}
-                      placeholder="Expiry Date"
-                      invalid={!!errors.expiry_date}
-                      // selected={getValues('expiry_date')}
-                      onChange={(e) => setValue(e.target.value)}
-                    />
-                    <CFormFeedback invalid>Expiry Date is required</CFormFeedback>
-                  </CCol>
-                  {/* End  Expiry Date  */}
-                  {/* start location */}
-                  <CCol md={6}>
-                    <CFormLabel>Location</CFormLabel>
-                    <CFormSelect
-                      id="location"
-                      name="location"
-                      {...register('location', {
-                        required: 'Location is required',
-                      })}
-                      invalid={!!errors.location}
-                      value={location}
-                      onChange={(e) => setlocation(e.target.value)}
-                    >
-                      <option value="">Select Location</option>
-                      {locationOptions?.map((option) => (
-                        <option key={option._id} value={option._id}>
-                          {option.locationName}
-                        </option>
-                      ))}
-                    </CFormSelect>
-                    <CFormFeedback invalid>Location is required</CFormFeedback>
-                  </CCol>
-                  {/* end location */}
-                  {/* start tag */}
-                  <CCol md={6}>
-                    <CFormLabel>Tag</CFormLabel>
-                    <CFormSelect
-                      id="tag"
-                      name="tag"
-                      {...register('tag', { required: 'Tag is required' })}
-                      invalid={!!errors.tag}
-                      value={tagvalue}
-                      onChange={(e) => {
-                        settagvalue(e.target.value)
-                      }}
-                    >
-                      <option value="">Select Tag</option>
-                      {tagOptions?.map((option) => (
-                        <option key={option._id} value={option._id}>
-                          {option.tagName}
-                        </option>
-                      ))}
-                    </CFormSelect>
+                    {/* start-category field */}
+                    <CCol md={4}>
+                      <CFormLabel>Category</CFormLabel>
+                      <CFormSelect
+                        id="category"
+                        name="category"
+                        {...register('category', { required: 'category is required' })}
+                        invalid={!!errors.category}
+                        value={getValues('category')}
+                        onChange={(e) => handleChange('category', e.target.value)}
+                      >
+                        <option value="">Select category</option>
+                        {categoryOptions?.map((option) => (
+                          <option key={option._id} value={option._id}>
+                            {option.categoryName}
+                          </option>
+                        ))}
+                      </CFormSelect>
+                      <CFormFeedback invalid>category Name is required</CFormFeedback>
+                    </CCol>
+                    {/* end category */}
 
-                    <CFormFeedback invalid>Tag is required</CFormFeedback>
-                  </CCol>
-                  {/* end tag */}
-                  {/* start image field */}
-                  <CCol md={6}>
-                    <CFormLabel>
-                      News Images
-                      <span className="errors"> Only png, jpg, webp and jpeg image allow</span>
-                    </CFormLabel>
-                    <CFormInput
-                      type="file"
-                      id="newsImage"
-                      {...register(
-                        'newsImage',
-                        isUpdate
-                          ? ''
-                          : {
-                              required: 'newsImage is required',
-                            },
-                      )}
-                      className={errors.newsImage ? 'is-invalid' : ''}
-                      onChange={(e) => {
-                        handleSingleImgChange(e)
-                      }}
-                    />
-                    {singleImageUrl && (
-                      <img
-                        src={singleImageUrl}
-                        alt="Single Image"
-                        style={{
-                          maxWidth: '20%',
-                          marginTop: '1.5rem',
-                          borderRadius: '10px',
-                          maxHeight: '40%',
+                    {/* start subcategory */}
+                    <CCol md={4}>
+                      <CFormLabel>Sub Category</CFormLabel>
+                      <CFormSelect
+                        id="subcategory"
+                        name="subcategory"
+                        {...register('subcategory', { required: 'Sub category is required' })}
+                        invalid={!!errors.subcategory}
+                        value={getValues('subcategory')}
+                        onChange={(e) => handleChange('subcategory', e.target.value)}
+                      >
+                        <option value="">Select Sub Category</option>
+                        {subCatOptions?.map((option) => (
+                          <option key={option._id} value={option._id}>
+                            {option.subCategoryName}
+                          </option>
+                        ))}
+                      </CFormSelect>
+                      <CFormFeedback invalid>Sub category is required</CFormFeedback>
+                    </CCol>
+                    {/* end subcategory */}
+
+                    {/* start Title */}
+                    <CCol md={6}>
+                      <CFormLabel>Title</CFormLabel>
+                      <CFormInput
+                        type="text"
+                        id="Title"
+                        {...register('title', {
+                          required: 'Title is required',
+                        })}
+                        placeholder="Title name"
+                        invalid={!!errors.title}
+                      />
+                      <CFormFeedback invalid>Title is required</CFormFeedback>
+                    </CCol>
+                    {/* end title */}
+
+                    {/* Start Expiry Date */}
+                    <CCol md={6}>
+                      <CFormLabel>Expiry Date</CFormLabel>
+                      <CFormInput
+                        type="date"
+                        id="expiry_date"
+                        dateFormat="dd/MM/yyyy"
+                        defaultValue={selectedDate || ''}
+                        {...register('expiry_date', {
+                          required: 'Expiry Date is required',
+                        })}
+                        placeholder="Expiry Date"
+                        invalid={!!errors.expiry_date}
+                        onChange={(e) => handleChange('expiry_date', e.target.value)}
+                        minDate={new Date()} // Set minimum date to the current date
+                      />
+                      <CFormFeedback invalid>Expiry Date is required</CFormFeedback>
+                    </CCol>
+                    {/* End  Expiry Date  */}
+
+                    {/* start location */}
+                    <CCol md={6}>
+                      <CFormLabel>Location</CFormLabel>
+                      <CFormSelect
+                        id="location"
+                        name="location"
+                        {...register('location', {
+                          required: 'Location is required',
+                        })}
+                        invalid={!!errors.location}
+                        value={getValues('location')}
+                        onChange={(e) => handleChange('location', e.target.value)}
+                      >
+                        <option value="">Select Location</option>
+                        {locationOptions?.map((option) => (
+                          <option key={option._id} value={option._id}>
+                            {option.locationName}
+                          </option>
+                        ))}
+                      </CFormSelect>
+                      <CFormFeedback invalid>Location is required</CFormFeedback>
+                    </CCol>
+                    {/* end location */}
+
+                    {/* start tag */}
+                    <CCol md={6}>
+                      <CFormLabel>Tag</CFormLabel>
+                      <CFormSelect
+                        id="tag"
+                        name="tag"
+                        {...register('tag', { required: 'Tag is required' })}
+                        invalid={!!errors.tag}
+                        value={getValues('tag')}
+                        onChange={(e) => handleChange('tag', e.target.value)}
+                      >
+                        <option value="">Select Tag</option>
+                        {tagOptions?.map((option) => (
+                          <option key={option._id} value={option._id}>
+                            {option.tagName}
+                          </option>
+                        ))}
+                      </CFormSelect>
+
+                      <CFormFeedback invalid>Tag is required</CFormFeedback>
+                    </CCol>
+                    {/* end tag */}
+
+                    {/* start image field */}
+                    <CCol md={6}>
+                      <CFormLabel>
+                        News Images
+                        <span className="errors"> Only png, jpg, webp and jpeg image allow</span>
+                      </CFormLabel>
+                      <CFormInput
+                        type="file"
+                        id="newsImage"
+                        {...register(
+                          'newsImage',
+                          isUpdate
+                            ? ''
+                            : {
+                                required: 'newsImage is required',
+                              },
+                        )}
+                        className={errors.newsImage ? 'is-invalid' : ''}
+                        onChange={(e) => {
+                          handleSingleImgChange(e)
                         }}
                       />
-                    )}
-
-                    {errors.newsImage && (
-                      <CFormFeedback invalid>News Image is required</CFormFeedback>
-                    )}
-                  </CCol>
-                  {/* end image */}
-                  {/* start multiple image field */}
-                  <CCol md={6}>
-                    <CFormLabel>
-                      Other Images
-                      <span className="errors"> Only png, jpg, webp and jpeg image allow</span>
-                    </CFormLabel>
-                    <CFormInput
-                      type="file"
-                      id="multipleImage"
-                      className={errors.multipleImage ? 'is-invalid' : ''}
-                      {...register(
-                        'multipleImage',
-                        isUpdate
-                          ? ''
-                          : {
-                              required: 'Image is required',
-                            },
-                      )}
-                      invalid={!!errors.multipleImage}
-                      onChange={(e) => {
-                        handleMultiImgChange(e) // Assuming handleMultiImgChange is a function you've defined
-                      }}
-                      multiple
-                    />
-                    {/* {multipleImageUrls &&
-                      multipleImageUrls.map((preview, index) => (
-                        <img
-                          key={index}
-                          src={preview}
-                          alt={`preview${index + 1}`}
-                          style={{
-                            maxWidth: '20%',
-                            maxHeight: '40%',
-                            marginTop: '1.5rem',
-                            marginRight: '0.8rem',
-                            borderRadius: '10px',
-                          }}
-                        />
-                      ))} */}
-                    {errors.newsImage && <CFormFeedback invalid> Image is required</CFormFeedback>}
-                  </CCol>
-                  {/* end image */}
-                  {/* start contentType field */}
-                  <CCol md={6}>
-                    <CFormLabel>Content Type</CFormLabel>
-                    <CFormSelect
-                      id="contentType"
-                      name="contentType"
-                      {...register('contentType', {
-                        required: 'contentType is required',
-                      })}
-                      // onChange={handleVideoChange}
-                      invalid={!!errors.contentType}
-                      value={getValues(formData.contentType)}
-                    >
-                      <option value="1">Standard Post </option>
-                      <option value="2">Video Upload </option>
-                    </CFormSelect>
-                  </CCol>
-
-                  {/* Video upload */}
-                  {formData.contentType == 2 && (
-                    <>
-                      <CCol md={6}>
-                        <CFormLabel>
-                          Video Upload
-                          <span className="errors"> Only mp4 allow</span>
-                        </CFormLabel>
-                        <CFormInput
-                          type="file"
-                          accept="video/*"
-                          name="selectedVideo"
-                          onChange={(e) => {
-                            handleVideoChange(e)
-                          }}
-                          {...register('video')}
-                        />
-                      </CCol>
                       {singleImageUrl && (
                         <img
                           src={singleImageUrl}
@@ -530,41 +436,151 @@ const NewsForm = () => {
                           }}
                         />
                       )}
-                    </>
-                  )}
-                  <CFormFeedback invalid> content Type is required</CFormFeedback>
 
-                  {/* start Description Field */}
-                  <CCol md={12}>
-                    <CFormLabel>Description</CFormLabel>
-                    <Controller
-                      name="description"
-                      control={control}
-                      defaultValue={getValues('description')}
-                      render={({ field }) => (
-                        <ReactQuill
-                          value={field.value || ''}
-                          onChange={field.onChange}
-                          style={{ height: '200px', border: 'none' }}
-                        />
+                      {errors.newsImage && (
+                        <CFormFeedback invalid>News Image is required</CFormFeedback>
                       )}
-                    />
-                  </CCol>
-                  {/* end Description  */}
-                  {/* submit button */}
-                  <CCol md={12} className="text-center submitButton">
-                    {isLoading ? (
-                      <CButton disabled>
-                        <CSpinner component="span" size="sm" aria-hidden="true" />
-                        Loading...
-                      </CButton>
-                    ) : (
-                      <CButton type="submit" className="AddButton">
-                        {isUpdate === '' ? 'Add' : 'Update'}
-                      </CButton>
+                    </CCol>
+                    {/* end image */}
+
+                    {/* start multiple image field */}
+                    <CCol md={6}>
+                      <CFormLabel>
+                        Other Images
+                        <span className="errors"> Only png, jpg, webp and jpeg image allow</span>
+                      </CFormLabel>
+                      <CFormInput
+                        type="file"
+                        id="multipleImage"
+                        className={errors.multipleImage ? 'is-invalid' : ''}
+                        {...register(
+                          'multipleImage',
+                          isUpdate
+                            ? ''
+                            : {
+                                required: 'Image is required',
+                              },
+                        )}
+                        invalid={!!errors.multipleImage}
+                        onChange={(e) => {
+                          handleMultiImgChange(e)
+                        }}
+                        multiple
+                      />
+
+                      {multipleImageUrls &&
+                        multipleImageUrls.map((preview, index) => (
+                          <img
+                            key={index}
+                            src={preview}
+                            alt={`preview${index + 1}`}
+                            style={{
+                              maxWidth: '20%',
+                              maxHeight: '40%',
+                              marginTop: '1.5rem',
+                              marginRight: '0.8rem',
+                              borderRadius: '10px',
+                            }}
+                          />
+                        ))}
+                      {errors.newsImage && (
+                        <CFormFeedback invalid> Image is required</CFormFeedback>
+                      )}
+                    </CCol>
+                    {/* end image */}
+
+                    {/* start contentType field */}
+                    <CCol md={6}>
+                      <CFormLabel>Content Type</CFormLabel>
+                      <CFormSelect
+                        id="contentType"
+                        name="contentType"
+                        {...register('contentType', {
+                          required: 'contentType is required',
+                        })}
+                        invalid={!!errors.contentType}
+                        value={getValues('contentType')}
+                        onChange={(e) => handleChange('contentType', e.target.value)}
+                      >
+                        <option value="1">Standard Post </option>
+                        <option value="2">Video Upload </option>
+                      </CFormSelect>
+                    </CCol>
+                    {/* end contentType */}
+
+                    {/* Video upload */}
+                    {videoDiv && (
+                      <>
+                        <CCol md={4}>
+                          <CFormLabel>
+                            Video Upload
+                            <span className="errors"> Only mp4 allow</span>
+                          </CFormLabel>
+                          <CFormInput
+                            type="file"
+                            id="video"
+                            {...register(
+                              'video',
+                              videoDiv
+                                ? ''
+                                : {
+                                    required: 'Video is required',
+                                  },
+                            )}
+                            onChange={handleVideoChange}
+                          />
+                        </CCol>
+                        <CCol md={2}>
+                          {videoFile && (
+                            <video
+                              alt="Video"
+                              style={{
+                                maxWidth: '100%',
+                                borderRadius: '10px',
+                                maxHeight: '80%',
+                              }}
+                              controls
+                              src={videoFile ? URL.createObjectURL(videoFile) : ''}
+                            />
+                          )}
+                        </CCol>
+                      </>
                     )}
-                  </CCol>
-                </CForm>
+
+                    {/* start Description Field */}
+                    <CCol md={12}>
+                      <CFormLabel>Description</CFormLabel>
+                      <Controller
+                        name="description"
+                        control={control}
+                        defaultValue={getValues('description')}
+                        render={({ field }) => (
+                          <ReactQuill
+                            placeholder="Description"
+                            value={field.value || ''}
+                            onChange={field.onChange}
+                            style={{ height: '200px', border: 'none' }}
+                          />
+                        )}
+                      />
+                    </CCol>
+                    {/* end Description  */}
+
+                    {/* submit button */}
+                    <CCol md={12} className="text-center submitButton">
+                      {isLoading ? (
+                        <CButton disabled>
+                          <CSpinner component="span" size="sm" aria-hidden="true" />
+                          Loading...
+                        </CButton>
+                      ) : (
+                        <CButton type="submit" className="AddButton">
+                          {isUpdate === '' ? 'Add' : 'Update'}
+                        </CButton>
+                      )}
+                    </CCol>
+                  </CForm>
+                )}
               </CCardBody>
             </CCard>
           </CCol>

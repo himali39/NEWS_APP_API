@@ -47,7 +47,10 @@ app.use(
   "/public/userImg",
   express.static(path.join(__dirname, "./src/public/userImg"))
 );
-
+app.use(
+  "/public/notifImages",
+  express.static(path.join(__dirname, "./src/public/notifImages"))
+);
 /**create server */
 const server = http.createServer(app);
 server.listen(process.env.PORT, () => {

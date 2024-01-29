@@ -18,7 +18,7 @@ router.post(
 
 router.get("/get-Notification", getAllNotification);
 
-router.delete("/delete-Notifification/:id", deleteNotification);
+router.delete("/delete-Notification/:id", deleteNotification);
 
 router.put("/update-Notification/:id", updateNotification);
 

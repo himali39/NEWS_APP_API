@@ -174,3 +174,6 @@ export const DELETE_NOTIFICATION_API = '/admin/notification/delete-Notification/
 export const UPDATE_NOTIFICATION_API = '/admin/notification/update-Notification/'
 
 /* ---------------------------- END Notification API ---------------------------- */
+
+/** list of notification data */
+export const GET_COUNT_DASHBORD_API = '/admin/dashborad/count-Dashborad'

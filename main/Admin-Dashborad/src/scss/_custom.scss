@@ -163,3 +163,7 @@ html:not([dir='rtl']) .ms-2 {
 .sidebar-nav .nav-item {
   padding-top: 4px;
 }
+
+.justify-content-between {
+    justify-content: space-around !important;
+}

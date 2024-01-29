@@ -145,7 +145,7 @@ const CategoryForm = () => {
                   </CCol>
 
                   <CCol md={6}>
-                    <CFormLabel htmlFor="validationDefault01">
+                    <CFormLabel>
                       Category Image
                       <span className="errors">Only png, jpg, webp and jpeg image allow</span>
                     </CFormLabel>
@@ -157,7 +157,7 @@ const CategoryForm = () => {
                       onChange={handleFileUpload}
                     />
 
-                    <CFormFeedback invalid>Flag Image is required</CFormFeedback>
+                    <CFormFeedback invalid>category Image is required</CFormFeedback>
                   </CCol>
 
                   <CCol md={12} className="text-center submitButton">

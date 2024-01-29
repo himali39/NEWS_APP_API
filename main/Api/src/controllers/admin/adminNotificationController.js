@@ -1,4 +1,5 @@
 const Notification = require("../../models/notificationModel");
+const deleteFiles = require("../../helper/deleteFile");
 
 /* ---------------------------- Add Notification ---------------------------- */
 const addNotification = async (req, res, next) => {
@@ -52,6 +53,10 @@ const deleteNotification = async (req, res, next) => {
     if (!noti) {
       return res.status(404).json({ message: "Notification data not found" });
     }
+    deleteFiles("notifImages/" + noti.notifiImage);
+
+    // console.log(deleteFiles("notifImages/" + noti.notifiImage));
+
     await Notification.deleteOne({ _id: id });
 
     res.status(200).json({
@@ -73,14 +78,13 @@ const updateNotification = async (req, res, next) => {
       return res.status(404).json({ message: "Notification not found" });
     }
 
-     const updateData = await Notification.findByIdAndUpdate(
-       req.params.id,
-       req.body,
-       {
-         new: true,
-       }
-     );
-   
+    const updateData = await Notification.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      {
+        new: true,
+      }
+    );
 
     res.status(200).json({
       success: true,

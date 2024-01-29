@@ -10,12 +10,13 @@ import {
   CFormFeedback,
   CFormInput,
   CFormLabel,
+  CFormSelect,
   CFormTextarea,
   CRow,
   CSpinner,
 } from '@coreui/react'
 import { useForm } from 'react-hook-form'
-import { addFaqs, updateFaqs } from 'src/redux/api/api'
+import { addNotification, getAllLanguage, updateNotification } from 'src/redux/api/api'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
@@ -27,15 +28,43 @@ const NotificationForm = () => {
     handleSubmit,
     formState: { errors },
   } = useForm()
-
   const navigate = useNavigate()
   const [isUpdate, setIsUpdate] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const { state } = useLocation()
+  const [languageOptions, setLanguageOptions] = useState([])
+  const [newUrl, setNewUrl] = useState()
+
+  const handleFileUpload = (event) => {
+    const file = event.target.files[0]
+    const reader = new FileReader()
+    reader.onloadend = () => {
+      setNewUrl(reader.result)
+    }
+    reader.readAsDataURL(file)
+  }
+
+  const LanguagesList = () => {
+    getAllLanguage()
+      .then((res) => {
+        setLanguageOptions(res.data.language)
+      })
+      .catch((err) => {
+        toast.error(err)
+      })
+  }
 
   const onSubmit = (data) => {
+    let formData = new FormData() //formdata object
+    Object.keys(data).forEach(function (key) {
+      if (key === 'notifiImage') {
+        formData.append(key, data[key][0])
+      } else {
+        formData.append(key, data[key])
+      }
+    })
     isUpdate === ''
-      ? addFaqs(data)
+      ? addNotification(formData)
           .then((res) => {
             navigate('/notification')
           })
@@ -46,7 +75,7 @@ const NotificationForm = () => {
               setIsLoading(false)
             }
           })
-      : updateFaqs(data, isUpdate)
+      : updateNotification(formData, isUpdate)
           .then((res) => {
             navigate('/notification')
           })
@@ -63,9 +92,10 @@ const NotificationForm = () => {
     if (state) {
       const { editData } = state
       setIsUpdate(editData._id)
-      setValue('question', editData.question)
-      setValue('answer', editData.answer)
+      setValue('title', editData.question)
+      setValue('languages', editData.languages)
     }
+    LanguagesList()
   }, [])
   return (
     <div className=" bg-light min-vh-100">
@@ -74,39 +104,82 @@ const NotificationForm = () => {
           <CCol md={8}>
             <CCard>
               <CCardHeader>
-                <strong>Faqs Form</strong>
+                <strong>Notification Form</strong>
               </CCardHeader>
               <CCardBody>
                 <ToastContainer />
                 <CForm className="row g-3 " onSubmit={handleSubmit(onSubmit)}>
-                  <CCol md={12}>
-                    <CFormLabel>Question</CFormLabel>
+                  <CCol md={6}>
+                    <CFormLabel>Language</CFormLabel>
+                    <CFormSelect
+                      id="languages"
+                      name="languages"
+                      {...register('languages', { required: 'Language is required' })}
+                      invalid={!!errors.languages}
+                    >
+                      <option value="">Select Language</option>
+                      {languageOptions?.map((option) => (
+                        <option key={option._id} value={option._id}>
+                          {option.languagesName}
+                        </option>
+                      ))}
+                    </CFormSelect>
+                    {errors.languages && <div className="errors">{errors.languages.message}</div>}
+                  </CCol>
+                  <CCol md={6}>
+                    <CFormLabel>Title</CFormLabel>
                     <CFormInput
                       type="text"
-                      id="question"
-                      {...register('question', {
-                        required: 'Question  is required',
+                      id="title"
+                      {...register('title', {
+                        required: 'Title  is required',
                       })}
-                      placeholder="Question"
-                      invalid={!!errors.question}
+                      placeholder="Title"
+                      invalid={!!errors.title}
                     />
-                    <CFormFeedback invalid>Question is required</CFormFeedback>
+                    <CFormFeedback invalid>Title is required</CFormFeedback>
+                  </CCol>
+                  <CCol md={6}>
+                    <CFormLabel>
+                      Image
+                      <span className="errors"> Only png, jpg, webp and jpeg image allow</span>
+                    </CFormLabel>
+                    <CFormInput
+                      type="file"
+                      id="notifiImage"
+                      {...register('notifiImage', { required: 'Notification Image is required' })}
+                      invalid={!!errors.notifiImage}
+                      onChange={handleFileUpload}
+                    />
                   </CCol>
 
+                  {newUrl && (
+                    <img
+                      src={newUrl}
+                      alt="Single Image"
+                      style={{
+                        maxWidth: '12%',
+                        marginTop: '1.5rem',
+                        borderRadius: '12px',
+                      }}
+                    />
+                  )}
+
+                  <CFormFeedback invalid> Notification Image is required </CFormFeedback>
+
                   <CCol md={12}>
-                    <CFormLabel>Answer</CFormLabel>
+                    <CFormLabel>Description</CFormLabel>
                     <CFormTextarea
-                      id="answer"
+                      id="description"
                       rows="6"
                       type="text"
-                      placeholder="Answer"
-                      {...register('answer', {
-                        required: 'Answer  is required',
+                      placeholder="Description"
+                      {...register('description', {
+                        required: 'Description  is required',
                       })}
-                      invalid={!!errors.answer}
+                      invalid={!!errors.description}
                     />
-
-                    <CFormFeedback invalid>Answer is required</CFormFeedback>
+                    <CFormFeedback invalid>Description is required</CFormFeedback>
                   </CCol>
 
                   <CCol md={12} className="text-center submitButton">

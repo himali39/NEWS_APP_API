@@ -62,6 +62,22 @@ const Notification = () => {
         sort: false,
       },
     },
+    {
+      name: 'notifiImage',
+      label: 'Image',
+      options: {
+        customBodyRender: (notifiImage) =>
+          notifiImage ? (
+            <img
+              src={`${process.env.REACT_APP_NOTIFI_IMAGE_PATH}${notifiImage}`}
+              alt={notifiImage}
+              style={{ height: '50px', width: '50px' }}
+            />
+          ) : (
+            ''
+          ),
+      },
+    },
 
     {
       name: 'status',
@@ -115,7 +131,7 @@ const Notification = () => {
                 onClick={async () => {
                   const confirm = await swal({
                     title: 'Are you sure?',
-                    text: 'Are you sure? Want to delete FAQS?',
+                    text: 'Are you sure? Want to delete Notification?',
                     icon: 'warning',
                     buttons: ['No, cancel it!', 'Yes, I am sure!'],
                     dangerMode: true,
@@ -136,6 +152,9 @@ const Notification = () => {
                   }
                 }}
               ></Icons.DeleteRounded>
+              <Button variant="contained" size="medium" className="AddButton">
+                send Notification
+              </Button>
             </div>
           )
         },
@@ -156,7 +175,7 @@ const Notification = () => {
           variant="contained"
           size="medium"
           className="AddButton"
-          onClick={() => navigate('/faqs-form')}
+          onClick={() => navigate('/notification-form')}
         >
           Add Notification
         </Button>

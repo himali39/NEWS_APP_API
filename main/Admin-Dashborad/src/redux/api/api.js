@@ -32,6 +32,7 @@ import {
   DELETE_TAG_API,
   DELETE_USER_API,
   GET_CATEGORY_BY_LANGUAGE_API,
+  GET_COUNT_DASHBORD_API,
   GET_FAQS_API,
   GET_FEEDBACK_API,
   GET_NOTIFICATION_API,
@@ -157,6 +158,7 @@ export const updateCategory = (data, id) =>
   axios.put(MAIN_URL + UPDATE_CATEGORY_API + id, data, {
     headers: { Authorization: `Bearer ${Cookies.get('accessToken')}` },
   })
+
 /* ---------------------------- END CATEGORY API ---------------------------- */
 
 /* ---------------------------- ALL  SUB CATEGORY API ---------------------------- */
@@ -292,13 +294,13 @@ export const updateUser = (data, id) =>
 /* ---------------------------- END User API ---------------------------- */
 
 /* --------------------- Get All Category By languageId --------------------- */
-export const getCatByLanguage = (languageId, data) =>
-  axios.get(MAIN_URL + GET_CATEGORY_BY_LANGUAGE_API + languageId, data, {
+export const getCatByLanguage = (languageId) =>
+  axios.get(MAIN_URL + GET_CATEGORY_BY_LANGUAGE_API + languageId, {
     headers: { Authorization: `Bearer ${Cookies.get('accessToken')}` },
   })
 /* ------------------- Get All subCategory By category Id ------------------- */
-export const getSubCatByCategory = (categoryId, data) =>
-  axios.get(MAIN_URL + GET_SUBCATE_BY_CATEGORY_API + categoryId, data, {
+export const getSubCatByCategory = (categoryId) =>
+  axios.get(MAIN_URL + GET_SUBCATE_BY_CATEGORY_API + categoryId, {
     headers: { Authorization: `Bearer ${Cookies.get('accessToken')}` },
   })
 
@@ -365,5 +367,10 @@ export const deleteNotification = (id) =>
 /* update Notification  */
 export const updateNotification = (data, id) =>
   axios.put(MAIN_URL + UPDATE_NOTIFICATION_API + id, data, {
+    headers: { Authorization: `Bearer ${Cookies.get('accessToken')}` },
+  })
+
+export const getDashboradCount = () =>
+  axios.get(MAIN_URL + GET_COUNT_DASHBORD_API, {
     headers: { Authorization: `Bearer ${Cookies.get('accessToken')}` },
   })

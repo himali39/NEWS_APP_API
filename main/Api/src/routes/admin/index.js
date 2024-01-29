@@ -10,6 +10,7 @@ const feedbackRouter = require("../admin/adminFeedbackRouter");
 const notifiRouter = require("../admin/adminNotificationRouter");
 const adminRouter = require("../admin/adminRouter");
 const userRouter = require("../admin/userRouter");
+const dashboradRouter = require("../admin/adminDashboradRouter");
 
 /* ---------------------------- admin Routers ---------------------------- */
 router.use("/admin", adminRouter);
@@ -43,5 +44,7 @@ router.use("/admin/feedback", feedbackRouter);
 
 /* ---------------------------- Notification Routers ---------------------------- */
 router.use("/admin/notification", notifiRouter);
+
+router.use("/admin/dashborad", dashboradRouter);
 
 module.exports = router;
