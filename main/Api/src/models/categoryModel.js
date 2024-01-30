@@ -16,14 +16,18 @@ const categorySchema = mongoose.Schema(
     languages: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "languages",
-      
     },
 
     categoryImage: {
       type: String,
       required: [true, "Image is required."],
     },
+    status: {
+      type: Boolean,
+      default: true,
+    },
   },
+
   {
     timestamps: true,
     versionKey: false,

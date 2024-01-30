@@ -67,9 +67,9 @@ const newsSchema = mongoose.Schema(
       type: Boolean,
       default: false,
     },
-    is_active: {
+    status: {
       type: Boolean,
-      default: false,
+      default: true,
     },
   },
   {

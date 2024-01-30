@@ -6,6 +6,7 @@ const {
   deleteCategory,
   updateCategory,
   getCategoryByLanguage,
+  updateCategoryStatus,
 } = require("../../controllers/admin/adminCategoryContoller");
 const verifyAdminToken = require("../../helper/verifyAdminToken");
 const router = express.Router();
@@ -31,5 +32,7 @@ router.put(
 );
 
 router.get("/getCatByLanguage/:languageId", getCategoryByLanguage);
+
+router.put("/update-Status/:id", updateCategoryStatus);
 
 module.exports = router;

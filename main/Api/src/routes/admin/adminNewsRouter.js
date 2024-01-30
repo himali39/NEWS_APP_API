@@ -5,6 +5,7 @@ const {
   allNewsList,
   deleteNews,
   updateNews,
+  updateNewsStatus,
 } = require("../../controllers/admin/adminNewsController");
 const router = express.Router();
 
@@ -34,6 +35,27 @@ router.get("/get-News", allNewsList);
 
 router.delete("/delete-News/:id", deleteNews);
 
-router.put("/put-News/:id", updateNews);
+router.put(
+  "/update-News/:id",
+  multiDiffFileUpload("/News_image/", [
+    {
+      name: "newsImage",
+      maxCount: 1,
+      allowedMimes: ["image/png", "image/jpeg", "image/jpg", "image/webp"],
+    },
+    {
+      name: "multipleImage",
+      maxCount: 15,
+      allowedMimes: ["image/png", "image/jpeg", "image/jpg", "image/webp"],
+    },
+    {
+      name: "video",
+      maxCount: 1,
+      allowedMimes: ["video/mp4"],
+    },
+  ]),
+  updateNews
+);
+router.put("/update-Status/:id", updateNewsStatus);
 
 module.exports = router;

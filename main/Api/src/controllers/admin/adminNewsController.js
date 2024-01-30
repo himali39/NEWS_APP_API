@@ -118,7 +118,18 @@ const updateNews = async (req, res) => {
     if (!newsData) {
       return res.status(404).json({ message: "News data not found" });
     }
+    if (req.files.newsImage) {
+      reqbody.newsImage = req.files.newsImage[0].filename;
+    }
 
+    if (req.files.multipleImage) {
+      reqbody.multipleImage = req.files.multipleImage.map(
+        (file) => file.filename
+      );
+    }
+    if (req.files.video) {
+      reqbody.video = req.files.video[0].filename;
+    }
     const updateNews = await News.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
     });
@@ -136,4 +147,35 @@ const updateNews = async (req, res) => {
   }
 };
 
-module.exports = { addNews, allNewsList, deleteNews, updateNews };
+/* --------------------------- Update News Status --------------------------- */
+const updateNewsStatus = async (req, res, next) => {
+  try {
+   
+    const newsData = await News.findById(req.params.id);
+
+    if (!newsData) {
+      return res.status(404).json({ message: "News data not found" });
+    }
+
+    newsData.status = !newsData.status;
+
+    const updatedStatus = await newsData.save();
+
+    res.status(200).json({
+      success: true,
+      message: "News data update successfully",
+      news: updatedStatus,
+    });
+
+  } catch (err) {
+    next(err);
+  }
+};
+
+module.exports = {
+  addNews,
+  allNewsList,
+  deleteNews,
+  updateNews,
+  updateNewsStatus,
+};

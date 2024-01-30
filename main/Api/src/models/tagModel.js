@@ -15,6 +15,10 @@ const tagSchema = mongoose.Schema(
         required: [true, "language name is required."],
       },
     ],
+    status: {
+      type: Boolean,
+      default: true,
+    },
   },
   {
     timestamps: true,

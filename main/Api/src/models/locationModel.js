@@ -12,6 +12,10 @@ const locationSchema = new mongoose.Schema(
     longitude: {
       type: Number,
     },
+    status: {
+      type: Boolean,
+      default: true,
+    },
   },
   {
     timestamps: true,

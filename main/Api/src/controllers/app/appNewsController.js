@@ -43,7 +43,6 @@ const allnewsList = async (req, res) => {
 };
 
 /* ----------------------------- Get News data ----------------------------- */
-
 const forYouNewsList = async (req, res) => {
   try {
     const { languageId, categoryId } = req.body;

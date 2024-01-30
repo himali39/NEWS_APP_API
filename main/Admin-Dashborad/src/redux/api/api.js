@@ -32,9 +32,11 @@ import {
   DELETE_TAG_API,
   DELETE_USER_API,
   GET_CATEGORY_BY_LANGUAGE_API,
+  GET_CATEGORY_WISE_NEWS_API,
   GET_COUNT_DASHBORD_API,
   GET_FAQS_API,
   GET_FEEDBACK_API,
+  GET_LANGAUGES_WISE_NEWS_API,
   GET_NOTIFICATION_API,
   GET_SUBCATE_BY_CATEGORY_API,
   MAIN_URL,
@@ -43,6 +45,7 @@ import {
   UPDATE_LANGUAGE_API,
   UPDATE_LOCATION_API,
   UPDATE_NEWS_API,
+  UPDATE_NEWS_STATUS_API,
   UPDATE_NOTIFICATION_API,
   UPDATE_SUBCATEGORY_API,
   UPDATE_TAG_API,
@@ -265,6 +268,11 @@ export const updateNews = (data, id) =>
     headers: { Authorization: `Bearer ${Cookies.get('accessToken')}` },
   })
 
+export const updateNewsStatus = (data, id) =>
+  axios.put(MAIN_URL + UPDATE_NEWS_STATUS_API + id, data, {
+    headers: { Authorization: `Bearer ${Cookies.get('accessToken')}` },
+  })
+
 /* ---------------------------- END News API ---------------------------- */
 
 /* ---------------------------- ALL User API ---------------------------- */
@@ -345,7 +353,6 @@ export const deleteFeedback = (id) =>
   })
 
 /* ---------------------------- ALL Notification API ---------------------------- */
-
 /* Get All Notification */
 export const getNotification = (data) =>
   axios.get(MAIN_URL + GET_NOTIFICATION_API, data, {
@@ -370,7 +377,20 @@ export const updateNotification = (data, id) =>
     headers: { Authorization: `Bearer ${Cookies.get('accessToken')}` },
   })
 
+/* Get All Dashboard */
 export const getDashboradCount = () =>
   axios.get(MAIN_URL + GET_COUNT_DASHBORD_API, {
+    headers: { Authorization: `Bearer ${Cookies.get('accessToken')}` },
+  })
+
+/* Get All Category Wise News */
+export const getCategoryWiseNews = () =>
+  axios.get(MAIN_URL + GET_CATEGORY_WISE_NEWS_API, {
+    headers: { Authorization: `Bearer ${Cookies.get('accessToken')}` },
+  })
+
+/* Get All get Language Wise News */
+export const getLanguageWiseNews = () =>
+  axios.get(MAIN_URL + GET_LANGAUGES_WISE_NEWS_API, {
     headers: { Authorization: `Bearer ${Cookies.get('accessToken')}` },
   })

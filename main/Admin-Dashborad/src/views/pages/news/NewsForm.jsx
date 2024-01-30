@@ -133,6 +133,8 @@ const NewsForm = () => {
       const res = await getSubCatByCategory(categoryId)
       if (res) {
         setSubCatOptions(res.data.subCategory)
+        if (state) {
+        }
       } else {
         setSubCatOptions([])
       }
@@ -166,6 +168,7 @@ const NewsForm = () => {
 
   /* list of Tag data*/
   const onSubmit = (data) => {
+    console.log(data)
     let formData = new FormData() // FormData object
     Object.keys(data).forEach(function (key) {
       if (key === 'newsImage') {
@@ -213,6 +216,7 @@ const NewsForm = () => {
     LocationList()
     TagList()
     if (state) {
+      console.log(state)
       const { editData, imageUrl } = state
       setIsUpdate(editData._id)
       setValue('languages', editData.languages._id)
@@ -229,8 +233,14 @@ const NewsForm = () => {
       setValue('expiry_date', formattedDate)
       setSelectedDate(formattedDate)
       setSingleImageUrl(imageUrl + editData.newsImage)
-      // setMultipleImageUrls(imageUrl + editData.multipleImage)
-      // setFormData(imageUrl + editData.video)
+      setValue('contentType', editData.contentType)
+      const newVal = editData.contentType == 2 ? true : false
+      setVideoDiv(newVal)
+      setVideoFile(imageUrl + editData.video)
+      setValue('description', editData.description)
+
+      const imageUrls = editData.multipleImage.map((filename) => imageUrl + filename)
+      setMultipleImageUrls(imageUrls)
     }
     setDefaultLoading(false)
   }, [])
@@ -414,7 +424,9 @@ const NewsForm = () => {
                         {...register(
                           'newsImage',
                           isUpdate
-                            ? ''
+                            ? {
+                                required: false,
+                              }
                             : {
                                 required: 'newsImage is required',
                               },
@@ -456,7 +468,9 @@ const NewsForm = () => {
                         {...register(
                           'multipleImage',
                           isUpdate
-                            ? ''
+                            ? {
+                                required: false,
+                              }
                             : {
                                 required: 'Image is required',
                               },
@@ -522,7 +536,9 @@ const NewsForm = () => {
                             {...register(
                               'video',
                               videoDiv
-                                ? ''
+                                ? {
+                                    required: false,
+                                  }
                                 : {
                                     required: 'Video is required',
                                   },
@@ -540,7 +556,13 @@ const NewsForm = () => {
                                 maxHeight: '80%',
                               }}
                               controls
-                              src={videoFile ? URL.createObjectURL(videoFile) : ''}
+                              src={
+                                videoFile
+                                  ? isUpdate
+                                    ? videoFile
+                                    : ''
+                                  : URL.createObjectURL(videoFile)
+                              }
                             />
                           )}
                         </CCol>

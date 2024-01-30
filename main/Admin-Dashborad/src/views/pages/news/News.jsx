@@ -2,7 +2,7 @@ import { Button, Switch } from '@mui/material'
 import MUIDataTable from 'mui-datatables'
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { deleteNews, getAllNews, updateNews } from 'src/redux/api/api'
+import { deleteNews, getAllNews, updateNews, updateNewsStatus } from 'src/redux/api/api'
 import * as Icons from '@mui/icons-material'
 import { ToastContainer, toast } from 'react-toastify'
 import swal from 'sweetalert'
@@ -127,7 +127,7 @@ const News = () => {
               checked={status}
               onChange={() => {
                 const data = { id: _id, status: !status }
-                updateNews(data, _id)
+                updateNewsStatus(data, _id)
                   .then(() => {
                     toast.success('status changed successfully!', {
                       key: data._id,

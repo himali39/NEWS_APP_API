@@ -147,10 +147,35 @@ const getCategoryByLanguage = async (req, res) => {
   }
 };
 
+/* --------------------------- Update News Status --------------------------- */
+const updateCategoryStatus = async (req, res, next) => {
+  try {
+   
+    const categoryData = await Category.findById(req.params.id);
+
+    if (!categoryData) {
+      return res.status(404).json({ message: "Category data not found" });
+    }
+
+    categoryData.status = !categoryData.status;
+
+    const updatedStatus = await categoryData.save();
+
+    res.status(200).json({
+      success: true,
+      message: "Category data update successfully",
+      news: updatedStatus,
+    });
+
+  } catch (err) {
+    next(err);
+  }
+};
 module.exports = {
   addCategory,
   getCategory,
   deleteCategory,
   updateCategory,
   getCategoryByLanguage,
+  updateCategoryStatus,
 };

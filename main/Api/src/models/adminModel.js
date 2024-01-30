@@ -18,7 +18,7 @@ const adminSchema = mongoose.Schema(
     profileImage: {
       type: String,
     },
-    
+
     otp: {
       type: String,
       default: null,
@@ -33,7 +33,11 @@ const adminSchema = mongoose.Schema(
     accessToken: {
       type: String,
     },
-     },
+    status: {
+      type: Boolean,
+      default: true,
+    },
+  },
   {
     timestamps: true,
     versionKey: false,

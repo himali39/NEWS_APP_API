@@ -16,6 +16,10 @@ const subCategorySchema = mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "languages",
     },
+    status: {
+      type: Boolean,
+      default: true,
+    },
   },
   {
     timestamps: true,

@@ -112,6 +112,8 @@ export const DELETE_NEWS_API = '/admin/news/delete-News/'
 /*  update news  */
 export const UPDATE_NEWS_API = '/admin/news/update-News/'
 
+export const UPDATE_NEWS_STATUS_API = '/admin/news/update-Status/'
+
 /* ---------------------------- END News API ---------------------------- */
 
 /* ---------------------------- ALL User API ---------------------------- */
@@ -177,3 +179,7 @@ export const UPDATE_NOTIFICATION_API = '/admin/notification/update-Notification/
 
 /** list of notification data */
 export const GET_COUNT_DASHBORD_API = '/admin/dashborad/count-Dashborad'
+
+export const GET_CATEGORY_WISE_NEWS_API = '/admin/dashborad/categoryWiseNews'
+
+export const GET_LANGAUGES_WISE_NEWS_API = '/admin/dashborad/languageWiseNews'
