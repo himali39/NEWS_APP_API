@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom'
 import * as Icons from '@mui/icons-material'
 import { ToastContainer, toast } from 'react-toastify'
 import swal from 'sweetalert'
-import { deleteSubCategory, getAllSubCategory, updateSubCategory } from 'src/redux/api/api'
+import { deleteSubCategory, getAllSubCategory, updateSubCatStatus } from 'src/redux/api/api'
 
 const SubCategory = () => {
   const navigate = useNavigate()
@@ -80,7 +80,7 @@ const SubCategory = () => {
               checked={status}
               onChange={() => {
                 const data = { id: _id, status: !status }
-                updateSubCategory(data, _id)
+                updateSubCatStatus(data, _id)
                   .then(() => {
                     toast.success('status changed successfully!', {
                       key: data._id,

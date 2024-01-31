@@ -56,7 +56,7 @@ const NewsForm = () => {
   const [multipleImageUrls, setMultipleImageUrls] = useState([])
   const [videoDiv, setVideoDiv] = useState(false)
   const [videoFile, setVideoFile] = useState(null)
-
+  let defaultImage = './src/assets/images/default.png'
   const { state } = useLocation()
 
   /* language on change event*/
@@ -238,7 +238,6 @@ const NewsForm = () => {
       setVideoDiv(newVal)
       setVideoFile(imageUrl + editData.video)
       setValue('description', editData.description)
-
       const imageUrls = editData.multipleImage.map((filename) => imageUrl + filename)
       setMultipleImageUrls(imageUrls)
     }
@@ -418,6 +417,9 @@ const NewsForm = () => {
                         News Images
                         <span className="errors"> Only png, jpg, webp and jpeg image allow</span>
                       </CFormLabel>
+                      {defaultImage && (
+                        <img src={defaultImage} alt="Default" style={{ maxWidth: '100px' }} />
+                      )}
                       <CFormInput
                         type="file"
                         id="newsImage"

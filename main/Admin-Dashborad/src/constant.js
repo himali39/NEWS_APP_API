@@ -48,6 +48,9 @@ export const DELETE_CATEGORY_API = '/admin/category/delete-Category/'
 /*  update category  */
 export const UPDATE_CATEGORY_API = '/admin/category/update-Category/'
 
+/*  update status category  */
+export const UPDATE_CATEGORY_STATUS_API = '/admin/category/update-Status/'
+
 /* ---------------------------- END CATEGORY API ---------------------------- */
 
 /* ---------------------------- ALL SUB CATEGORY API ---------------------------- */
@@ -64,6 +67,9 @@ export const DELETE_SUBCATEGORY_API = '/admin/subcategory/delete-subCategory/'
 /*  update subcategory  */
 export const UPDATE_SUBCATEGORY_API = '/admin/subcategory/update-subcategory/'
 
+/*  update status sub category  */
+export const UPDATE_SUBCATEGORY_STATUS_API = '/admin/subcategory/update-Status/'
+
 /* ---------------------------- END SUB CATEGORY API ---------------------------- */
 
 /* ---------------------------- ALL TAG API ---------------------------- */
@@ -79,6 +85,9 @@ export const DELETE_TAG_API = '/admin/tag/delete-Tag/'
 
 /*  update tag  */
 export const UPDATE_TAG_API = '/admin/tag/update-Tag/'
+
+/*  update status tag  */
+export const UPDATE_TAG_STATUS_API = '/admin/tag/update-Status/'
 
 /* ---------------------------- END TAG API ---------------------------- */
 
@@ -112,6 +121,7 @@ export const DELETE_NEWS_API = '/admin/news/delete-News/'
 /*  update news  */
 export const UPDATE_NEWS_API = '/admin/news/update-News/'
 
+/**update status */
 export const UPDATE_NEWS_STATUS_API = '/admin/news/update-Status/'
 
 /* ---------------------------- END News API ---------------------------- */
@@ -129,6 +139,9 @@ export const DELETE_USER_API = '/admin/delete-user/'
 
 /*  update USER  */
 export const UPDATE_USER_API = '/admin/update-user/'
+
+/*user active  */
+export const ACTIVE_USER_API = '/admin/get-activeUser/'
 
 /* ---------------------------- END User API ---------------------------- */
 

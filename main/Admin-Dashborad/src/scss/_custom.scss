@@ -80,20 +80,16 @@ html:not([dir='rtl']) .ms-2 {
     font-size: 10px !important;
   }
 }
+/* ----------------------------- end media query ----------------------------- */
+
 .MuiTableCell-head {
   padding-left: 0 !important;
 }
-
-// .MuiTableCell-body{
-//   padding-left: 0 !important;
-// }
-
-// .tss-1937jnc-MUIDataTableHead-main
 .css-15wwp11-MuiTableHead-root {
   border: 2px solid #813939 !important;
   background-color: #3c4b64 !important;
 }
-/* ---------------------------- delete button css --------------------------- */
+/** delete button css*/ 
 .deleteButton {
   color: #ffff;
   cursor: pointer;
@@ -123,11 +119,8 @@ html:not([dir='rtl']) .ms-2 {
 .gender {
   display: block;
 }
-.radio {
-  display: inline-block;
-  margin-right: 10px;
-}
 .user-profile {
+  // margin-top: 1.5rem;
   width: 80px;
   height: 80px;
   border-radius: 25%;
@@ -137,34 +130,51 @@ html:not([dir='rtl']) .ms-2 {
   border-radius: var(--cui-card-inner-border-radius) var(--cui-card-inner-border-radius) 0 0;
 }
 .card-header {
-  background-color: rgba(21, 179, 206, 0.2);
+  background-color: #15b3ce33;
 }
 /* ---------------------------- sidebar color css --------------------------- */
 .sidebar {
-  // --cui-sidebar-bg: rgba(21, 179, 206, 0.4) !important;
-  --cui-sidebar-bg: rgba(21, 179, 206, 0.6) !important;
-  // --cui-sidebar-brand-bg: rgba(0, 0, 21, 0.4) !important;
-  // --cui-sidebar-toggler-bg: rgba(0, 0, 21, 0.4) !important;
-  // --cui-sidebar-toggler-hover-bg: rgba(0, 0, 0, 0.3) !important;
-  // --cui-sidebar-header-bg: rgba(0, 0, 21, 0.2);
-  // --cui-sidebar-footer-bg: rgba(0, 0, 21, 0.2);
-  // background-color: rgba(21, 179, 206, 0.9) !important;
-}
-.sidebar-brand {
-  // background: none !important;
+  --cui-sidebar-bg: #15b3ce99 !important;
 }
 .sidebar-nav .nav-link {
-  // --cui-sidebar-nav-link-active-bg: rgba(21, 179, 206, 1.1) !important;
-  // color:#ffff
-  background-color: rgb(22, 139, 158);
+  background-color: #168b9e;
+  
   color: #ffff;
-}
+} 
 
 .sidebar-nav .nav-item {
   padding-top: 4px;
 }
-
+/* ----------------------------- End sidebar css ---------------------------- */
 .card-body {
   justify-content: center !important;
-  
+}
+/* ----------------------------- dashborad  css ----------------------------- */
+.chart-wrapper {
+  margin-top: 2rem !important;
+}
+.activeUser {
+  color: white;
+  font-weight: bold;
+  background-color: green;
+  border-radius: 10px;
+  text-align: center;
+  padding: 2px;
+}
+.deactiveUser {
+  color: white;
+  font-weight: bold;
+  background-color: red;
+  border-radius: 10px;
+  text-align: center;
+  padding: 2px;
+}
+.custom-icon {
+  opacity: 0.5;
+  transition: opacity 0.3s;
+}
+
+.custom-icon:hover {
+  opacity: 1;
+  /* Add other hover styles as needed */
 }

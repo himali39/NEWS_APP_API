@@ -1,6 +1,7 @@
 import axios from 'axios'
 import Cookies from 'js-cookie'
 import {
+  ACTIVE_USER_API,
   ADD_CATEGORY_API,
   ADD_FAQS_API,
   ADD_LANGUAGE_API,
@@ -41,6 +42,7 @@ import {
   GET_SUBCATE_BY_CATEGORY_API,
   MAIN_URL,
   UPDATE_CATEGORY_API,
+  UPDATE_CATEGORY_STATUS_API,
   UPDATE_FAQS_API,
   UPDATE_LANGUAGE_API,
   UPDATE_LOCATION_API,
@@ -48,17 +50,19 @@ import {
   UPDATE_NEWS_STATUS_API,
   UPDATE_NOTIFICATION_API,
   UPDATE_SUBCATEGORY_API,
+  UPDATE_SUBCATEGORY_STATUS_API,
   UPDATE_TAG_API,
+  UPDATE_TAG_STATUS_API,
   UPDATE_USER_API,
 } from 'src/constant'
 // export const MAIN_url = 'http://localhost:8002'
 
 axios.interceptors.response.use(
   (response) => response,
-  async (error) => {
-    const originalRequest = error.config
+  async (err) => {
+    const originalRequest = err.config
 
-    if (error.response.status === 402 && !originalRequest._retry) {
+    if (err.response.status === 402 && !originalRequest._retry) {
       originalRequest._retry = true
 
       try {
@@ -73,19 +77,19 @@ axios.interceptors.response.use(
         // console.log(originalRequest)
 
         return axios(originalRequest)
-      } catch (refreshError) {
-        // Handle refresh token error or redirect to login
-        console.error('Error refreshing token:', refreshError)
-        // You might want to redirect to login or handle the error in another way
+      } catch (refresherr) {
+        // Handle refresh token err or redirect to login
+        console.err('err refreshing token:', refresherr)
+        // You might want to redirect to login or handle the err in another way
       }
     }
 
-    if (error.response.status === 405) {
+    if (err.response.status === 405) {
       Cookies.remove('accessToken')
       window.location.reload()
     }
 
-    return Promise.reject(error)
+    return Promise.reject(err)
   },
 )
 /* ------------------------------ ALL ADMIN API ----------------------------- */
@@ -162,6 +166,12 @@ export const updateCategory = (data, id) =>
     headers: { Authorization: `Bearer ${Cookies.get('accessToken')}` },
   })
 
+/* update Category STATUS  */
+export const updateCategoryStatus = (data, id) =>
+  axios.put(MAIN_URL + UPDATE_CATEGORY_STATUS_API + id, data, {
+    headers: { Authorization: `Bearer ${Cookies.get('accessToken')}` },
+  })
+
 /* ---------------------------- END CATEGORY API ---------------------------- */
 
 /* ---------------------------- ALL  SUB CATEGORY API ---------------------------- */
@@ -189,6 +199,11 @@ export const updateSubCategory = (data, id) =>
     headers: { Authorization: `Bearer ${Cookies.get('accessToken')}` },
   })
 
+/* update subCategory STATUS  */
+export const updateSubCatStatus = (data, id) =>
+  axios.put(MAIN_URL + UPDATE_SUBCATEGORY_STATUS_API + id, data, {
+    headers: { Authorization: `Bearer ${Cookies.get('accessToken')}` },
+  })
 /* ---------------------------- END SUB CATEGORY API ---------------------------- */
 
 /* ---------------------------- ALL TAG API ---------------------------- */
@@ -213,6 +228,11 @@ export const deleteTag = (id) =>
 /* update Tag  */
 export const updateTag = (data, id) =>
   axios.put(MAIN_URL + UPDATE_TAG_API + id, data, {
+    headers: { Authorization: `Bearer ${Cookies.get('accessToken')}` },
+  })
+/* update Tag STATUS  */
+export const updateTagStatus = (data, id) =>
+  axios.put(MAIN_URL + UPDATE_TAG_STATUS_API + id, data, {
     headers: { Authorization: `Bearer ${Cookies.get('accessToken')}` },
   })
 /* ---------------------------- ENDTAG API ---------------------------- */
@@ -241,6 +261,7 @@ export const updateLocation = (data, id) =>
   axios.put(MAIN_URL + UPDATE_LOCATION_API + id, data, {
     headers: { Authorization: `Bearer ${Cookies.get('accessToken')}` },
   })
+
 /* ---------------------------- END Location API ---------------------------- */
 
 /* ---------------------------- ALL News API ---------------------------- */
@@ -268,6 +289,7 @@ export const updateNews = (data, id) =>
     headers: { Authorization: `Bearer ${Cookies.get('accessToken')}` },
   })
 
+/* update news status */
 export const updateNewsStatus = (data, id) =>
   axios.put(MAIN_URL + UPDATE_NEWS_STATUS_API + id, data, {
     headers: { Authorization: `Bearer ${Cookies.get('accessToken')}` },
@@ -297,6 +319,12 @@ export const deleteUser = (id) =>
 /* update User  */
 export const updateUser = (data, id) =>
   axios.put(MAIN_URL + UPDATE_USER_API + id, data, {
+    headers: { Authorization: `Bearer ${Cookies.get('accessToken')}` },
+  })
+
+/* active User  */
+export const ActiveUserList = () =>
+  axios.get(MAIN_URL + ACTIVE_USER_API, {
     headers: { Authorization: `Bearer ${Cookies.get('accessToken')}` },
   })
 /* ---------------------------- END User API ---------------------------- */

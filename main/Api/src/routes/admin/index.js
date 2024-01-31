@@ -45,6 +45,7 @@ router.use("/admin/feedback", feedbackRouter);
 /* ---------------------------- Notification Routers ---------------------------- */
 router.use("/admin/notification", notifiRouter);
 
+/* ---------------------------- Dashboard Routers ---------------------------- */
 router.use("/admin/dashborad", dashboradRouter);
 
 module.exports = router;

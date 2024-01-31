@@ -116,10 +116,10 @@ const CategoryForm = () => {
                 <ToastContainer />
                 <CForm className="row g-3 " onSubmit={handleSubmit(onSubmit)}>
                   <CCol md={6}>
-                    <CFormLabel htmlFor="validationDefault01">Category Name</CFormLabel>
+                    <CFormLabel>Category Name</CFormLabel>
                     <CFormInput
                       type="text"
-                      id="validationDefault01"
+                      id="categoryName"
                       {...register('categoryName', { required: 'category Name is required' })}
                       invalid={!!errors.categoryName}
                     />
@@ -127,7 +127,7 @@ const CategoryForm = () => {
                   </CCol>
 
                   <CCol md={6}>
-                    <CFormLabel htmlFor="validationDefault01">Language</CFormLabel>
+                    <CFormLabel>Language</CFormLabel>
                     <CFormSelect
                       id="languages"
                       name="languages"
@@ -151,15 +151,30 @@ const CategoryForm = () => {
                     </CFormLabel>
                     <CFormInput
                       type="file"
-                      id="validationTextarea"
+                      id="categoryImage"
                       {...register('categoryImage', { required: 'category Image is required' })}
                       invalid={!!errors.categoryImage}
                       onChange={handleFileUpload}
                     />
-
+                  </CCol>
+                  <CCol md={6}>
+                    {newUrl && (
+                      <>
+                        <p>Image preview</p>
+                        <img
+                          src={newUrl}
+                          alt="newUrl"
+                          style={{
+                            maxWidth: '40%',
+                            marginTop: '1.5rem',
+                            borderRadius: '10px',
+                            maxHeight: '40%',
+                          }}
+                        />
+                      </>
+                    )}
                     <CFormFeedback invalid>category Image is required</CFormFeedback>
                   </CCol>
-
                   <CCol md={12} className="text-center submitButton">
                     {isLoading ? (
                       <CButton disabled>

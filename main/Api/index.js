@@ -27,6 +27,7 @@ connectDB();
 app.use("/public", express.static(path.join(__dirname, "./public/")));
 
 app.use(express.static(path.join(__dirname, "./Api/src/public/")));
+
 app.use(
   "/Images",
   express.static(path.join(__dirname, "./src/public/adminImages"))
@@ -51,6 +52,7 @@ app.use(
   "/public/notifImages",
   express.static(path.join(__dirname, "./src/public/notifImages"))
 );
+
 /**create server */
 const server = http.createServer(app);
 server.listen(process.env.PORT, () => {

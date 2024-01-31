@@ -75,7 +75,7 @@ const deleteSubCategory = async (req, res) => {
   }
 };
 
-/* ----------------------------- update Category data ----------------------------- */
+/* ----------------------------- update sub Category data ----------------------------- */
 const updateSubCategory = async (req, res) => {
   try {
     const id = req.params.id;
@@ -103,6 +103,30 @@ const updateSubCategory = async (req, res) => {
       success: false,
       message: error.message,
     });
+  }
+};
+
+/* --------------------------- Update Sub category Status --------------------------- */
+const updateSubCateStatus = async (req, res, next) => {
+  try {
+   
+    const subCateData = await subCategory.findById(req.params.id);
+
+    if (!subCateData) {
+      return res.status(404).json({ message: "Sub Category data not found" });
+    }
+    subCateData.status = !subCateData.status;
+
+    const updatedStatus = await subCateData.save();
+
+    res.status(200).json({
+      success: true,
+      message: "Sub Category update status successfully",
+      news: updatedStatus,
+    });
+
+  } catch (err) {
+    next(err);
   }
 };
 
@@ -149,4 +173,5 @@ module.exports = {
   deleteSubCategory,
   updateSubCategory,
   getSubCateByCategory,
+  updateSubCateStatus,
 };

@@ -2,10 +2,11 @@ import { Button, Switch } from '@mui/material'
 import MUIDataTable from 'mui-datatables'
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { deleteNews, getAllNews, updateNews, updateNewsStatus } from 'src/redux/api/api'
+import { deleteNews, getAllNews, updateNewsStatus } from 'src/redux/api/api'
 import * as Icons from '@mui/icons-material'
 import { ToastContainer, toast } from 'react-toastify'
 import swal from 'sweetalert'
+import defaultImg from '../../../../src/assets/images/default.png'
 
 const News = () => {
   const navigate = useNavigate()
@@ -78,7 +79,7 @@ const News = () => {
               style={{ height: '50px', width: '50px' }}
             />
           ) : (
-            ''
+            <img src={defaultImg} alt={defaultImg} style={{ height: '50px', width: '50px' }} />
           ),
       },
     },

@@ -93,7 +93,7 @@ const updateUser = async (req, res) => {
     const updatedData = await User.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
     });
-   
+
     if (!updatedData) {
       throw new Error("Something went wrong, try again later");
     }
@@ -111,4 +111,40 @@ const updateUser = async (req, res) => {
   }
 };
 
-module.exports = { allUserList, addUser, deleteUser, updateUser };
+/* ----  total count of active and inactive users ---- */
+const getStatusWiseUserCount = async (req, res) => {
+  try {
+    const users = await User.find();
+
+    const activeUsers = users.filter((user) => user.status);
+    const inactiveUsers = users.filter((user) => !user.status);
+
+    const activeCount = activeUsers.length;
+    const inactiveCount = inactiveUsers.length;
+
+    // const activeCount = users.filter((user) => user.status).length;
+    // const inactiveCount = users.length - activeCount;
+
+    // const userData = { activeCount: activeCount, inactiveCount: inactiveCount };
+    const userData = { activeCount, inactiveCount, activeUsers, inactiveUsers };
+
+    res.status(200).json({
+      success: true,
+      message: "Active User data get successfully",
+      user: userData,
+    });
+  } catch (error) {
+    res.status(404).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
+module.exports = {
+  allUserList,
+  addUser,
+  deleteUser,
+  updateUser,
+  getStatusWiseUserCount,
+};

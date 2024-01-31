@@ -26,6 +26,7 @@ const UserForm = () => {
     register,
     setValue,
     handleSubmit,
+    value,
     formState: { errors },
   } = useForm()
   const navigate = useNavigate()
@@ -48,7 +49,6 @@ const UserForm = () => {
     let formData = new FormData() //formdata object
     Object.keys(data).forEach(function (key) {
       if (key === 'ProfileImg') {
-        console.log(data[key])
         formData.append(key, data[key][0])
       } else {
         formData.append(key, data[key])
@@ -58,11 +58,9 @@ const UserForm = () => {
     isUpdate === ''
       ? addUser(formData)
           .then((res) => {
-            console.log(res)
             navigate('/user')
           })
           .catch((err) => {
-            console.log(err)
             if (!err.response.data.success) {
               toast.error(err.response.data.message)
             } else {
@@ -71,7 +69,6 @@ const UserForm = () => {
           })
       : updateUser(formData, isUpdate)
           .then((res) => {
-            console.log(res)
             navigate('/user')
           })
           .catch((err) => {
@@ -86,7 +83,6 @@ const UserForm = () => {
   useEffect(() => {
     if (state) {
       const { editData, imageUrl } = state
-      console.log(state)
       setIsUpdate(editData._id)
       setValue('fullName', editData.fullName)
       setValue('userName', editData.userName)
@@ -94,8 +90,7 @@ const UserForm = () => {
       setValue('email', editData.email)
       setValue('yourBio', editData.yourBio)
       setValue('gender', editData.gender)
-      setSingleImageUrl(imageUrl + editData.imageUrl)
-      // setSingleImageUrl(imageUrl + editData.ProfileImg)
+      setSingleImageUrl(imageUrl + editData.ProfileImg)
     }
   }, [])
   return (
@@ -149,37 +144,52 @@ const UserForm = () => {
                   <CCol md={6}>
                     <CFormLabel>Mobile</CFormLabel>
                     <CFormInput
-                      type="number"
+                      type="text"
                       id="mobile"
                       placeholder="Enter mobile"
-                      {...register('mobile', { required: 'Mobile  is required' })}
+                      {...register('mobile', {
+                        required: 'Mobile  is required',
+                        pattern: {
+                          value: /^[0-9]*$/,
+                          message: 'Enter only numbers for mobile',
+                        },
+                      })}
                       invalid={!!errors.mobile}
                     />
-                    <CFormFeedback invalid>Email is required</CFormFeedback>
+                    <CFormFeedback invalid>Mobile is required</CFormFeedback>
                   </CCol>
 
                   <CCol md={6}>
                     <CFormLabel className="gender">Gender</CFormLabel>
                     <CFormCheck
                       type="radio"
+                      inline
                       id="male"
                       name="gender"
                       label="Male"
-                      className="radio"
+                      value="male"
+                      {...register('gender', { required: 'Gender is required' })}
+                      onChange={(e) => setValue('male', e.target.value)}
                     />
                     <CFormCheck
                       type="radio"
+                      inline
                       name="gender"
                       id="female"
+                      value="female"
                       label="Female"
-                      className="radio"
+                      {...register('gender', { required: 'Gender is required' })}
+                      onChange={(e) => setValue('female', e.target.value)}
                     />
                     <CFormCheck
                       type="radio"
+                      inline
                       name="gender"
                       id="other"
+                      value="other"
                       label="Other"
-                      className="radio"
+                      {...register('gender', { required: 'Gender is required' })}
+                      onChange={(e) => setValue('female', e.target.value)}
                     />
                     <CFormFeedback invalid>Gender is required</CFormFeedback>
                   </CCol>
@@ -188,24 +198,23 @@ const UserForm = () => {
                     <CFormLabel>Profile</CFormLabel>
                     <CFormInput
                       type="file"
-                      id="ProfileImgw"
+                      id="ProfileImg"
                       {...register('ProfileImg', { required: 'Profile Image is required' })}
                       invalid={!!errors.ProfileImg}
                       onChange={handleFileUpload}
                     />
 
-                    {/* <CCol md={6}> */}
                     {singleImageUrl && (
-                      // <div>
-                      // <p>Profile img :</p>
-                      <img src={singleImageUrl} alt="Single Image" className="user-profile" />
-                      // </div>
+                      <>
+                        <p>Profile img :</p>
+                        <img src={singleImageUrl} alt="Single Image" className="user-profile" />
+                      </>
                     )}
-                    {/* </CCol> */}
+
                     <CFormFeedback invalid> Profile Img is required</CFormFeedback>
                   </CCol>
 
-                  <CCol md={6}>
+                  <CCol md={12}>
                     <CFormLabel>Your Bio</CFormLabel>
                     <CFormTextarea
                       id="bioTextarea1"
@@ -217,6 +226,7 @@ const UserForm = () => {
                     />
                     <CFormFeedback invalid>your Bio is required</CFormFeedback>
                   </CCol>
+
                   <CCol md={12} className="text-center submitButton">
                     {isLoading ? (
                       <CButton disabled>

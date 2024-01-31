@@ -14,20 +14,16 @@ import {
   CSpinner,
   CFormSelect,
 } from '@coreui/react'
-import { Controller, useForm } from 'react-hook-form'
+import { useForm } from 'react-hook-form'
 import {
-  addCategory,
   addSubCategory,
   getAllCategory,
   getAllLanguage,
-  updateCategory,
   updateSubCategory,
 } from 'src/redux/api/api'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
-
-import { MenuItem, Select } from '@mui/material'
 
 const SubCategoryForm = () => {
   const {

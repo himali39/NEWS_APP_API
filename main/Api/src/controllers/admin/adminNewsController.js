@@ -113,6 +113,7 @@ const deleteNews = async (req, res) => {
 /* ----------------------------- delete Category data ----------------------------- */
 const updateNews = async (req, res) => {
   try {
+    const reqbody=req.body;
     const newsData = await News.findById(req.params.id);
 
     if (!newsData) {

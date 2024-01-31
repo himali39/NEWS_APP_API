@@ -1,5 +1,6 @@
 const Tag = require("../../models/tagModel");
 
+
 /* -------------------------------add tag data------------------------------ */
 const addTag = async (req, res) => {
   try {
@@ -101,4 +102,28 @@ const updateTag = async (req, res) => {
   }
 };
 
-module.exports = { addTag, getTagData, updateTag, deleteTag };
+/* --------------------------- Update Sub category Status --------------------------- */
+const updateTagStatus = async (req, res, next) => {
+  try {
+   
+    const tagData = await Tag.findById(req.params.id);
+
+    if (!tagData) {
+      return res.status(404).json({ message: "Tag data not found" });
+    }
+    tagData.status = !tagData.status;
+
+    const updatedStatus = await tagData.save();
+
+    res.status(200).json({
+      success: true,
+      message: "Tag update status successfully",
+      news: updatedStatus,
+    });
+
+  } catch (err) {
+    next(err);
+  }
+};
+
+module.exports = { addTag, getTagData, updateTag, deleteTag, updateTagStatus };

@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom'
 import * as Icons from '@mui/icons-material'
 import { ToastContainer, toast } from 'react-toastify'
 import swal from 'sweetalert'
-import { deleteTag, getAllTag, updateTag } from 'src/redux/api/api'
+import { deleteTag, getAllTag, updateTagStatus } from 'src/redux/api/api'
 
 const Tag = () => {
   const navigate = useNavigate()
@@ -66,7 +66,7 @@ const Tag = () => {
               checked={status}
               onChange={() => {
                 const data = { id: _id, status: !status }
-                updateTag(data, _id)
+                updateTagStatus(data, _id)
                   .then(() => {
                     toast.success('status changed successfully!', {
                       key: data._id,

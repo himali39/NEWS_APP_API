@@ -2,7 +2,7 @@ import { Button, Switch } from '@mui/material'
 import MUIDataTable from 'mui-datatables'
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { deleteCategory, getAllCategory, updateCategory } from 'src/redux/api/api'
+import { deleteCategory, getAllCategory, updateCategoryStatus } from 'src/redux/api/api'
 import * as Icons from '@mui/icons-material'
 import { ToastContainer, toast } from 'react-toastify'
 import swal from 'sweetalert'
@@ -83,7 +83,7 @@ const Category = () => {
               checked={status}
               onChange={() => {
                 const data = { id: _id, status: !status }
-                updateCategory(data, _id)
+                updateCategoryStatus(data, _id)
                   .then(() => {
                     toast.success('status changed successfully!', {
                       key: data._id,
@@ -120,7 +120,7 @@ const Category = () => {
                 onClick={async () => {
                   const confirm = await swal({
                     title: 'Are you sure?',
-                    text: 'Are you sure? Want to delete Location? All related data will also be deleted',
+                    text: 'Are you sure? Want to delete Category? All related data will also be deleted',
                     icon: 'warning',
                     buttons: ['No, cancel it!', 'Yes, I am sure!'],
                     dangerMode: true,
