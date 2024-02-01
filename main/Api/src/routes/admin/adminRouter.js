@@ -31,8 +31,8 @@ router.post("/change-password", verifyAdminToken, changePassword);
 
 router.post(
   "/edit-profile",
-  singleFileUpload("/adminImages/", "profileImage"),
   verifyAdminToken,
+  singleFileUpload("/adminImages/", "profileImage"),
   updateProfile
 );
 

@@ -1,11 +1,11 @@
-import { Button, Switch } from '@mui/material'
+import { Switch } from '@mui/material'
 import MUIDataTable from 'mui-datatables'
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import * as Icons from '@mui/icons-material'
 import { ToastContainer, toast } from 'react-toastify'
 import swal from 'sweetalert'
-import { deleteFaqs, deleteFeedback, getFaqs, getFeedback, updateFaqs } from 'src/redux/api/api'
+import { deleteFeedback, getFeedback, updateFaqs } from 'src/redux/api/api'
 
 const Feedback = () => {
   const navigate = useNavigate()
@@ -27,7 +27,7 @@ const Feedback = () => {
           if (err.response.data.status === 401) {
             toast.error(err.response.data.message)
           } else {
-            console.log(err.response.data, 'else')
+            toast.error(err.response.data, 'else')
           }
         }
       })

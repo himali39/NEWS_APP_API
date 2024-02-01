@@ -57,8 +57,6 @@ const Login = () => {
           type: LOGIN_SUCCESS,
           data,
         })
-        toast.success(res.data.message)
-
         navigate('/dashboard')
       }
     } catch (err) {

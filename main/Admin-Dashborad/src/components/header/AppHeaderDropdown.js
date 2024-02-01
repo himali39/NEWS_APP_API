@@ -25,6 +25,7 @@ const AppHeaderDropdown = () => {
   /* ------------------------------ admin logout ------------------------------ */
   const Logout = () => {
     Cookies.remove('accessToken')
+    Cookies.remove('refreshToken')
     Cookies.remove('admin')
     dispatch({ type: LOGOUT })
     navigate('/')

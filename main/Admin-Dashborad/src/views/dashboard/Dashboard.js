@@ -4,10 +4,10 @@ import { CChartBar, CChartDoughnut, CChartPie } from '@coreui/react-chartjs'
 import WidgetsDropdown from '../widgets/WidgetsDropdown'
 import { ActiveUserList, getCategoryWiseNews, getLanguageWiseNews } from 'src/redux/api/api'
 import UserTable from './UserTable'
-import { toast } from 'react-toastify'
+import { toast, ToastContainer } from 'react-toastify'
 
 const Dashboard = () => {
-  const random = (min, max) => Math.floor(Math.random() * (max - min + 1) + min)
+  // const random = (min, max) => Math.floor(Math.random() * (max - min + 1) + min)
   const [categoryNewsCount, setCategoryNewsCount] = useState([])
   const [languageNewsCount, setLanguageNewsCount] = useState([])
   const [isLoading, setIsLoading] = useState(true)
@@ -24,7 +24,7 @@ const Dashboard = () => {
         if (err.response.data.status === 401) {
           toast.error(err.response.data.message)
         } else {
-          console.log(err.response.data, 'else')
+          toast.error(err.response.data, 'else')
         }
       }
     }
@@ -40,7 +40,7 @@ const Dashboard = () => {
         if (err.response.data.status === 401) {
           toast.error(err.response.data.message)
         } else {
-          console.log(err.response.data, 'else')
+          toast.error(err.response.data, 'else')
         }
       }
     }
@@ -56,7 +56,7 @@ const Dashboard = () => {
         if (err.response.data.status === 401) {
           toast.error(err.response.data.message)
         } else {
-          console.log(err.response.data, 'else')
+          toast.error(err.response.data, 'else')
         }
       }
     }
@@ -77,6 +77,7 @@ const Dashboard = () => {
         </>
       ) : (
         <>
+          <ToastContainer />
           <WidgetsDropdown />
           <CCard className="mb-4">
             <CCardBody>

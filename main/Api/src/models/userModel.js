@@ -40,6 +40,7 @@ const UserSchema = mongoose.Schema(
     },
     ProfileImg: {
       type: String,
+      default: null,
     },
     accessToken: {
       type: String,
@@ -88,7 +89,7 @@ UserSchema.pre("save", async function (next) {
   if (user.isModified("password")) {
     this.password = await bcrypt.hash(this.password, 10);
   }
-    next();
+  next();
 });
 
 const User = mongoose.model("user", UserSchema);

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import MUIDataTable from 'mui-datatables'
 import { ActiveUserList } from 'src/redux/api/api'
+import { toast, ToastContainer } from 'react-toastify'
 
 const UserTable = () => {
   const [dataTableData, setDataTable] = useState([])
@@ -14,9 +15,9 @@ const UserTable = () => {
       .catch((err) => {
         if (!err.response.data.success) {
           if (err.response.data.status === 402) {
-            // toast.error(err.response.data.message)
+            toast.error(err.response.data.message)
           } else {
-            console.log(err.response.data, 'else')
+            toast.error(err.response.data, 'else')
           }
         }
       })
@@ -100,6 +101,7 @@ const UserTable = () => {
 
   return (
     <>
+      <ToastContainer />
       <MUIDataTable data={dataTableData} columns={columns} options={options} />
     </>
   )

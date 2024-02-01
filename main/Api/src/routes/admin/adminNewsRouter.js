@@ -7,10 +7,12 @@ const {
   updateNews,
   updateNewsStatus,
 } = require("../../controllers/admin/adminNewsController");
+const verifyAdminToken = require("../../helper/verifyAdminToken");
 const router = express.Router();
 
 router.post(
   "/add-News",
+  verifyAdminToken,
   multiDiffFileUpload("/News_image/", [
     {
       name: "newsImage",
@@ -31,12 +33,13 @@ router.post(
   addNews
 );
 
-router.get("/get-News", allNewsList);
+router.get("/get-News", verifyAdminToken, allNewsList);
 
-router.delete("/delete-News/:id", deleteNews);
+router.delete("/delete-News/:id", verifyAdminToken, deleteNews);
 
 router.put(
   "/update-News/:id",
+  verifyAdminToken,
   multiDiffFileUpload("/News_image/", [
     {
       name: "newsImage",
@@ -56,6 +59,6 @@ router.put(
   ]),
   updateNews
 );
-router.put("/update-Status/:id", updateNewsStatus);
+router.put("/update-Status/:id", verifyAdminToken, updateNewsStatus);
 
 module.exports = router;

@@ -58,53 +58,37 @@ import {
 } from 'src/constant'
 // export const MAIN_url = 'http://localhost:8002'
 
-axios.interceptors.response.use(
-  (response) => response,
-  async (err) => {
-    const originalRequest = err.config
-
-    if (err.response.status === 402 && !originalRequest._retry) {
-      originalRequest._retry = true
-
-      try {
-        const refreshToken = Cookies.get('refreshToken')
-
-        const res = await axios.post(`${MAIN_URL}/admin/refreshToken`, { refreshToken })
-
-        const accessToken = res.data.refreshToken
-
-        Cookies.set('accessToken', accessToken)
-
-        // Retry the original request with the new token
-        originalRequest.headers.Authorization = `Bearer ${accessToken}`
-
-        return axios(originalRequest)
-      } catch (refresherr) {
-        console.err('err refreshing token:', refresherr)
-        // You might want to redirect to login or handle the err in another way
-      }
-    }
-
-    if (err.response.status === 405) {
-      Cookies.remove('accessToken')
-      window.location.reload()
-    }
-
-    return Promise.reject(err)
-  },
-)
 // axios.interceptors.response.use(
 //   (response) => response,
 //   async (err) => {
-//     if (err.response.status === 401 || err.response.status === 403) {
-//       // Handle unauthorized or forbidden access (token expired) here
-//       // For example, you can redirect the user to the login page or perform other actions
-//       console.error('Token expired or unauthorized access')
-//     }
+//     const originalRequest = err.config
+//     console.log('Cookies 1   ', Cookies.get('refreshToken'))
+
+// if (err.response.status === 402 && !originalRequest._retry) {
+//   Cookies.remove('accessToken')
+//   // window.location.reload()
+// }
+// if (err.response.status === 402 && !originalRequest._retry) {
+//   originalRequest._retry = true
+//   console.log('object', originalRequest)
+//   try {
+//     const refreshToken = Cookies.get('refreshToken')
+//     const res = await axios.post(`${MAIN_URL}/admin/refreshToken`, { refreshToken })
+//     const accessToken = res.data.refreshToken
+//     // console.log(res.data.refreshToken, 'Api js page')
+//     Cookies.set('accessToken', accessToken)
+//     // Retry the original request with the new token
+//     originalRequest.headers.Authorization = `Bearer ${accessToken}`
+//     // console.log(originalRequest)
+//     return axios(originalRequest)
+//   } catch (refresherr) {
+//     // Handle refresh token err or redirect to login
+//     console.err('err refreshing token:', refresherr)
+//     // You might want to redirect to login or handle the err in another way
+//   }
+// }
 
 //     if (err.response.status === 405) {
-//       // Handle other specific errors if needed
-//       // For example, you can remove the access token and reload the page
 //       Cookies.remove('accessToken')
 //       window.location.reload()
 //     }
@@ -112,6 +96,43 @@ axios.interceptors.response.use(
 //     return Promise.reject(err)
 //   },
 // )
+axios.interceptors.response.use(
+  (response) => response,
+  async (err) => {
+    const originalRequest = err.config
+    // console.log(Cookies.get('accessToken'), 'Cookies.get')
+    // if (err.response.status === 402 && !originalRequest._retry) {
+    //   // originalRequest._retry = true
+    //   // Cookies.remove('accessToken')
+    //   // Cookies.remove('refreshToken')
+    //   // Cookies.remove('admin')
+    //   // window.location.reload()
+
+    //   try {
+    //     console.log(Cookies.get('refreshToken'), "Cookies.get('refreshToken')")
+    //     const refreshToken = Cookies.get('refreshToken')
+    //     const res = await axios.post(`${MAIN_URL}/admin/refreshToken`, { refreshToken })
+    //     const accessToken = res.data.refreshToken
+
+    //     Cookies.set('accessToken', accessToken)
+
+    //     originalRequest.headers.Authorization = `Bearer ${accessToken}` // Retry the original request with the new token
+
+    //     return axios(originalRequest)
+    //   } catch (refresherr) {
+    //     console.err('err refreshing token:', refresherr) // Handle refresh token err or redirect to login
+    //   }
+    // }
+
+    if (err.response.status === 405) {
+      Cookies.remove('accessToken')
+      Cookies.remove('refreshToken')
+      Cookies.remove('admin')
+      window.location.reload()
+    }
+    return Promise.reject(err)
+  },
+)
 
 /* ------------------------------ ALL ADMIN API ----------------------------- */
 /* Admin login api */
@@ -429,13 +450,13 @@ export const updateNotification = (data, id) =>
 /* Get All Dashboard */
 export const getDashboradCount = (data) =>
   axios.get(MAIN_URL + GET_COUNT_DASHBORD_API, data, {
-    headers: { Authorization: `Bearer ${Cookies.get('accessToken')}` },
+    headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` },
   })
 
 /* Get All Category Wise News */
 export const getCategoryWiseNews = (data) =>
   axios.get(MAIN_URL + GET_CATEGORY_WISE_NEWS_API, data, {
-    headers: { Authorization: `Bearer ${Cookies.get('accessToken')}` },
+    headers: { Authorization: `Bearer dgdfgdfgdfg` },
   })
 
 /* Get All get Language Wise News */

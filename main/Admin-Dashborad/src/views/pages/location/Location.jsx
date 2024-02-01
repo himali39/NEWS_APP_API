@@ -1,9 +1,9 @@
+import { ToastContainer, toast } from 'react-toastify'
 import { Button, Switch } from '@mui/material'
 import MUIDataTable from 'mui-datatables'
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import * as Icons from '@mui/icons-material'
-import { ToastContainer, toast } from 'react-toastify'
 import { deleteLocation, getAllLocation, updateLocation } from 'src/redux/api/api'
 import swal from 'sweetalert'
 
@@ -20,7 +20,9 @@ const Location = () => {
         if (!err.response.data.success) {
           if (err.response.data.status === 401) {
             toast.error(err.response.data.message)
-          } else console.log(err.response.data, 'else')
+          } else {
+            toast.error(err.response.data, 'else')
+          }
         }
       })
   }
@@ -141,6 +143,7 @@ const Location = () => {
 
   return (
     <>
+      <ToastContainer />
       <div className="right-text">
         <Button
           variant="contained"
@@ -151,7 +154,6 @@ const Location = () => {
           Add Language
         </Button>
       </div>
-      <ToastContainer />
       <MUIDataTable
         title={'Location List'}
         data={dataTableData}

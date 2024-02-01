@@ -3,8 +3,7 @@ const Admin = require("../models/adminModel");
 
 module.exports = async (req, res, next) => {
   let token = req.header("Authorization");
-
-  if (token) {
+   if (token) {
     token = req.header("Authorization").replace("Bearer ", "");
   }
   if (!token) {

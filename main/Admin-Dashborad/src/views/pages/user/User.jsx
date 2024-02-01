@@ -24,7 +24,7 @@ const User = () => {
           if (err.response.data.status === 401) {
             toast.error(err.response.data.message)
           } else {
-            console.log(err.response.data, 'else')
+            toast.error(err.response.data, 'else')
           }
         }
       })
@@ -70,7 +70,11 @@ const User = () => {
               style={{ height: '50px', width: '50px' }}
             />
           ) : (
-            <img src={defaultImg} alt={defaultImg} style={{ height: '50px', width: '50px' }} />
+            <img
+              src={defaultImg}
+              alt={ProfileImg}
+              style={{ height: '50px', width: '50px', borderRadius: '50%' }}
+            />
           ),
       },
     },
@@ -118,7 +122,7 @@ const User = () => {
                 className="editButton"
                 onClick={() => {
                   const editData = dataTableData.find((data) => data._id === value)
-                  console.log(editData)
+
                   navigate('/user-form', { state: { editData: editData, imageUrl: baseUrl } })
                 }}
               ></Icons.EditRounded>

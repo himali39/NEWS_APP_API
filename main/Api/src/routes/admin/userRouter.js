@@ -1,18 +1,29 @@
 const express = require("express");
 const { allUserList, addUser, deleteUser, updateUser, getStatusWiseUserCount } = require("../../controllers/admin/adminUserController");
 const { singleFileUpload } = require("../../helper/upload");
+const verifyAdminToken = require("../../helper/verifyAdminToken");
 
 const router = express.Router();
 
 /* ------------------------------ add user data ----------------------------- */
-router.post("/add-user", singleFileUpload("/userImg/", "ProfileImg"), addUser);
+router.post(
+  "/add-user",
+  verifyAdminToken,
+  singleFileUpload("/userImg/", "ProfileImg"),
+  addUser
+);
 
-router.get("/get-user", allUserList);
+router.get("/get-user", verifyAdminToken, allUserList);
 
-router.delete("/delete-user/:id", deleteUser);
+router.delete("/delete-user/:id", verifyAdminToken, deleteUser);
 
-router.get("/get-activeUser", getStatusWiseUserCount);
+router.get("/get-activeUser", verifyAdminToken, getStatusWiseUserCount);
 
-router.put("/update-user/:id",singleFileUpload("/userImg/", "ProfileImg"), updateUser);
+router.put(
+  "/update-user/:id",
+  verifyAdminToken,
+  singleFileUpload("/userImg/", "ProfileImg"),
+  updateUser
+);
 
 module.exports = router;

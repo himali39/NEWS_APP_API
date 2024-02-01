@@ -49,7 +49,9 @@ const UserForm = () => {
     let formData = new FormData() //formdata object
     Object.keys(data).forEach(function (key) {
       if (key === 'ProfileImg') {
-        formData.append(key, data[key][0])
+        if (data[key][0] !== undefined) {
+          formData.append(key, data[key][0])
+        }
       } else {
         formData.append(key, data[key])
       }
@@ -105,6 +107,7 @@ const UserForm = () => {
               <CCardBody>
                 <ToastContainer />
                 <CForm className="row g-3 " onSubmit={handleSubmit(onSubmit)}>
+                  {/* fullName field */}
                   <CCol md={6}>
                     <CFormLabel>FullName</CFormLabel>
                     <CFormInput
@@ -116,7 +119,9 @@ const UserForm = () => {
                     />
                     <CFormFeedback invalid>FullName is required</CFormFeedback>
                   </CCol>
+                  {/* end field */}
 
+                  {/* userName field */}
                   <CCol md={6}>
                     <CFormLabel>UserName</CFormLabel>
                     <CFormInput
@@ -128,7 +133,9 @@ const UserForm = () => {
                     />
                     <CFormFeedback invalid>user Name is required</CFormFeedback>
                   </CCol>
+                  {/* end field */}
 
+                  {/* email field */}
                   <CCol md={6}>
                     <CFormLabel>Email</CFormLabel>
                     <CFormInput
@@ -140,7 +147,9 @@ const UserForm = () => {
                     />
                     <CFormFeedback invalid>Email is required</CFormFeedback>
                   </CCol>
+                  {/* end field */}
 
+                  {/* Mobile field */}
                   <CCol md={6}>
                     <CFormLabel>Mobile</CFormLabel>
                     <CFormInput
@@ -158,7 +167,9 @@ const UserForm = () => {
                     />
                     <CFormFeedback invalid>Mobile is required</CFormFeedback>
                   </CCol>
+                  {/* end field */}
 
+                  {/* Gender field */}
                   <CCol md={6}>
                     <CFormLabel className="gender">Gender</CFormLabel>
                     <CFormCheck
@@ -193,17 +204,18 @@ const UserForm = () => {
                     />
                     <CFormFeedback invalid>Gender is required</CFormFeedback>
                   </CCol>
+                  {/* end field */}
 
+                  {/* Profile field */}
                   <CCol md={6}>
                     <CFormLabel>Profile</CFormLabel>
                     <CFormInput
                       type="file"
                       id="ProfileImg"
-                      {...register('ProfileImg', { required: 'Profile Image is required' })}
+                      {...register('ProfileImg')}
                       invalid={!!errors.ProfileImg}
                       onChange={handleFileUpload}
                     />
-
                     {singleImageUrl && (
                       <>
                         <p>Profile img :</p>
@@ -213,7 +225,9 @@ const UserForm = () => {
 
                     <CFormFeedback invalid> Profile Img is required</CFormFeedback>
                   </CCol>
+                  {/* end field */}
 
+                  {/* Your Bio field */}
                   <CCol md={12}>
                     <CFormLabel>Your Bio</CFormLabel>
                     <CFormTextarea
@@ -226,6 +240,7 @@ const UserForm = () => {
                     />
                     <CFormFeedback invalid>your Bio is required</CFormFeedback>
                   </CCol>
+                  {/* end field */}
 
                   <CCol md={12} className="text-center submitButton">
                     {isLoading ? (

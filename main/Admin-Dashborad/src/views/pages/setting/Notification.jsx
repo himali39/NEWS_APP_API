@@ -26,7 +26,7 @@ const Notification = () => {
           if (err.response.data.status === 401) {
             toast.error(err.response.data.message)
           } else {
-            console.log(err.response.data, 'else')
+            toast.error(err.response.data, 'else')
           }
         }
       })

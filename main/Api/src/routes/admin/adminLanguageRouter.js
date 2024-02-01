@@ -12,6 +12,7 @@ const router = require("express").Router();
 /* --------------------------- add Language route --------------------------- */
 router.post(
   "/add-Language",
+  verifyAdminToken,
   multiDiffFileUpload("/languagesFiles", [
     {
       name: "jsonFile",
@@ -28,16 +29,15 @@ router.post(
 );
 
 /* ------------------------- get Language data route ------------------------ */
-router.get("/get-Language",
- verifyAdminToken,
-  getLanguage);
+router.get("/get-Language", verifyAdminToken, getLanguage);
 
-  /* ------------------------- delete Language data route ------------------------ */
+/* ------------------------- delete Language data route ------------------------ */
 router.delete("/delete-Language/:id", verifyAdminToken, deleteLanguage);
 
-  /* ------------------------- update Language data route ------------------------ */
+/* ------------------------- update Language data route ------------------------ */
 router.put(
   "/update-Language/:id",
+  verifyAdminToken,
   multiDiffFileUpload("/languagesFiles", [
     {
       name: "jsonFile",
@@ -50,7 +50,6 @@ router.put(
       allowedMimes: ["image/png", "image/jpeg", "image/jpg", "image/webp"],
     },
   ]),
-  verifyAdminToken,
   updateLanguage
 );
 

@@ -14,6 +14,7 @@ const router = express.Router();
 /* ----------------------- add category route ----------------------- */
 router.post(
   "/add-category",
+  verifyAdminToken,
   singleFileUpload("/category-images/", "categoryImage"),
   addCategory
 );
@@ -22,17 +23,17 @@ router.post(
 router.get("/get-category",verifyAdminToken, getCategory);
 
 /* ----------------------- delete category route  ----------------------- */
-router.delete("/delete-Category/:id", deleteCategory);
+router.delete("/delete-Category/:id",verifyAdminToken, deleteCategory);
 
 /* ----------------------- update category route  ----------------------- */
 router.put(
-  "/update-Category/:id",
+  "/update-Category/:id",verifyAdminToken,
   singleFileUpload("/category_images/", "categoryImage"),
   updateCategory
 );
 
-router.get("/getCatByLanguage/:languageId", getCategoryByLanguage);
+router.get("/getCatByLanguage/:languageId",verifyAdminToken, getCategoryByLanguage);
 
-router.put("/update-Status/:id", updateCategoryStatus);
+router.put("/update-Status/:id",verifyAdminToken, updateCategoryStatus);
 
 module.exports = router;

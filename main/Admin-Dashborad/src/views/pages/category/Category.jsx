@@ -6,6 +6,7 @@ import { deleteCategory, getAllCategory, updateCategoryStatus } from 'src/redux/
 import * as Icons from '@mui/icons-material'
 import { ToastContainer, toast } from 'react-toastify'
 import swal from 'sweetalert'
+import defaultImg from '../../../../src/assets/images/default.png'
 
 const Category = () => {
   const navigate = useNavigate()
@@ -28,7 +29,7 @@ const Category = () => {
           if (err.response.data.status === 401) {
             toast.error(err.response.data.message)
           } else {
-            console.log(err.response.data, 'else')
+            toast.error(err.response.data, 'else')
           }
         }
       })
@@ -66,7 +67,11 @@ const Category = () => {
               style={{ height: '50px', width: '50px' }}
             />
           ) : (
-            ''
+            <img
+              src={defaultImg}
+              alt={categoryImage}
+              style={{ height: '50px', width: '50px', borderRadius: '50%' }}
+            />
           ),
       },
     },
