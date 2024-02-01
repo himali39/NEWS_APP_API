@@ -7,7 +7,7 @@ const addCategory = async (req, res) => {
   try {
     const reqbody = req.body;
 
-    if (req.file) {
+    if (req.file && req.file.filename != "undefined") {
       reqbody.categoryImage = req.file.filename;
     }
 
@@ -88,7 +88,7 @@ const updateCategory = async (req, res) => {
       return res.status(404).json({ message: "Category data not found" });
     }
     if (req.file && req.file != "undefined") {
-      req.body.image = req.file.filename;
+      req.body.categoryImage = req.file.filename;
     }
 
     const updateCateData = await Category.findByIdAndUpdate(id, req.body, {

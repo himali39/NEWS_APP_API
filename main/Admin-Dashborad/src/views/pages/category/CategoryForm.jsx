@@ -14,13 +14,11 @@ import {
   CSpinner,
   CFormSelect,
 } from '@coreui/react'
-import { Controller, useForm } from 'react-hook-form'
+import { useForm } from 'react-hook-form'
 import { addCategory, getAllLanguage, updateCategory } from 'src/redux/api/api'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
-
-import { MenuItem, Select } from '@mui/material'
 
 const CategoryForm = () => {
   const {
@@ -29,6 +27,7 @@ const CategoryForm = () => {
     setValue,
     handleSubmit,
     control,
+    clearErrors,
     formState: { errors },
   } = useForm()
 
@@ -40,13 +39,22 @@ const CategoryForm = () => {
 
   const { state } = useLocation()
 
-  const handleFileUpload = (event) => {
-    const file = event.target.files[0]
-    const reader = new FileReader()
-    reader.onloadend = () => {
-      setNewUrl(reader.result)
+  const handleChange = async (fieldName, fieldValue) => {
+    clearErrors(fieldName, fieldValue)
+    if (fieldName == 'languages') {
+      setValue(fieldName, fieldValue)
     }
-    reader.readAsDataURL(file)
+  }
+
+  const handleFileUpload = (e) => {
+    const files = e.target.files[0]
+    if (files) {
+      const imageUrl = URL.createObjectURL(files)
+      setNewUrl(imageUrl)
+      // clearErrors('newsImage')
+    } else {
+      setNewUrl(null)
+    }
   }
   const LanguagesList = () => {
     getAllLanguage()
@@ -62,7 +70,9 @@ const CategoryForm = () => {
     let formData = new FormData() //formdata object
     Object.keys(data).forEach(function (key) {
       if (key === 'categoryImage') {
-        formData.append(key, data[key][0])
+        if (data[key][0] !== undefined) {
+          formData.append(key, data[key][0])
+        }
       } else {
         formData.append(key, data[key])
       }
@@ -95,11 +105,11 @@ const CategoryForm = () => {
   }
   useEffect(() => {
     if (state) {
-      const { editdata, imageUrl } = state
-      setIsUpdate(editdata._id)
-      setValue('categoryName', editdata.categoryName)
-      setValue('languages', editdata.languages)
-      setNewUrl(imageUrl + editdata.flagImage)
+      const { editData, imageUrl } = state
+      setIsUpdate(editData._id)
+      setValue('categoryName', editData.categoryName)
+      setValue('languages', editData.languages._id)
+      setNewUrl(imageUrl + editData.categoryImage)
     }
     LanguagesList()
   }, [])
@@ -115,6 +125,7 @@ const CategoryForm = () => {
               <CCardBody>
                 <ToastContainer />
                 <CForm className="row g-3 " onSubmit={handleSubmit(onSubmit)}>
+                  {/* Category Name field */}
                   <CCol md={6}>
                     <CFormLabel>Category Name</CFormLabel>
                     <CFormInput
@@ -122,9 +133,11 @@ const CategoryForm = () => {
                       id="categoryName"
                       {...register('categoryName', { required: 'category Name is required' })}
                       invalid={!!errors.categoryName}
+                      placeholder="category Name"
                     />
                     <CFormFeedback invalid>category Name is required</CFormFeedback>
                   </CCol>
+                  {/* end field */}
 
                   <CCol md={6}>
                     <CFormLabel>Language</CFormLabel>
@@ -133,6 +146,8 @@ const CategoryForm = () => {
                       name="languages"
                       {...register('languages', { required: 'Language is required' })}
                       invalid={!!errors.languages}
+                      value={getValues('languages')}
+                      onChange={(e) => handleChange('languages', e.target.value)}
                     >
                       <option value="">Select Language</option>
                       {languageOptions?.map((option) => (
@@ -143,7 +158,6 @@ const CategoryForm = () => {
                     </CFormSelect>
                     {errors.languages && <div className="errors">{errors.languages.message}</div>}
                   </CCol>
-
                   <CCol md={6}>
                     <CFormLabel>
                       Category Image
@@ -152,8 +166,7 @@ const CategoryForm = () => {
                     <CFormInput
                       type="file"
                       id="categoryImage"
-                      {...register('categoryImage', { required: 'category Image is required' })}
-                      invalid={!!errors.categoryImage}
+                      {...register('categoryImage')}
                       onChange={handleFileUpload}
                     />
                   </CCol>
@@ -166,15 +179,14 @@ const CategoryForm = () => {
                           alt="newUrl"
                           style={{
                             maxWidth: '40%',
-                            marginTop: '1.5rem',
                             borderRadius: '10px',
                             maxHeight: '40%',
                           }}
                         />
                       </>
                     )}
-                    <CFormFeedback invalid>category Image is required</CFormFeedback>
                   </CCol>
+
                   <CCol md={12} className="text-center submitButton">
                     {isLoading ? (
                       <CButton disabled>

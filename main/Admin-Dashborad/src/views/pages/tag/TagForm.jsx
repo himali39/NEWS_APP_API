@@ -14,21 +14,19 @@ import {
   CSpinner,
   CFormSelect,
 } from '@coreui/react'
-import { Controller, useForm } from 'react-hook-form'
-
+import { useForm } from 'react-hook-form'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
-
-import { MenuItem, Select } from '@mui/material'
 import { addTag, getAllLanguage, updateTag } from 'src/redux/api/api'
 
 const TagForm = () => {
   const {
     register,
+    getValues,
     setValue,
     handleSubmit,
-    control,
+    clearErrors,
     formState: { errors },
   } = useForm()
 
@@ -36,9 +34,15 @@ const TagForm = () => {
   const [isUpdate, setIsUpdate] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const [languageOptions, setLanguageOptions] = useState([])
-  const [categoryOptions, setCategoryOptions] = useState([])
 
   const { state } = useLocation()
+
+  const handleChange = async (fieldName, fieldValue) => {
+    clearErrors(fieldName, fieldValue)
+    if (fieldName == 'languages') {
+      setValue(fieldName, fieldValue)
+    }
+  }
 
   const LanguagesList = () => {
     getAllLanguage()
@@ -78,10 +82,11 @@ const TagForm = () => {
   }
   useEffect(() => {
     if (state) {
-      const { editdata } = state
-      setIsUpdate(editdata._id)
-      setValue('tagName', editdata.tagName)
-      setValue('languages', editdata.languages)
+      const { editData } = state
+      console.log(editData)
+      setIsUpdate(editData._id)
+      setValue('tagName', editData.tagName)
+      setValue('languages', editData.languages._id)
     }
     LanguagesList()
   }, [])
@@ -118,7 +123,9 @@ const TagForm = () => {
                       id="languages"
                       name="languages"
                       {...register('languages', { required: 'Language is required' })}
+                      onChange={(e) => handleChange('languages', e.target.value)}
                       invalid={!!errors.languages}
+                      value={getValues('languages')}
                     >
                       <option value="">Select Language</option>
                       {languageOptions?.map((option) => (

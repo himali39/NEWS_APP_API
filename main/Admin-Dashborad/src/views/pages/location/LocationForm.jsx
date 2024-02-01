@@ -68,13 +68,13 @@ const LocationForm = () => {
   }
   useEffect(() => {
     if (state) {
-      const { editdata } = state
+      const { editData } = state
 
-      setIsUpdate(editdata._id)
+      setIsUpdate(editData._id)
 
-      setValue('locationName', editdata.locationName)
-      setValue('latitude', editdata.latitude)
-      setValue('longitude', editdata.longitude)
+      setValue('locationName', editData.locationName)
+      setValue('latitude', editData.latitude)
+      setValue('longitude', editData.longitude)
     }
   }, [])
   return (

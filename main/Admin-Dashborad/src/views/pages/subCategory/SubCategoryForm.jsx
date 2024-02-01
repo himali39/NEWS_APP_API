@@ -29,17 +29,27 @@ const SubCategoryForm = () => {
   const {
     register,
     setValue,
+    getValues,
     handleSubmit,
+    clearErrors,
     formState: { errors },
   } = useForm()
-
   const navigate = useNavigate()
   const [isUpdate, setIsUpdate] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const [languageOptions, setLanguageOptions] = useState([])
   const [categoryOptions, setCategoryOptions] = useState([])
-
   const { state } = useLocation()
+
+  const handleChange = async (fieldName, fieldValue) => {
+    clearErrors(fieldName, fieldValue)
+    if (fieldName == 'languages') {
+      setValue(fieldName, fieldValue)
+    }
+    if (fieldName == 'category') {
+      setValue(fieldName, fieldValue)
+    }
+  }
 
   const LanguagesList = () => {
     getAllLanguage()
@@ -87,12 +97,15 @@ const SubCategoryForm = () => {
             setIsLoading(false)
           })
   }
+
   useEffect(() => {
     if (state) {
-      const { editdata } = state
-      setIsUpdate(editdata._id)
-      setValue('subCategoryName', editdata.subCategoryName)
-      setValue('languages', editdata.languages)
+      const { editData } = state
+      console.log(editData)
+      setIsUpdate(editData._id)
+      setValue('subCategoryName', editData.subCategoryName)
+      setValue('languages', editData.languages._id)
+      setValue('category', editData.category._id)
     }
     LanguagesList()
     CategoryList()
@@ -109,8 +122,9 @@ const SubCategoryForm = () => {
               <CCardBody>
                 <ToastContainer />
                 <CForm className="row g-3 " onSubmit={handleSubmit(onSubmit)}>
+                  {/* subCategory field */}
                   <CCol md={6}>
-                    <CFormLabel htmlFor="validationDefault01">Sub Category</CFormLabel>
+                    <CFormLabel>Sub Category</CFormLabel>
                     <CFormInput
                       type="text"
                       id="validationDefault01"
@@ -122,7 +136,9 @@ const SubCategoryForm = () => {
                     />
                     <CFormFeedback invalid>sub Category is required</CFormFeedback>
                   </CCol>
+                  {/* end sub category field */}
 
+                  {/* Language field */}
                   <CCol md={6}>
                     <CFormLabel>Language</CFormLabel>
                     <CFormSelect
@@ -130,6 +146,8 @@ const SubCategoryForm = () => {
                       name="languages"
                       {...register('languages', { required: 'Language is required' })}
                       invalid={!!errors.languages}
+                      value={getValues('languages')}
+                      onChange={(e) => handleChange('languages', e.target.value)}
                     >
                       <option value="">Select Language</option>
                       {languageOptions?.map((option) => (
@@ -138,10 +156,11 @@ const SubCategoryForm = () => {
                         </option>
                       ))}
                     </CFormSelect>
-
                     {errors.languages && <div className="errors">{errors.languages.message}</div>}
                   </CCol>
+                  {/* end languages field */}
 
+                  {/* category field */}
                   <CCol md={6}>
                     <CFormLabel>Category</CFormLabel>
                     <CFormSelect
@@ -149,6 +168,8 @@ const SubCategoryForm = () => {
                       name="category"
                       {...register('category', { required: 'category is required' })}
                       invalid={!!errors.category}
+                      value={getValues('category')}
+                      onChange={(e) => handleChange('category', e.target.value)}
                     >
                       <option value="">Select category</option>
                       {categoryOptions?.map((option) => (
@@ -159,6 +180,7 @@ const SubCategoryForm = () => {
                     </CFormSelect>
                     <CFormFeedback invalid>category Name is required</CFormFeedback>
                   </CCol>
+                  {/* end category field */}
 
                   <CCol md={12} className="text-center submitButton">
                     {isLoading ? (

@@ -16,7 +16,7 @@ const Tag = () => {
       .then((res) => {
         const transformedData = res.data.tag.map((tag) => ({
           ...tag,
-          languages: tag.languages?.map((language) => language.languagesName),
+          languagesName: tag.languages == null ? '' : tag.languages.languagesName,
         }))
 
         setDataTable(transformedData)
@@ -46,7 +46,7 @@ const Tag = () => {
       },
     },
     {
-      name: 'languages',
+      name: 'languagesName',
       label: 'Language',
       options: {
         filter: true,
@@ -94,10 +94,10 @@ const Tag = () => {
               <Icons.EditRounded
                 className="editButton"
                 onClick={() => {
-                  const editdata = dataTableData.find((data) => data._id === value)
-                  console.log(editdata)
-                  navigate('/sub-category-form', {
-                    state: { editdata: editdata },
+                  const editData = dataTableData.find((data) => data._id === value)
+                  console.log(editData)
+                  navigate('/tag-form', {
+                    state: { editData: editData },
                   })
                 }}
               ></Icons.EditRounded>

@@ -61,7 +61,6 @@ const NewsForm = () => {
 
   /* language on change event*/
   const handleChange = async (fieldName, fieldValue) => {
-    console.log(fieldName)
     clearErrors(fieldName, fieldValue)
     setValue(fieldName, fieldValue)
     if (fieldName == 'languages') {
@@ -168,7 +167,6 @@ const NewsForm = () => {
 
   /* list of Tag data*/
   const onSubmit = (data) => {
-    console.log(data)
     let formData = new FormData() // FormData object
     Object.keys(data).forEach(function (key) {
       if (key === 'newsImage') {
@@ -185,6 +183,7 @@ const NewsForm = () => {
         formData.append(key, data[key])
       }
     })
+
     isUpdate === ''
       ? addNews(formData)
           .then((res) => {
@@ -216,7 +215,6 @@ const NewsForm = () => {
     LocationList()
     TagList()
     if (state) {
-      console.log(state)
       const { editData, imageUrl } = state
       setIsUpdate(editData._id)
       setValue('languages', editData.languages._id)
@@ -417,21 +415,18 @@ const NewsForm = () => {
                         News Images
                         <span className="errors"> Only png, jpg, webp and jpeg image allow</span>
                       </CFormLabel>
-                      {defaultImage && (
-                        <img src={defaultImage} alt="Default" style={{ maxWidth: '100px' }} />
-                      )}
                       <CFormInput
                         type="file"
                         id="newsImage"
                         {...register(
                           'newsImage',
-                          isUpdate
-                            ? {
-                                required: false,
-                              }
-                            : {
-                                required: 'newsImage is required',
-                              },
+                          // isUpdate
+                          //   ? {
+                          //       required: false,
+                          //     }
+                          //   : {
+                          //       required: 'newsImage is required',
+                          //     },
                         )}
                         className={errors.newsImage ? 'is-invalid' : ''}
                         onChange={(e) => {
@@ -451,9 +446,9 @@ const NewsForm = () => {
                         />
                       )}
 
-                      {errors.newsImage && (
+                      {/* {errors.newsImage && (
                         <CFormFeedback invalid>News Image is required</CFormFeedback>
-                      )}
+                      )} */}
                     </CCol>
                     {/* end image */}
 
@@ -467,16 +462,7 @@ const NewsForm = () => {
                         type="file"
                         id="multipleImage"
                         className={errors.multipleImage ? 'is-invalid' : ''}
-                        {...register(
-                          'multipleImage',
-                          isUpdate
-                            ? {
-                                required: false,
-                              }
-                            : {
-                                required: 'Image is required',
-                              },
-                        )}
+                        {...register('multipleImage')}
                         invalid={!!errors.multipleImage}
                         onChange={(e) => {
                           handleMultiImgChange(e)
@@ -484,6 +470,7 @@ const NewsForm = () => {
                         multiple
                       />
 
+                      <p> Multiple Images </p>
                       {multipleImageUrls &&
                         multipleImageUrls.map((preview, index) => (
                           <img
@@ -499,9 +486,6 @@ const NewsForm = () => {
                             }}
                           />
                         ))}
-                      {errors.newsImage && (
-                        <CFormFeedback invalid> Image is required</CFormFeedback>
-                      )}
                     </CCol>
                     {/* end image */}
 

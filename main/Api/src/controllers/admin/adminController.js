@@ -54,20 +54,22 @@ const adminLogin = async (req, res) => {
     let payload = {
       email,
       expiresIn: "1m",
+      refreshSecret,
     };
 
     /**create accesstoken */
     let accessToken;
 
     accessToken = jwt.sign({ email: email }, process.env.JWT_SECRECT_KEY, {
-      expiresIn: "1m",
+      expiresIn: "1d",
     });
 
     // accessToken = await jwt.sign(payload, process.env.JWT_SECRECT_KEY);
     admin.accessToken = accessToken;
 
-    const refreshToken = jwt.sign({ email: email }, refreshSecret, {
-      expiresIn: "1m",
+    const refreshToken = jwt.sign({ email: email }, refreshSecret,
+       {
+      expiresIn: "5m",
     });
 
     const baseUrl =

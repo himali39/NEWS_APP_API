@@ -6,7 +6,7 @@ import { deleteNews, getAllNews, updateNewsStatus } from 'src/redux/api/api'
 import * as Icons from '@mui/icons-material'
 import { ToastContainer, toast } from 'react-toastify'
 import swal from 'sweetalert'
-import defaultImg from '../../../../src/assets/images/default.png'
+import defaultImg from '../../../../src/assets/images/defaultImg.png'
 
 const News = () => {
   const navigate = useNavigate()
@@ -79,7 +79,7 @@ const News = () => {
               style={{ height: '50px', width: '50px' }}
             />
           ) : (
-            <img src={defaultImg} alt={defaultImg} style={{ height: '50px', width: '50px' }} />
+            <img src={defaultImg} alt={newsImage} style={{ height: '50px', width: '50px' }} />
           ),
       },
     },

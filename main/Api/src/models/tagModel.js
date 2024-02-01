@@ -1,4 +1,3 @@
-
 const mongoose = require("mongoose");
 
 const tagSchema = mongoose.Schema(
@@ -8,13 +7,11 @@ const tagSchema = mongoose.Schema(
       required: [true, "Tag name is required."],
       trim: true,
     },
-    languages: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "languages",
-        required: [true, "language name is required."],
-      },
-    ],
+    languages: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "languages",
+    },
+
     status: {
       type: Boolean,
       default: true,

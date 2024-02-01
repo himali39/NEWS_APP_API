@@ -6,7 +6,7 @@ import { deleteCategory, getAllCategory, updateCategoryStatus } from 'src/redux/
 import * as Icons from '@mui/icons-material'
 import { ToastContainer, toast } from 'react-toastify'
 import swal from 'sweetalert'
-import defaultImg from '../../../../src/assets/images/default.png'
+import defaultImg from '../../../../src/assets/images/defaultImg.png'
 
 const Category = () => {
   const navigate = useNavigate()
@@ -22,7 +22,7 @@ const Category = () => {
         }))
 
         setDataTable(transformedData)
-        setBaseUrl(`${process.env.REACT_APP_LANGUAGES_IMAGE_PATH}`)
+        setBaseUrl(`${process.env.REACT_APP_CATEGORY_IMAGE_PATH}`)
       })
       .catch((err) => {
         if (!err.response.data.success) {
@@ -67,11 +67,7 @@ const Category = () => {
               style={{ height: '50px', width: '50px' }}
             />
           ) : (
-            <img
-              src={defaultImg}
-              alt={categoryImage}
-              style={{ height: '50px', width: '50px', borderRadius: '50%' }}
-            />
+            <img src={defaultImg} alt={categoryImage} style={{ height: '50px', width: '50px' }} />
           ),
       },
     },
@@ -116,8 +112,8 @@ const Category = () => {
               <Icons.EditRounded
                 className="editButton"
                 onClick={() => {
-                  const editdata = dataTableData.find((data) => data._id === value)
-                  navigate('/category-form', { state: { editdata: editdata, imageUrl: baseUrl } })
+                  const editData = dataTableData.find((data) => data._id === value)
+                  navigate('/category-form', { state: { editData: editData, imageUrl: baseUrl } })
                 }}
               ></Icons.EditRounded>
               <Icons.DeleteRounded

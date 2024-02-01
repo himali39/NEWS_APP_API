@@ -20,7 +20,7 @@ const categorySchema = mongoose.Schema(
 
     categoryImage: {
       type: String,
-      required: [true, "Image is required."],
+      default: null,
     },
     status: {
       type: Boolean,

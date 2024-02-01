@@ -4,26 +4,25 @@ const News = require("../../models/newsModel");
 const addNews = async (req, res) => {
   try {
     const reqbody = req.body;
-  
 
-    if (req.files.newsImage) {
+    if (req.file && req.file.filename != "undefined") {
       reqbody.newsImage = req.files.newsImage[0].filename;
     }
 
-    if (req.files.multipleImage) {
+    console.log(req.files.newsImage);
+    if (req.files && req.files.filename != "undefined") {
       reqbody.multipleImage = req.files.multipleImage.map(
         (file) => file.filename
       );
     }
-    if (req.files.video) {
+   
+    if (req.files && req.files.filename != "undefined") {
       reqbody.video = req.files.video[0].filename;
     }
 
-    // if (reqbody.contentType !==) {
-    //   throw new Error("Content-Type not supported");
-    // }
+console.log(req.file.video);
+    
     const newsData = await News.create(reqbody);
-
     if (!newsData) {
       return res.status(404).json({ message: "News Data not found" });
     }
@@ -113,7 +112,7 @@ const deleteNews = async (req, res) => {
 /* ----------------------------- delete Category data ----------------------------- */
 const updateNews = async (req, res) => {
   try {
-    const reqbody=req.body;
+    const reqbody = req.body;
     const newsData = await News.findById(req.params.id);
 
     if (!newsData) {
@@ -151,7 +150,6 @@ const updateNews = async (req, res) => {
 /* --------------------------- Update News Status --------------------------- */
 const updateNewsStatus = async (req, res, next) => {
   try {
-   
     const newsData = await News.findById(req.params.id);
 
     if (!newsData) {
@@ -167,7 +165,6 @@ const updateNewsStatus = async (req, res, next) => {
       message: "News data update successfully",
       news: updatedStatus,
     });
-
   } catch (err) {
     next(err);
   }

@@ -6,7 +6,7 @@ import * as Icons from '@mui/icons-material'
 import { ToastContainer, toast } from 'react-toastify'
 import { deleteLanguage, getAllLanguage, updateLanguage } from 'src/redux/api/api'
 import swal from 'sweetalert'
-import defaultImg from '../../../../src/assets/images/default.png'
+import defaultImg from '../../../../src/assets/images/defaultImg.png'
 
 const Language = () => {
   const [dataTableData, setDataTable] = useState([])

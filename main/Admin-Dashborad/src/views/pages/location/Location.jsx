@@ -97,9 +97,9 @@ const Location = () => {
               <Icons.EditRounded
                 className="editButton"
                 onClick={() => {
-                  const editdata = dataTableData.find((data) => data._id === value)
-                  console.log(editdata)
-                  navigate('/location-form', { state: { editdata: editdata } })
+                  const editData = dataTableData.find((data) => data._id === value)
+                  console.log(editData)
+                  navigate('/location-form', { state: { editData: editData } })
                 }}
               ></Icons.EditRounded>
               <Icons.DeleteRounded

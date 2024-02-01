@@ -108,10 +108,9 @@ const SubCategory = () => {
               <Icons.EditRounded
                 className="editButton"
                 onClick={() => {
-                  const editdata = dataTableData.find((data) => data._id === value)
-                  console.log(editdata)
+                  const editData = dataTableData.find((data) => data._id === value)
                   navigate('/sub-category-form', {
-                    state: { editdata: editdata },
+                    state: { editData: editData },
                   })
                 }}
               ></Icons.EditRounded>
