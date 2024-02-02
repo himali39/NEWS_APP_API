@@ -153,7 +153,7 @@ const forgotPasswordEmail = async (req, res) => {
 
     // Render the EJS template
     const emailTemplate = await ejs.renderFile(
-      "./src/Api/views/email_otp.ejs",
+      "./Api/src/views/email_otp.ejs",
       {
         otp,
       }

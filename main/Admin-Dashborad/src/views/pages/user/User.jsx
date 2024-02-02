@@ -1,4 +1,4 @@
-import { Button, Switch } from '@mui/material'
+import { Button, IconButton, Switch } from '@mui/material'
 import MUIDataTable from 'mui-datatables'
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
@@ -34,15 +34,6 @@ const User = () => {
   }, [])
 
   const columns = [
-    {
-      name: 'index',
-      label: 'No',
-      options: {
-        customBodyRender: (value, tableMeta, updateValue) => {
-          return tableMeta.rowIndex + 1
-        },
-      },
-    },
     {
       name: 'fullName',
       label: 'Full Name',
@@ -119,7 +110,6 @@ const User = () => {
         },
       },
     },
-
     {
       name: '_id',
       label: 'Action',
@@ -170,9 +160,52 @@ const User = () => {
     },
   ]
 
+  const deleteMultiple = async (selectedRows, data) => {
+    const ids = selectedRows.data.map((index1) => data[index1.dataIndex]._id)
+
+    const confirm = await swal({
+      title: 'Are you sure?',
+      text: 'Are you sure that you want to delete this Category?',
+      icon: 'warning',
+      buttons: ['No, cancel it!', 'Yes, I am sure!'],
+      dangerMode: true,
+    })
+
+    if (confirm) {
+      (ids)
+        .then(() => {
+          list()
+          toast.success('Deleted successfully!', {
+            key: ids.join(','),
+          })
+        })
+        .catch(() => {
+          toast.error('Something went wrong!', {
+            key: ids.join(','),
+          })
+        })
+    }
+  }
+
+  const SelectedRowsToolbar = ({ selectedRows, data }) => {
+    return (
+      <div>
+        <IconButton onClick={() => deleteMultiple(selectedRows, data)}>
+          <Icons.Delete />
+        </IconButton>
+      </div>
+    )
+  }
+
   const options = {
-    // filterType: 'checkbox',
-    selectableRows: 'none',
+    customToolbarSelect: (selectedRows, data) => (
+      <SelectedRowsToolbar
+        selectedRows={selectedRows}
+        data={data}
+        columns={columns}
+        datatableTitle="test"
+      />
+    ),
   }
 
   return (

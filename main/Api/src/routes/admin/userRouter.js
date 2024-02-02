@@ -1,5 +1,5 @@
 const express = require("express");
-const { allUserList, addUser, deleteUser, updateUser, getStatusWiseUserCount } = require("../../controllers/admin/adminUserController");
+const { allUserList, addUser, deleteUser, updateUser, getStatusWiseUserCount, deleteMultipleUser } = require("../../controllers/admin/adminUserController");
 const { singleFileUpload } = require("../../helper/upload");
 const verifyAdminToken = require("../../helper/verifyAdminToken");
 
@@ -16,6 +16,8 @@ router.post(
 router.get("/get-user", verifyAdminToken, allUserList);
 
 router.delete("/delete-user/:id", verifyAdminToken, deleteUser);
+
+router.delete("/multidelete-user", deleteMultipleUser);
 
 router.get("/get-activeUser", verifyAdminToken, getStatusWiseUserCount);
 

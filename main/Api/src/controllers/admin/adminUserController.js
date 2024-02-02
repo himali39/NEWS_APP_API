@@ -109,7 +109,53 @@ const updateUser = async (req, res) => {
     });
   }
 };
+/* ----------------------- Multiple User delete ---------------------- */
+// const deleteMultipleUser = async (req, res) => {
+//   try {
+//     const { ids } = req.body;
+//     const userData = await User.deleteMany({ _id: { $in: ids } });
 
+//     if (userData.deletedCount === 0) {
+//       throw new Error("User not Found");
+//     }
+//     res.status(200).json({
+//       success: true,
+//       message: "User Delete successfully!",
+//       user: userData,
+//     });
+//   } catch (err) {
+//     res.status(400).json({
+//       success: false,
+//       message: err.message,
+//     });
+//   }
+// };
+const deleteMultipleUser = async (req, res, next) => {
+  try {
+    const { ids } = req.body;
+    ids.map(async (item) => {
+      const id = new mongoose.Types.ObjectId(item);
+
+      const userData = await User.findById(id);
+
+      if (!userData) {
+        return res.status(404).json({ message: "user data not found" });
+      }
+
+      deleteFiles("/userImg" + userData.ProfileImg);
+
+      await User.deleteOne({ _id: id });
+    });
+
+    res.status(200).json({
+      success: true,
+      message: "All selected records deleted successfully.",
+      user: updatedData,
+    });
+  } catch (err) {
+    next(err);
+  }
+};
 /* ----  total count of active and inactive users ---- */
 const getStatusWiseUserCount = async (req, res) => {
   try {
@@ -144,6 +190,7 @@ module.exports = {
   allUserList,
   addUser,
   deleteUser,
+  deleteMultipleUser,
   updateUser,
   getStatusWiseUserCount,
 };

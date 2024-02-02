@@ -140,6 +140,9 @@ export const DELETE_USER_API = '/admin/delete-user/'
 /*  update USER  */
 export const UPDATE_USER_API = '/admin/update-user/'
 
+/*  delete  multiple USER  */
+export const DELETE_MULTIPLE_USER_API = '/admin/multidelete-user'
+
 /*user active  */
 export const ACTIVE_USER_API = '/admin/get-activeUser/'
 

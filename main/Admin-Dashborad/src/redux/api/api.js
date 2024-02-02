@@ -28,6 +28,7 @@ import {
   DELETE_FEEDBACK_API,
   DELETE_LANGUAGE_API,
   DELETE_LOCATION_API,
+  DELETE_MULTIPLE_USER_API,
   DELETE_NEWS_API,
   DELETE_NOTIFICATION_API,
   DELETE_SUBCATEGORY_API,
@@ -338,6 +339,13 @@ export const addUser = (data) =>
 export const deleteUser = (id) =>
   axios.delete(MAIN_URL + DELETE_USER_API + id, {
     headers: { Authorization: `Bearer ${Cookies.get('accessToken')}` },
+  })
+
+/* delete MULTIPLE User  */
+export const deleteMultipleUser = (data) =>
+  axios.delete(MAIN_URL + DELETE_MULTIPLE_USER_API, {
+    headers: { Authorization: `Bearer ${Cookies.get('accessToken')}` },
+    data: { ids: data },
   })
 
 /* update User  */
