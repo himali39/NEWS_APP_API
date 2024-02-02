@@ -31,7 +31,7 @@ const newsSchema = mongoose.Schema(
     title: {
       type: String,
       trim: true,
-      // required: [true, "News Title name is required."],
+      required: [true, "News Title name is required."],
     },
     tag: {
       type: mongoose.Schema.Types.ObjectId,

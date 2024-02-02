@@ -121,7 +121,7 @@ const getCategoryByLanguage = async (req, res) => {
     if (!languageId) {
       return res
         .status(400)
-        .json({ message: "Language ID is required for filtering categories" });
+        .json({ message: "Language is required for categories" });
     }
 
     const CategoryData = await Category.find({
@@ -131,12 +131,12 @@ const getCategoryByLanguage = async (req, res) => {
     if (!CategoryData || CategoryData.length === 0) {
       return res
         .status(400)
-        .json({ message: "No categories found for the given language ID" });
+        .json({ message: "No categories found for the given Language" });
     }
 
     res.status(200).json({
       success: true,
-      message: "Get categories data based on language ID",
+      message: "Get categories data based on Language",
       category: CategoryData,
     });
   } catch (error) {

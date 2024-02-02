@@ -38,6 +38,15 @@ const Tag = () => {
 
   const columns = [
     {
+      name: 'index',
+      label: 'No',
+      options: {
+        customBodyRender: (value, tableMeta, updateValue) => {
+          return tableMeta.rowIndex + 1
+        },
+      },
+    },
+    {
       name: 'tagName',
       label: 'Tag',
       options: {
@@ -135,7 +144,8 @@ const Tag = () => {
   ]
 
   const options = {
-    filterType: 'checkbox',
+    // filterType: 'checkbox',
+    selectableRows: 'none',
   }
 
   return (

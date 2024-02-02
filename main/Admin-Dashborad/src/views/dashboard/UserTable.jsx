@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import MUIDataTable from 'mui-datatables'
 import { ActiveUserList } from 'src/redux/api/api'
 import { toast, ToastContainer } from 'react-toastify'
+import defaultImg from '../../assets/images/default.png'
 
 const UserTable = () => {
   const [dataTableData, setDataTable] = useState([])
@@ -64,7 +65,11 @@ const UserTable = () => {
               style={{ height: '50px', width: '50px', borderRadius: '50%' }}
             />
           ) : (
-            ''
+            <img
+              src={defaultImg}
+              alt={ProfileImg}
+              style={{ height: '50px', width: '50px', borderRadius: '50%' }}
+            />
           ),
       },
     },

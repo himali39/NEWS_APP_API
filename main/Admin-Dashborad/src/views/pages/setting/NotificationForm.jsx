@@ -92,8 +92,9 @@ const NotificationForm = () => {
     if (state) {
       const { editData } = state
       setIsUpdate(editData._id)
-      setValue('title', editData.question)
-      setValue('languages', editData.languages)
+      setValue('title', editData.title)
+      setValue('languages', editData.languages._id)
+      setValue('description', editData.description)
     }
     LanguagesList()
   }, [])
@@ -126,6 +127,7 @@ const NotificationForm = () => {
                     </CFormSelect>
                     {errors.languages && <div className="errors">{errors.languages.message}</div>}
                   </CCol>
+
                   <CCol md={6}>
                     <CFormLabel>Title</CFormLabel>
                     <CFormInput
@@ -139,6 +141,7 @@ const NotificationForm = () => {
                     />
                     <CFormFeedback invalid>Title is required</CFormFeedback>
                   </CCol>
+
                   <CCol md={6}>
                     <CFormLabel>
                       Image

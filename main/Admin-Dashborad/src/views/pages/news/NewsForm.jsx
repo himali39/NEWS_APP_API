@@ -40,7 +40,6 @@ const NewsForm = () => {
     control,
     getValues,
   } = useForm()
-
   const navigate = useNavigate()
 
   const [isUpdate, setIsUpdate] = useState('')
@@ -56,10 +55,9 @@ const NewsForm = () => {
   const [multipleImageUrls, setMultipleImageUrls] = useState([])
   const [videoDiv, setVideoDiv] = useState(false)
   const [videoFile, setVideoFile] = useState(null)
-  let defaultImage = './src/assets/images/default.png'
   const { state } = useLocation()
 
-  /* language on change event*/
+  /* handle on change event*/
   const handleChange = async (fieldName, fieldValue) => {
     clearErrors(fieldName, fieldValue)
     setValue(fieldName, fieldValue)
@@ -77,7 +75,13 @@ const NewsForm = () => {
 
   const handleVideoChange = (e) => {
     const file = e.target.files[0]
-    setVideoFile(file)
+    // Check if the selected file is an mp4 video
+    if (file && file.type === 'video/mp4') {
+      setVideoFile(file)
+    } else {
+      e.target.value = null
+      toast.error('Invalid video type. Only mp4 files are allowed.')
+    }
   }
   /**Single image url handle change */
   const handleSingleImgChange = (e) => {
@@ -461,16 +465,14 @@ const NewsForm = () => {
                       <CFormInput
                         type="file"
                         id="multipleImage"
-                        className={errors.multipleImage ? 'is-invalid' : ''}
+                        // className={errors.multipleImage ? 'is-invalid' : ''}
                         {...register('multipleImage')}
-                        invalid={!!errors.multipleImage}
                         onChange={(e) => {
                           handleMultiImgChange(e)
                         }}
                         multiple
                       />
 
-                      <p> Multiple Images </p>
                       {multipleImageUrls &&
                         multipleImageUrls.map((preview, index) => (
                           <img

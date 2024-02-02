@@ -36,6 +36,15 @@ const Language = () => {
 
   const columns = [
     {
+      name: 'index',
+      label: 'No',
+      options: {
+        customBodyRender: (value, tableMeta, updateValue) => {
+          return tableMeta.rowIndex + 1
+        },
+      },
+    },
+    {
       name: 'languagesName',
       label: 'Language',
       options: {
@@ -159,6 +168,7 @@ const Language = () => {
 
   const options = {
     // filterType: 'checkbox',
+    selectableRows: 'none',
   }
 
   return (

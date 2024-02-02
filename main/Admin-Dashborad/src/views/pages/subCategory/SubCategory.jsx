@@ -40,6 +40,15 @@ const SubCategory = () => {
 
   const columns = [
     {
+      name: 'index',
+      label: 'No',
+      options: {
+        customBodyRender: (value, tableMeta, updateValue) => {
+          return tableMeta.rowIndex + 1
+        },
+      },
+    },
+    {
       name: 'subCategoryName',
       label: 'sub Category ',
       options: {
@@ -148,7 +157,8 @@ const SubCategory = () => {
   ]
 
   const options = {
-    filterType: 'checkbox',
+    // filterType: 'checkbox',
+    selectableRows: 'none',
   }
 
   return (

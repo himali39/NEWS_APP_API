@@ -107,7 +107,7 @@ const ChangePassword = () => {
                     </CInputGroup>
 
                     <CRow className="update-button">
-                      <CCol xs={6} md={4} className="mb-2 mb-md-0">
+                      <CCol xs={12} md={4} className="mb-2 mb-md-0">
                         <CButton
                           type="submit"
                           className="w-100 custom-color"

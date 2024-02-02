@@ -63,7 +63,7 @@ const EditProfile = () => {
         } else {
           if ((res.status === 202 || 400) && !res.data.success) {
             setError(res.data.message)
-            // setIsLoading(false)
+            setIsLoading(false)
           }
         }
         setIsLoading(false)
@@ -86,12 +86,12 @@ const EditProfile = () => {
   }
 
   return (
-    <div className="bg-light min-vh-100 profile">
+    <div className="bg-light profile">
       <CContainer className="profile-container">
         <CRow>
           <CCol>
             <CCardGroup>
-              <CCard className="p-4 profile-card">
+              <CCard className="p-4 mb-4 profile-card">
                 <CCardBody>
                   <CForm onSubmit={handleSubmit(onSubmit)}>
                     <h2 className="text-center mb-4">Edit Your Profile</h2>
@@ -131,12 +131,12 @@ const EditProfile = () => {
                         type="file"
                         accept="image/*"
                         {...register('profileImage')}
-                        id="validationTextarea"
+                        id="image"
                         aria-label="file example"
                       />
                     </CInputGroup>
                     <CRow className="update-button">
-                      <CCol xs={6} md={4} className="mb-2 mb-md-0 ">
+                      <CCol xs={12} sm={4} className="mb-2 mb-md-0 ">
                         <CButton type="submit" className="w-100 custom-color" disabled={isLoading}>
                           {isLoading ? 'Loading...' : 'Update'}
                         </CButton>

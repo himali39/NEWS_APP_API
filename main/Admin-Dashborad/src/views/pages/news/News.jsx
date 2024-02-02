@@ -44,6 +44,15 @@ const News = () => {
 
   const columns = [
     {
+      name: 'index',
+      label: 'No',
+      options: {
+        customBodyRender: (value, tableMeta, updateValue) => {
+          return tableMeta.rowIndex + 1
+        },
+      },
+    },
+    {
       name: 'categoryName',
       label: 'Category',
       options: {
@@ -113,6 +122,14 @@ const News = () => {
       options: {
         filter: true,
         sort: true,
+        customBodyRender: (value) => {
+          if (!value) return '' // Handle null or undefined values
+          const dateObject = new Date(value)
+          const day = dateObject.getDate().toString().padStart(2, '0')
+          const month = (dateObject.getMonth() + 1).toString().padStart(2, '0') // Months are 0-indexed
+          const year = dateObject.getFullYear()
+          return `${day}/${month}/${year}`
+        },
       },
     },
     {
@@ -157,6 +174,7 @@ const News = () => {
                 className="editButton"
                 onClick={() => {
                   const editData = dataTableData.find((data) => data._id === value)
+                  console.log(editData)
                   navigate('/news-form', { state: { editData: editData, imageUrl: baseUrl } })
                 }}
               ></Icons.EditRounded>
@@ -194,7 +212,8 @@ const News = () => {
   ]
 
   const options = {
-    filterType: 'checkbox',
+    // filterType: 'checkbox',
+    selectableRows: 'none',
   }
 
   return (

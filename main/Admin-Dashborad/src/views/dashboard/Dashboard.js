@@ -72,7 +72,7 @@ const Dashboard = () => {
     <>
       {isLoading ? (
         <>
-          <CSpinner component="span" size="sm" aria-hidden="true" />
+          <CSpinner component="span" size="sm" aria-hidden="true" style={{ textAlign: 'center' }} />
           Loading...
         </>
       ) : (
@@ -82,7 +82,7 @@ const Dashboard = () => {
           <CCard className="mb-4">
             <CCardBody>
               <CRow>
-                <CCol xs={4}>
+                <CCol xs={12} md={6} xl={4}>
                   <CCard className="mb-4" style={{ height: '96%' }}>
                     <CCardHeader>Category wise News</CCardHeader>
                     <CCardBody>
@@ -101,7 +101,7 @@ const Dashboard = () => {
                     </CCardBody>
                   </CCard>
                 </CCol>
-                <CCol xs={8}>
+                <CCol xs={12} md={6} xl={8}>
                   <CCard className="mb-4">
                     <CCardHeader>Active Users</CCardHeader>
                     <CCardBody>

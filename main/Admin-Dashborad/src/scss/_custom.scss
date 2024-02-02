@@ -89,7 +89,7 @@ html:not([dir='rtl']) .ms-2 {
   border: 2px solid #813939 !important;
   background-color: #3c4b64 !important;
 }
-/** delete button css*/ 
+/** delete button css*/
 .deleteButton {
   color: #ffff;
   cursor: pointer;
@@ -113,7 +113,7 @@ html:not([dir='rtl']) .ms-2 {
 .submitButton {
   display: flex;
   justify-content: flex-end;
-  margin-top: 40px;
+  margin-top: 4rem !important;
 }
 
 .gender {
@@ -132,15 +132,16 @@ html:not([dir='rtl']) .ms-2 {
 .card-header {
   background-color: #15b3ce33;
 }
+
 /* ---------------------------- sidebar color css --------------------------- */
 .sidebar {
   --cui-sidebar-bg: #15b3ce99 !important;
 }
 .sidebar-nav .nav-link {
   background-color: #168b9e;
-  
+
   color: #ffff;
-} 
+}
 
 .sidebar-nav .nav-item {
   padding-top: 4px;
@@ -169,12 +170,9 @@ html:not([dir='rtl']) .ms-2 {
   text-align: center;
   padding: 2px;
 }
-.custom-icon {
-  opacity: 0.5;
-  transition: opacity 0.3s;
-}
 
-.custom-icon:hover {
-  opacity: 1;
-  /* Add other hover styles as needed */
+.hover-card:hover .icon-container {
+  transform: scale(1.2); /* Adjust the scaling factor as needed */
+  transition: transform 0.3s ease-in-out;
+  opacity: 0.9;
 }

@@ -50,26 +50,18 @@ const adminLogin = async (req, res) => {
     const successPassword = await bcrypt.compare(password, admin.password);
     if (!successPassword) throw Error("Inccorect Password");
 
-    // /**create Token */
-    let payload = {
-      email,
-      expiresIn: "1m",
-      refreshSecret,
-    };
-
     /**create accesstoken */
     let accessToken;
 
     accessToken = jwt.sign({ email: email }, process.env.JWT_SECRECT_KEY, {
-      expiresIn: "1d",
+      expiresIn: "20m",
     });
 
     // accessToken = await jwt.sign(payload, process.env.JWT_SECRECT_KEY);
     admin.accessToken = accessToken;
 
-    const refreshToken = jwt.sign({ email: email }, refreshSecret,
-       {
-      expiresIn: "5m",
+    const refreshToken = jwt.sign({ email: email }, refreshSecret, {
+      expiresIn: "1m",
     });
 
     const baseUrl =
@@ -286,7 +278,7 @@ const refreshToken = async (req, res, next) => {
       { email: decoded.email },
       accessSecret, //access secret key from env
       {
-        expiresIn: "20m",
+        expiresIn: "1m",
       }
     );
     res.status(200).json({ success: true, admin: admin, refreshToken: token });

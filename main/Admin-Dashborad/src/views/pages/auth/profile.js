@@ -9,14 +9,14 @@ const Profile = () => {
     <div className="bg-light min-vh-100 profile">
       <CContainer className="profile-container">
         <CRow>
-          <CCol md={6}>
+          <CCol lg={6} xs={12}>
             <CCardGroup>
               <CCardBody>
                 <EditProfile />
               </CCardBody>
             </CCardGroup>
           </CCol>
-          <CCol md={6}>
+          <CCol lg={6} xs={12}>
             <CCardGroup>
               <CCardBody>
                 <ChangePassword />

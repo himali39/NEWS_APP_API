@@ -74,7 +74,7 @@ const Login = () => {
     <div className="login-page bg-light min-vh-100">
       <CContainer>
         <CRow className="justify-content-center">
-          <CCol md={12} className="main-col">
+          <CCol lg={4} md={6} sm={6}>
             <CCardGroup>
               <CCard className="p-4">
                 <CCardBody>
@@ -109,12 +109,12 @@ const Login = () => {
                     </CInputGroup>
 
                     <CRow>
-                      <CCol xs={12} md={6} className="mb-3 mb-md-0 mt-2">
-                        <CButton type="submit" className="w-100 custom-color">
+                      <CCol lg={12} md={6} xs={12} className="mb-3 mb-md-0 mt-2">
+                        <CButton type="submit" className="w-100 custom-color" disabled={isLoading}>
                           {isLoading ? 'Loading...' : 'Login'}
                         </CButton>
                       </CCol>
-                      <CCol xs={12} md={6} className="text-center text-md-right">
+                      <CCol lg={12} md={6} xs={12} className="text-center text-md-right">
                         <NavLink to="/forgot-password">
                           <CButton color="link" className="px-0">
                             Forgot password?

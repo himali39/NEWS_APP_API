@@ -35,6 +35,15 @@ const User = () => {
 
   const columns = [
     {
+      name: 'index',
+      label: 'No',
+      options: {
+        customBodyRender: (value, tableMeta, updateValue) => {
+          return tableMeta.rowIndex + 1
+        },
+      },
+    },
+    {
       name: 'fullName',
       label: 'Full Name',
       options: {
@@ -67,7 +76,7 @@ const User = () => {
             <img
               src={`${process.env.REACT_APP_USER_PROFILE_PATH}${ProfileImg}`}
               alt={ProfileImg}
-              style={{ height: '50px', width: '50px' }}
+              style={{ height: '50px', width: '50px', borderRadius: '50%' }}
             />
           ) : (
             <img
@@ -163,6 +172,7 @@ const User = () => {
 
   const options = {
     // filterType: 'checkbox',
+    selectableRows: 'none',
   }
 
   return (

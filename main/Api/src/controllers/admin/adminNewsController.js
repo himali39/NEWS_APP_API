@@ -8,8 +8,7 @@ const addNews = async (req, res) => {
     if (req.file && req.file.filename != "undefined") {
       reqbody.newsImage = req.files.newsImage[0].filename;
     }
-
-    console.log(req.files.newsImage);
+  
     if (req.files && req.files.filename != "undefined") {
       reqbody.multipleImage = req.files.multipleImage.map(
         (file) => file.filename
@@ -19,8 +18,6 @@ const addNews = async (req, res) => {
     if (req.files && req.files.filename != "undefined") {
       reqbody.video = req.files.video[0].filename;
     }
-
-console.log(req.file.video);
     
     const newsData = await News.create(reqbody);
     if (!newsData) {
@@ -36,6 +33,7 @@ console.log(req.file.video);
     res.status(400).json({
       success: false,
       message: err.message,
+     
     });
   }
 };

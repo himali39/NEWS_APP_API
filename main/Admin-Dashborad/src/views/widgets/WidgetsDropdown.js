@@ -34,9 +34,13 @@ const WidgetsDropdown = () => {
         <CRow>
           <CCol sm={6} lg={3}>
             <CWidgetStatsF
-              className="mb-3"
+              className="mb-3 hover-card"
               style={{ backgroundColor: 'rgb(142 185 185)', color: 'white' }}
-              icon={<CIcon width={38} icon={cil3d} size="xl" className="custom-icon" />}
+              icon={
+                <div className="icon-container">
+                  <CIcon width={38} icon={cil3d} size="xl" className="custom-icon" />
+                </div>
+              }
               value={
                 <>
                   <div style={{ fontSize: '16px' }}>Total Category</div>
@@ -58,9 +62,13 @@ const WidgetsDropdown = () => {
           </CCol>
           <CCol sm={6} lg={3}>
             <CWidgetStatsF
-              className="mb-3"
+              className="mb-3 hover-card"
               style={{ backgroundColor: '#6b90b5', color: 'white' }}
-              icon={<CIcon width={38} icon={cilNewspaper} size="xl" />}
+              icon={
+                <div className="icon-container">
+                  <CIcon width={38} icon={cilNewspaper} size="xl" className="custom-icon" />
+                </div>
+              }
               value={
                 <>
                   <div style={{ fontSize: '16px' }}>Total News</div>
@@ -82,9 +90,13 @@ const WidgetsDropdown = () => {
           </CCol>
           <CCol sm={6} lg={3}>
             <CWidgetStatsF
-              className="mb-3"
+              className="mb-3 hover-card"
               style={{ backgroundColor: '#acb3b0', color: 'white' }}
-              icon={<CIcon width={38} icon={cilUser} size="xl" />}
+              icon={
+                <div className="icon-container">
+                  <CIcon width={38} icon={cilUser} size="xl" className="custom-icon" />
+                </div>
+              }
               value={
                 <>
                   <div style={{ fontSize: '16px' }}>All Users</div>
@@ -106,9 +118,13 @@ const WidgetsDropdown = () => {
           </CCol>
           <CCol sm={6} lg={3}>
             <CWidgetStatsF
-              className="mb-3"
+              className="mb-3 hover-card"
               style={{ backgroundColor: '#77d6d6', color: 'white' }}
-              icon={<CIcon width={38} icon={cilLanguage} size="xl" />}
+              icon={
+                <div className="icon-container">
+                  <CIcon width={38} icon={cilLanguage} size="xl" className="custom-icon" />
+                </div>
+              }
               value={
                 <>
                   <div style={{ fontSize: '16px' }}>Total Language</div>

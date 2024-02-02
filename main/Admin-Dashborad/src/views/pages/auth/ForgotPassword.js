@@ -55,7 +55,7 @@ const ForgotPassword = () => {
     <div className="login-page bg-light min-vh-100">
       <CContainer>
         <CRow className="justify-content-center">
-          <CCol md={8}>
+          <CCol lg={4} md={6} sm={6}>
             <CCardGroup>
               <CCard className="p-4">
                 <CCardBody>
@@ -86,13 +86,13 @@ const ForgotPassword = () => {
                     <ToastContainer />
 
                     <CRow>
-                      <CCol xs={12} md={6} className="mb-2 mb-md-0">
+                      <CCol lg={12} md={6} xs={12} className="mb-2 mb-md-0">
                         <CButton type="submit" className="w-100 custom-color">
                           {isLoading ? 'Loading...' : 'Submit'}
                         </CButton>
                       </CCol>
 
-                      <CCol xs={12} md={6} className="text-center text-md-right">
+                      <CCol lg={12} md={6} xs={12} className="text-center text-md-right">
                         <NavLink to="/">
                           <CButton color="link" className="px-0">
                             Back to Login

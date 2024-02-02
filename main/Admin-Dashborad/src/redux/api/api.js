@@ -65,24 +65,27 @@ axios.interceptors.response.use(
 
     if (err.response.status === 402 && !originalRequest._retry) {
       originalRequest._retry = true
+      Cookies.remove('accessToken')
+      Cookies.remove('refreshToken')
+      Cookies.remove('admin')
+      window.location.reload()
+      // try {
+      //   const refreshToken = Cookies.get('refreshToken')
 
-      try {
-        const refreshToken = Cookies.get('refreshToken')
+      //   const res = await axios.post(`${MAIN_URL}/admin/refreshToken`, { refreshToken })
 
-        const res = await axios.post(`${MAIN_URL}/admin/refreshToken`, { refreshToken })
+      //   const accessToken = res.data.refreshToken
 
-        const accessToken = res.data.refreshToken
+      //   Cookies.set('accessToken', accessToken)
 
-        Cookies.set('accessToken', accessToken)
+      //   // Retry the original request with the new token
+      //   originalRequest.headers.Authorization = `Bearer ${accessToken}`
 
-        // Retry the original request with the new token
-        originalRequest.headers.Authorization = `Bearer ${accessToken}`
-
-        return axios(originalRequest)
-      } catch (refresherr) {
-        console.err('err refreshing token:', refresherr)
-        // You might want to redirect to login or handle the err in another way
-      }
+      //   return axios(originalRequest)
+      // } catch (refresherr) {
+      //   console.err('err refreshing token:', refresherr)
+      //   // You might want to redirect to login or handle the err in another way
+      // }
     }
 
     if (err.response.status === 405) {
@@ -116,7 +119,6 @@ axios.interceptors.response.use(
 /* ------------------------------ ALL ADMIN API ----------------------------- */
 /* Admin login api */
 export const adminLogin = (data) => axios.post(MAIN_URL + ADMIN_LOGIN_API, data)
-
 /* Admin forgot password api */
 export const forgotPassword = (data) => axios.post(MAIN_URL + ADMIN_FORGOT_PASSWORD_API, data)
 
@@ -138,8 +140,8 @@ export const UpdateProfile = (data) =>
 
 /* ---------------------------- ALL LANGUAGE API ---------------------------- */
 /*  Get All Languages  */
-export const getAllLanguage = (data) =>
-  axios.get(MAIN_URL + All_LANGUAGE_LIST_API, data, {
+export const getAllLanguage = () =>
+  axios.get(MAIN_URL + All_LANGUAGE_LIST_API, {
     headers: { Authorization: `Bearer ${Cookies.get('accessToken')}` },
   })
 
@@ -170,8 +172,8 @@ export const addCategory = (data) =>
   })
 
 /* Get All Category  */
-export const getAllCategory = (data) =>
-  axios.get(MAIN_URL + All_CATEGORY_LIST_API, data, {
+export const getAllCategory = () =>
+  axios.get(MAIN_URL + All_CATEGORY_LIST_API, {
     headers: { Authorization: `Bearer ${Cookies.get('accessToken')}` },
   })
 
@@ -197,8 +199,8 @@ export const updateCategoryStatus = (data, id) =>
 
 /* ---------------------------- ALL  SUB CATEGORY API ---------------------------- */
 /* Get All subCategory  */
-export const getAllSubCategory = (data) =>
-  axios.get(MAIN_URL + All_SUBCATEGORY_LIST_API, data, {
+export const getAllSubCategory = () =>
+  axios.get(MAIN_URL + All_SUBCATEGORY_LIST_API, {
     headers: { Authorization: `Bearer ${Cookies.get('accessToken')}` },
   })
 
@@ -228,11 +230,6 @@ export const updateSubCatStatus = (data, id) =>
 /* ---------------------------- END SUB CATEGORY API ---------------------------- */
 
 /* ---------------------------- ALL TAG API ---------------------------- */
-/* Get All Tag  */
-export const getAllTag = (data) =>
-  axios.get(MAIN_URL + All_TAG_LIST_API, data, {
-    headers: { Authorization: `Bearer ${Cookies.get('accessToken')}` },
-  })
 
 /** add Tag */
 export const addTag = (data) =>
@@ -256,12 +253,19 @@ export const updateTagStatus = (data, id) =>
   axios.put(MAIN_URL + UPDATE_TAG_STATUS_API + id, data, {
     headers: { Authorization: `Bearer ${Cookies.get('accessToken')}` },
   })
+
+/* Get All Tag  */
+export const getAllTag = () =>
+  axios.get(MAIN_URL + All_TAG_LIST_API, {
+    headers: { Authorization: `Bearer ${Cookies.get('accessToken')}` },
+  })
+
 /* ---------------------------- ENDTAG API ---------------------------- */
 
 /* ---------------------------- ALL Location API ---------------------------- */
 /* Get All location  */
-export const getAllLocation = (data) =>
-  axios.get(MAIN_URL + All_LOCATION_LIST_API, data, {
+export const getAllLocation = () =>
+  axios.get(MAIN_URL + All_LOCATION_LIST_API, {
     headers: { Authorization: `Bearer ${Cookies.get('accessToken')}` },
   })
 
@@ -287,8 +291,8 @@ export const updateLocation = (data, id) =>
 
 /* ---------------------------- ALL News API ---------------------------- */
 /* Get All news  */
-export const getAllNews = (data) =>
-  axios.get(MAIN_URL + All_NEWS_LIST_API, data, {
+export const getAllNews = () =>
+  axios.get(MAIN_URL + All_NEWS_LIST_API, {
     headers: { Authorization: `Bearer ${Cookies.get('accessToken')}` },
   })
 
@@ -317,11 +321,10 @@ export const updateNewsStatus = (data, id) =>
   })
 
 /* ---------------------------- END News API ---------------------------- */
-
 /* ---------------------------- ALL User API ---------------------------- */
 /* Get All user  */
-export const getAllUser = (data) =>
-  axios.get(MAIN_URL + All_USER_LIST_API, data, {
+export const getAllUser = () =>
+  axios.get(MAIN_URL + All_USER_LIST_API, {
     headers: { Authorization: `Bearer ${Cookies.get('accessToken')}` },
   })
 
@@ -343,11 +346,6 @@ export const updateUser = (data, id) =>
     headers: { Authorization: `Bearer ${Cookies.get('accessToken')}` },
   })
 
-/* active User  */
-export const ActiveUserList = (data) =>
-  axios.get(MAIN_URL + ACTIVE_USER_API, data, {
-    headers: { Authorization: `Bearer ${Cookies.get('accessToken')}` },
-  })
 /* ---------------------------- END User API ---------------------------- */
 
 /* --------------------- Get All Category By languageId --------------------- */
@@ -363,8 +361,8 @@ export const getSubCatByCategory = (categoryId) =>
 
 /* ---------------------------- ALL FAQS API ---------------------------- */
 /* Get All Faqs */
-export const getFaqs = (data) =>
-  axios.get(MAIN_URL + GET_FAQS_API, data, {
+export const getFaqs = () =>
+  axios.get(MAIN_URL + GET_FAQS_API, {
     headers: { Authorization: `Bearer ${Cookies.get('accessToken')}` },
   })
 
@@ -387,11 +385,10 @@ export const updateFaqs = (data, id) =>
   })
 
 /* ---------------------------- END FAQS API ---------------------------- */
-
 /* ---------------------------- ALL Feedback API ---------------------------- */
 /* Get All Feedback */
-export const getFeedback = (data) =>
-  axios.get(MAIN_URL + GET_FEEDBACK_API, data, {
+export const getFeedback = () =>
+  axios.get(MAIN_URL + GET_FEEDBACK_API, {
     headers: { Authorization: `Bearer ${Cookies.get('accessToken')}` },
   })
 
@@ -403,8 +400,8 @@ export const deleteFeedback = (id) =>
 
 /* ---------------------------- ALL Notification API ---------------------------- */
 /* Get All Notification */
-export const getNotification = (data) =>
-  axios.get(MAIN_URL + GET_NOTIFICATION_API, data, {
+export const getNotification = () =>
+  axios.get(MAIN_URL + GET_NOTIFICATION_API, {
     headers: { Authorization: `Bearer ${Cookies.get('accessToken')}` },
   })
 
@@ -425,21 +422,26 @@ export const updateNotification = (data, id) =>
   axios.put(MAIN_URL + UPDATE_NOTIFICATION_API + id, data, {
     headers: { Authorization: `Bearer ${Cookies.get('accessToken')}` },
   })
-
 /* Get All Dashboard */
-export const getDashboradCount = (data) =>
-  axios.get(MAIN_URL + GET_COUNT_DASHBORD_API, data, {
-    headers: { Authorization: `Bearer ${Cookies.get('accessToken')}` },
-  })
-
-/* Get All Category Wise News */
-export const getCategoryWiseNews = (data) =>
-  axios.get(MAIN_URL + GET_CATEGORY_WISE_NEWS_API, data, {
+export const getDashboradCount = () =>
+  axios.get(MAIN_URL + GET_COUNT_DASHBORD_API, {
     headers: { Authorization: `Bearer ${Cookies.get('accessToken')}` },
   })
 
 /* Get All get Language Wise News */
-export const getLanguageWiseNews = (data) =>
-  axios.get(MAIN_URL + GET_LANGAUGES_WISE_NEWS_API, data, {
+export const getLanguageWiseNews = () =>
+  axios.get(MAIN_URL + GET_LANGAUGES_WISE_NEWS_API, {
+    headers: { Authorization: `Bearer ${Cookies.get('accessToken')}` },
+  })
+
+/* Get All Category Wise News */
+export const getCategoryWiseNews = () =>
+  axios.get(MAIN_URL + GET_CATEGORY_WISE_NEWS_API, {
+    headers: { Authorization: `Bearer ${Cookies.get('accessToken')}` },
+  })
+
+/* active User  */
+export const ActiveUserList = () =>
+  axios.get(MAIN_URL + ACTIVE_USER_API, {
     headers: { Authorization: `Bearer ${Cookies.get('accessToken')}` },
   })

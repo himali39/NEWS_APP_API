@@ -69,7 +69,6 @@ const getCategoryWiseNewsCount = async (req, res) => {
 
 const getLanguageWiseNewsCount = async (req, res) => {
   try {
-   
     const languageNewsCount = await News.aggregate([
       {
         $group: {
@@ -95,7 +94,7 @@ const getLanguageWiseNewsCount = async (req, res) => {
         },
       },
     ]);
-     res.status(200).json({
+    res.status(200).json({
       success: true,
       message: "Language-wise all news count",
       data: languageNewsCount,

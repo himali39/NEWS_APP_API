@@ -6,6 +6,7 @@ import * as Icons from '@mui/icons-material'
 import { ToastContainer, toast } from 'react-toastify'
 import swal from 'sweetalert'
 import { deleteNotification, getNotification, updateNotification } from 'src/redux/api/api'
+import defaultImg from '../../../assets/images/defaultImg.png'
 
 const Notification = () => {
   const navigate = useNavigate()
@@ -53,7 +54,6 @@ const Notification = () => {
         sort: false,
       },
     },
-
     {
       name: 'title',
       label: 'Title',
@@ -74,11 +74,14 @@ const Notification = () => {
               style={{ height: '50px', width: '50px' }}
             />
           ) : (
-            ''
+            <img
+              src={defaultImg}
+              alt={notifiImage}
+              style={{ height: '50px', width: '50px', borderRadius: '50%' }}
+            />
           ),
       },
     },
-
     {
       name: 'status',
       label: 'Status',
