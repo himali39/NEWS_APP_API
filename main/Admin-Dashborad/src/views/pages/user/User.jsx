@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import * as Icons from '@mui/icons-material'
 import { ToastContainer, toast } from 'react-toastify'
-import { deleteUser, getAllUser, updateUser } from 'src/redux/api/api'
+import { deleteMultipleUser, deleteUser, getAllUser, updateUser } from 'src/redux/api/api'
 import swal from 'sweetalert'
 import defaultImg from '../../../../src/assets/images/default.png'
 
@@ -160,20 +160,23 @@ const User = () => {
     },
   ]
 
-  const deleteMultiple = async (selectedRows, data) => {
-    const ids = selectedRows.data.map((index1) => data[index1.dataIndex]._id)
+  const deleteMultiple = async (index) => {
+    const ids = index.data.map(
+      (index1) => dataTableData.find((data, ind) => ind === index1.dataIndex && data._id)._id,
+    )
 
     const confirm = await swal({
       title: 'Are you sure?',
-      text: 'Are you sure that you want to delete this Category?',
+      text: 'Are you sure that you want to delete selected users?',
       icon: 'warning',
       buttons: ['No, cancel it!', 'Yes, I am sure!'],
       dangerMode: true,
     })
 
     if (confirm) {
-      (ids)
+      deleteMultipleUser(ids)
         .then(() => {
+          console.log(ids)
           list()
           toast.success('Deleted successfully!', {
             key: ids.join(','),
@@ -187,10 +190,10 @@ const User = () => {
     }
   }
 
-  const SelectedRowsToolbar = ({ selectedRows, data }) => {
+  const SelectedRowsToolbar = (data) => {
     return (
       <div>
-        <IconButton onClick={() => deleteMultiple(selectedRows, data)}>
+        <IconButton onClick={() => deleteMultiple(data)}>
           <Icons.Delete />
         </IconButton>
       </div>
@@ -207,7 +210,6 @@ const User = () => {
       />
     ),
   }
-
   return (
     <>
       <div className="right-text">

@@ -1,4 +1,6 @@
 const User = require("../../models/userModel");
+const mongoose = require("mongoose");
+const deleteFiles =require("../../helper/deleteFile");
 
 /* -------------------------------add Personalize data------------------------------ */
 const addUser = async (req, res) => {
@@ -64,11 +66,15 @@ const deleteUser = async (req, res) => {
     const DeletedData = await User.findByIdAndDelete(req.params.id, req.body, {
       new: true,
     });
+
+    deleteFiles("userImg/" + userData.ProfileImg);
+
     res.status(200).json({
       success: true,
       message: "List of User Data successfully ",
       user: DeletedData,
     });
+
   } catch (error) {
     res.status(404).json({
       success: false,
@@ -109,53 +115,42 @@ const updateUser = async (req, res) => {
     });
   }
 };
-/* ----------------------- Multiple User delete ---------------------- */
-// const deleteMultipleUser = async (req, res) => {
-//   try {
-//     const { ids } = req.body;
-//     const userData = await User.deleteMany({ _id: { $in: ids } });
 
-//     if (userData.deletedCount === 0) {
-//       throw new Error("User not Found");
-//     }
-//     res.status(200).json({
-//       success: true,
-//       message: "User Delete successfully!",
-//       user: userData,
-//     });
-//   } catch (err) {
-//     res.status(400).json({
-//       success: false,
-//       message: err.message,
-//     });
-//   }
-// };
-const deleteMultipleUser = async (req, res, next) => {
+/* ----------------------- Multiple User delete ---------------------- */
+const deleteMultipleUser = async (req, res) => {
   try {
     const { ids } = req.body;
-    ids.map(async (item) => {
-      const id = new mongoose.Types.ObjectId(item);
+ 
+    const userData = await User.find({ _id: { $in: ids } });
 
-      const userData = await User.findById(id);
-
-      if (!userData) {
-        return res.status(404).json({ message: "user data not found" });
-      }
-
-      deleteFiles("/userImg" + userData.ProfileImg);
-
-      await User.deleteOne({ _id: id });
+    // Check if any user data is found
+    if (userData.length === 0) {
+      throw new Error("User not Found");
+    }
+    // Extract ProfileImg from user data and delete files
+    userData.forEach((user) => {
+      deleteFiles("/userImg/" + user.ProfileImg);
     });
+    const deleteResult = await User.deleteMany({ _id: { $in: ids } });
+
+    // Check if any users were deleted
+    if (deleteResult.deletedCount === 0) {
+      throw new Error("User not Found");
+    }
 
     res.status(200).json({
       success: true,
-      message: "All selected records deleted successfully.",
-      user: updatedData,
+      message: "Users deleted successfully!",
+      users: userData,
     });
   } catch (err) {
-    next(err);
+    res.status(400).json({
+      success: false,
+      message: err.message,
+    });
   }
 };
+
 /* ----  total count of active and inactive users ---- */
 const getStatusWiseUserCount = async (req, res) => {
   try {

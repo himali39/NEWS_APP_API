@@ -63,6 +63,9 @@ const deleteCategory = async (req, res) => {
 
     deleteFiles("category-images/" + CategoryData.categoryImage);
 
+    // console.log("category-images/" + CategoryData.categoryImage);
+
+    // console.log(CategoryData.categoryImage);
     const deleteCateData = await Category.findByIdAndDelete(req.params.id);
 
     res.status(200).json({
@@ -150,7 +153,6 @@ const getCategoryByLanguage = async (req, res) => {
 /* --------------------------- Update News Status --------------------------- */
 const updateCategoryStatus = async (req, res, next) => {
   try {
-   
     const categoryData = await Category.findById(req.params.id);
 
     if (!categoryData) {
@@ -166,7 +168,6 @@ const updateCategoryStatus = async (req, res, next) => {
       message: "Category update status successfully",
       news: updatedStatus,
     });
-
   } catch (err) {
     next(err);
   }

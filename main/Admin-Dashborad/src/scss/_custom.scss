@@ -55,8 +55,8 @@ html:not([dir='rtl']) .ms-2 {
 .right-text {
   display: flex;
   justify-content: right;
-  margin-top: -27px;
-  margin-bottom: 12px;
+  margin-top: -2.7rem;
+  margin-bottom: 0.5rem;
 }
 .AddButton {
   background-color: #15b3ce !important;
@@ -84,10 +84,24 @@ html:not([dir='rtl']) .ms-2 {
 
 .MuiTableCell-head {
   padding-left: 0 !important;
+  background-color: #15b3ce33 !important;
 }
-.css-15wwp11-MuiTableHead-root {
-  border: 2px solid #813939 !important;
-  background-color: #3c4b64 !important;
+
+.tss-gm6zfk-MUIDataTableHeadCell-fixedHeader {
+  background-color: none !important;
+}
+.css-1ygcj2i-MuiTableCell-root {
+  font-weight: 800 !important;
+  text-transform: uppercase;
+}
+.tss-1akey0g-MUIDataTableHeadCell-data,
+.MuiTypography-root {
+  font-weight: 800 !important;
+  text-transform: uppercase;
+}
+a {
+  text-decoration: none !important;
+  color: #2c384aae !important;
 }
 /** delete button css*/
 .deleteButton {
@@ -113,22 +127,18 @@ html:not([dir='rtl']) .ms-2 {
 .submitButton {
   display: flex;
   justify-content: flex-end;
-  margin-top: 4rem !important;
+  // margin-top: 4rem !important;
 }
 
 .gender {
   display: block;
 }
 .user-profile {
-  // margin-top: 1.5rem;
   width: 80px;
   height: 80px;
   border-radius: 25%;
 }
 
-.card-header:first-child {
-  border-radius: var(--cui-card-inner-border-radius) var(--cui-card-inner-border-radius) 0 0;
-}
 .card-header {
   background-color: #15b3ce33;
 }
@@ -139,8 +149,7 @@ html:not([dir='rtl']) .ms-2 {
 }
 .sidebar-nav .nav-link {
   background-color: #168b9e;
-
-  color: #ffff;
+  color: #ffff !important;
 }
 
 .sidebar-nav .nav-item {

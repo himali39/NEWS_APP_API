@@ -17,7 +17,7 @@ router.get("/get-user", verifyAdminToken, allUserList);
 
 router.delete("/delete-user/:id", verifyAdminToken, deleteUser);
 
-router.delete("/multidelete-user", deleteMultipleUser);
+router.delete("/multidelete-user",verifyAdminToken, deleteMultipleUser);
 
 router.get("/get-activeUser", verifyAdminToken, getStatusWiseUserCount);
 

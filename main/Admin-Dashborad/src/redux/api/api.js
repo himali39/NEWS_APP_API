@@ -1,6 +1,5 @@
 import axios from 'axios'
 import Cookies from 'js-cookie'
-import { Navigate } from 'react-router-dom'
 import {
   ACTIVE_USER_API,
   ADD_CATEGORY_API,

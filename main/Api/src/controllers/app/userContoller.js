@@ -228,6 +228,7 @@ const resetPassword = async (req, res) => {
     });
   }
 };
+
 /* ---------------------------- Get RefreshToken ---------------------------- */
 const RefreshToken = async (req, res, next) => {
   const refreshToken = req.body.refreshToken;
@@ -258,6 +259,7 @@ const RefreshToken = async (req, res, next) => {
     next(err);
   }
 };
+
 /* ----------------------------- update user profile ----------------------------- */
 const updateUserProfile = async (req, res) => {
   try {

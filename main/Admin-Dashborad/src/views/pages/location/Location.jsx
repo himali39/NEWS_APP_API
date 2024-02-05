@@ -32,15 +32,6 @@ const Location = () => {
 
   const columns = [
     {
-      name: 'index',
-      label: 'No',
-      options: {
-        customBodyRender: (value, tableMeta, updateValue) => {
-          return tableMeta.rowIndex + 1
-        },
-      },
-    },
-    {
       name: 'locationName',
       label: 'Location',
       options: {
@@ -147,8 +138,8 @@ const Location = () => {
   ]
 
   const options = {
-    // filterType: 'checkbox',
-    selectableRows: 'none',
+    filterType: 'checkbox',
+    // selectableRows: 'none',
   }
 
   return (
