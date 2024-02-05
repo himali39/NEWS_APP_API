@@ -1,8 +1,13 @@
-import { Button, Switch } from '@mui/material'
+import { Button, Switch, IconButton } from '@mui/material'
 import MUIDataTable from 'mui-datatables'
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { deleteCategory, getAllCategory, updateCategoryStatus } from 'src/redux/api/api'
+import {
+  deleteCategory,
+  deleteMultipleCategory,
+  getAllCategory,
+  updateCategoryStatus,
+} from 'src/redux/api/api'
 import * as Icons from '@mui/icons-material'
 import { ToastContainer, toast } from 'react-toastify'
 import swal from 'sweetalert'
@@ -149,10 +154,55 @@ const Category = () => {
       },
     },
   ]
+  const deleteMultiple = async (index) => {
+    const ids = index.data.map(
+      (index1) => dataTableData.find((data, ind) => ind === index1.dataIndex && data._id)._id,
+    )
+
+    const confirm = await swal({
+      title: 'Are you sure?',
+      text: 'Are you sure that you want to delete selected category?',
+      icon: 'warning',
+      buttons: ['No, cancel it!', 'Yes, I am sure!'],
+      dangerMode: true,
+    })
+
+    if (confirm) {
+      deleteMultipleCategory(ids)
+        .then(() => {
+          console.log(ids)
+          categoryList()
+          toast.success('Deleted successfully!', {
+            key: ids.join(','),
+          })
+        })
+        .catch(() => {
+          toast.error('Something went wrong!', {
+            key: ids.join(','),
+          })
+        })
+    }
+  }
+
+  const SelectedRowsToolbar = (data) => {
+    return (
+      <div>
+        <IconButton onClick={() => deleteMultiple(data)}>
+          <Icons.Delete />
+        </IconButton>
+      </div>
+    )
+  }
 
   const options = {
-    filterType: 'checkbox',
-    // selectableRows: 'none',
+    customToolbarSelect: (selectedRows, data) => (
+      <SelectedRowsToolbar
+        selectedRows={selectedRows}
+        data={data}
+        columns={columns}
+        datatableTitle="test"
+      />
+    ),
   }
 
   return (

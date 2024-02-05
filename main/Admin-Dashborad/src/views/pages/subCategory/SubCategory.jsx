@@ -1,11 +1,16 @@
-import { Button, Switch } from '@mui/material'
+import { Button, Switch, IconButton } from '@mui/material'
 import MUIDataTable from 'mui-datatables'
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import * as Icons from '@mui/icons-material'
 import { ToastContainer, toast } from 'react-toastify'
 import swal from 'sweetalert'
-import { deleteSubCategory, getAllSubCategory, updateSubCatStatus } from 'src/redux/api/api'
+import {
+  deleteMultipleSubCate,
+  deleteSubCategory,
+  getAllSubCategory,
+  updateSubCatStatus,
+} from 'src/redux/api/api'
 
 const SubCategory = () => {
   const navigate = useNavigate()
@@ -39,15 +44,6 @@ const SubCategory = () => {
   }, [])
 
   const columns = [
-    {
-      name: 'index',
-      label: 'No',
-      options: {
-        customBodyRender: (value, tableMeta, updateValue) => {
-          return tableMeta.rowIndex + 1
-        },
-      },
-    },
     {
       name: 'subCategoryName',
       label: 'sub Category ',
@@ -156,9 +152,55 @@ const SubCategory = () => {
     },
   ]
 
+  const deleteMultiple = async (index) => {
+    const ids = index.data.map(
+      (index1) => dataTableData.find((data, ind) => ind === index1.dataIndex && data._id)._id,
+    )
+
+    const confirm = await swal({
+      title: 'Are you sure?',
+      text: 'Are you sure that you want to delete selected sub-category?',
+      icon: 'warning',
+      buttons: ['No, cancel it!', 'Yes, I am sure!'],
+      dangerMode: true,
+    })
+
+    if (confirm) {
+      deleteMultipleSubCate(ids)
+        .then(() => {
+          console.log(ids)
+          subCategoryList()
+          toast.success('Deleted successfully!', {
+            key: ids.join(','),
+          })
+        })
+        .catch(() => {
+          toast.error('Something went wrong!', {
+            key: ids.join(','),
+          })
+        })
+    }
+  }
+
+  const SelectedRowsToolbar = (data) => {
+    return (
+      <div>
+        <IconButton onClick={() => deleteMultiple(data)}>
+          <Icons.Delete />
+        </IconButton>
+      </div>
+    )
+  }
+
   const options = {
-    // filterType: 'checkbox',
-    selectableRows: 'none',
+    customToolbarSelect: (selectedRows, data) => (
+      <SelectedRowsToolbar
+        selectedRows={selectedRows}
+        data={data}
+        columns={columns}
+        datatableTitle="test"
+      />
+    ),
   }
 
   return (

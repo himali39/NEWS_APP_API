@@ -106,6 +106,34 @@ const updateSubCategory = async (req, res) => {
   }
 };
 
+/* ----------------------- Multiple User delete ---------------------- */
+const deleteMultiSubCate = async (req, res) => {
+  try {
+    const { ids } = req.body;
+
+    const subCateData = await subCategory.find({ _id: { $in: ids } });
+
+  
+    const deleteResult = await subCategory.deleteMany({ _id: { $in: ids } });
+
+    // Check if any subCategorys were deleted
+    if (deleteResult.deletedCount === 0) {
+      throw new Error("subCategory not Found");
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "subCategory deleted successfully!",
+      subCategory: subCateData,
+    });
+  } catch (err) {
+    res.status(400).json({
+      success: false,
+      message: err.message,
+    });
+  }
+};
+
 /* --------------------------- Update Sub category Status --------------------------- */
 const updateSubCateStatus = async (req, res, next) => {
   try {
@@ -142,7 +170,7 @@ const getSubCateByCategory = async (req, res) => {
       });
     }
 
-    const subCategoryData = await subCategory
+    const subsubCateData = await subCategory
       .find({
         category: categoryId,
       })
@@ -172,6 +200,7 @@ module.exports = {
   getSubCategory,
   deleteSubCategory,
   updateSubCategory,
+  deleteMultiSubCate,
   getSubCateByCategory,
   updateSubCateStatus,
 };

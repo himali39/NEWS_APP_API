@@ -27,6 +27,9 @@ import {
   DELETE_FEEDBACK_API,
   DELETE_LANGUAGE_API,
   DELETE_LOCATION_API,
+  DELETE_MULTIPLE_CATEGORY_API,
+  DELETE_MULTIPLE_SUBCATE_API,
+  DELETE_MULTIPLE_TAG_API,
   DELETE_MULTIPLE_USER_API,
   DELETE_NEWS_API,
   DELETE_NOTIFICATION_API,
@@ -183,6 +186,13 @@ export const deleteCategory = (id) =>
     headers: { Authorization: `Bearer ${Cookies.get('accessToken')}` },
   })
 
+/* delete MULTIPLE category  */
+export const deleteMultipleCategory = (data) =>
+  axios.delete(MAIN_URL + DELETE_MULTIPLE_CATEGORY_API, {
+    headers: { Authorization: `Bearer ${Cookies.get('accessToken')}` },
+    data: { ids: data },
+  })
+
 /* update Category  */
 export const updateCategory = (data, id) =>
   axios.put(MAIN_URL + UPDATE_CATEGORY_API + id, data, {
@@ -222,6 +232,13 @@ export const updateSubCategory = (data, id) =>
     headers: { Authorization: `Bearer ${Cookies.get('accessToken')}` },
   })
 
+/* delete MULTIPLE SUB-category  */
+export const deleteMultipleSubCate = (data) =>
+  axios.delete(MAIN_URL + DELETE_MULTIPLE_SUBCATE_API, {
+    headers: { Authorization: `Bearer ${Cookies.get('accessToken')}` },
+    data: { ids: data },
+  })
+
 /* update subCategory STATUS  */
 export const updateSubCatStatus = (data, id) =>
   axios.put(MAIN_URL + UPDATE_SUBCATEGORY_STATUS_API + id, data, {
@@ -252,6 +269,13 @@ export const updateTag = (data, id) =>
 export const updateTagStatus = (data, id) =>
   axios.put(MAIN_URL + UPDATE_TAG_STATUS_API + id, data, {
     headers: { Authorization: `Bearer ${Cookies.get('accessToken')}` },
+  })
+
+/* delete MULTIPLE Tag  */
+export const deleteMultipleTag = (data) =>
+  axios.delete(MAIN_URL + DELETE_MULTIPLE_TAG_API, {
+    headers: { Authorization: `Bearer ${Cookies.get('accessToken')}` },
+    data: { ids: data },
   })
 
 /* Get All Tag  */

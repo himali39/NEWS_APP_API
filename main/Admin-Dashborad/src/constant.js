@@ -51,6 +51,9 @@ export const UPDATE_CATEGORY_API = '/admin/category/update-Category/'
 /*  update status category  */
 export const UPDATE_CATEGORY_STATUS_API = '/admin/category/update-Status/'
 
+/*  delete category  */
+export const DELETE_MULTIPLE_CATEGORY_API = '/admin/category/multidelete-Category'
+
 /* ---------------------------- END CATEGORY API ---------------------------- */
 
 /* ---------------------------- ALL SUB CATEGORY API ---------------------------- */
@@ -70,6 +73,9 @@ export const UPDATE_SUBCATEGORY_API = '/admin/subcategory/update-subcategory/'
 /*  update status sub category  */
 export const UPDATE_SUBCATEGORY_STATUS_API = '/admin/subcategory/update-Status/'
 
+/*  delete subcategory  */
+export const DELETE_MULTIPLE_SUBCATE_API = '/admin/subcategory/multidelete-subCategory'
+
 /* ---------------------------- END SUB CATEGORY API ---------------------------- */
 
 /* ---------------------------- ALL TAG API ---------------------------- */
@@ -85,6 +91,9 @@ export const DELETE_TAG_API = '/admin/tag/delete-Tag/'
 
 /*  update tag  */
 export const UPDATE_TAG_API = '/admin/tag/update-Tag/'
+
+/*  delete multiple tag  */
+export const DELETE_MULTIPLE_TAG_API = '/admin/tag/multidelete-Tag'
 
 /*  update status tag  */
 export const UPDATE_TAG_STATUS_API = '/admin/tag/update-Status/'

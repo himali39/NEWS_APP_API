@@ -7,6 +7,7 @@ const {
   updateCategory,
   getCategoryByLanguage,
   updateCategoryStatus,
+  deleteMultipleCategory,
 } = require("../../controllers/admin/adminCategoryContoller");
 const verifyAdminToken = require("../../helper/verifyAdminToken");
 const router = express.Router();
@@ -31,6 +32,9 @@ router.put(
   singleFileUpload("/category_images/", "categoryImage"),
   updateCategory
 );
+
+/* ----------------------- delete multiple category route  ----------------------- */
+router.delete("/multidelete-Category", verifyAdminToken, deleteMultipleCategory);
 
 router.get("/getCatByLanguage/:languageId",verifyAdminToken, getCategoryByLanguage);
 

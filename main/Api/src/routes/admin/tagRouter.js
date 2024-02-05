@@ -1,5 +1,5 @@
 const express = require("express");
-const { addTag, getTagData, deleteTag, updateTag, updateTagStatus } = require("../../controllers/admin/adminTagController");
+const { addTag, getTagData, deleteTag, updateTag, updateTagStatus, deleteMultiTag } = require("../../controllers/admin/adminTagController");
 const verifyAdminToken = require("../../helper/verifyAdminToken");
 
 const router = express.Router();
@@ -15,6 +15,9 @@ router.delete("/delete-Tag/:id", verifyAdminToken, deleteTag);
 
 /* ----------------------- update Tag route  ----------------------- */
 router.put("/update-Tag/:id", verifyAdminToken, updateTag);
+
+/* ----------------------- delete multiple Tag route  ----------------------- */
+router.delete("/multidelete-Tag", verifyAdminToken, deleteMultiTag);
 
 /* ----------------------- update Tag status  ----------------------- */
 router.put("/update-Status/:id", verifyAdminToken, updateTagStatus);

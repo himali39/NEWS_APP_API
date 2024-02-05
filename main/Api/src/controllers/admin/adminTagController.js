@@ -102,6 +102,33 @@ const updateTag = async (req, res) => {
   }
 };
 
+/* ----------------------- Multiple User delete ---------------------- */
+const deleteMultiTag = async (req, res) => {
+  try {
+    const { ids } = req.body;
+
+    const tagData = await Tag.find({ _id: { $in: ids } });
+
+  
+    const deleteResult = await Tag.deleteMany({ _id: { $in: ids } });
+
+    // Check if any tag were deleted
+    if (deleteResult.deletedCount === 0) {
+      throw new Error("Tag not Found");
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "All Tag Data deleted successfully!",
+      tag: tagData,
+    });
+  } catch (err) {
+    res.status(400).json({
+      success: false,
+      message: err.message,
+    });
+  }
+};
 /* --------------------------- Update Sub category Status --------------------------- */
 const updateTagStatus = async (req, res, next) => {
   try {
@@ -126,4 +153,10 @@ const updateTagStatus = async (req, res, next) => {
   }
 };
 
-module.exports = { addTag, getTagData, updateTag, deleteTag, updateTagStatus };
+module.exports = {
+  addTag,
+  getTagData,
+  updateTag,
+  deleteTag,
+  deleteMultiTag,updateTagStatus,
+};

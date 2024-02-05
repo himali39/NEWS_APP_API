@@ -63,9 +63,6 @@ const deleteCategory = async (req, res) => {
 
     deleteFiles("category-images/" + CategoryData.categoryImage);
 
-    // console.log("category-images/" + CategoryData.categoryImage);
-
-    // console.log(CategoryData.categoryImage);
     const deleteCateData = await Category.findByIdAndDelete(req.params.id);
 
     res.status(200).json({
@@ -115,6 +112,40 @@ const updateCategory = async (req, res) => {
   }
 };
 
+/* ----------------------- Multiple User delete ---------------------- */
+const deleteMultipleCategory = async (req, res) => {
+  try {
+    const { ids } = req.body;
+
+    const categoryData = await Category.find({ _id: { $in: ids } });
+
+    // Check if any category data is found
+    if (categoryData.length === 0) {
+      throw new Error("category not Found");
+    }
+    // Extract categoryImage from category data and delete files
+    categoryData.forEach((category) => {
+      deleteFiles("/category-images/" + category.categoryImage);
+    });
+    const deleteResult = await Category.deleteMany({ _id: { $in: ids } });
+
+    // Check if any categorys were deleted
+    if (deleteResult.deletedCount === 0) {
+      throw new Error("category not Found");
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "category deleted successfully!",
+      category: categoryData,
+    });
+  } catch (err) {
+    res.status(400).json({
+      success: false,
+      message: err.message,
+    });
+  }
+};
 /* ----------- selected languageId through get category data list in news form----------- */
 const getCategoryByLanguage = async (req, res) => {
   try {
@@ -178,6 +209,7 @@ module.exports = {
   getCategory,
   deleteCategory,
   updateCategory,
+  deleteMultipleCategory,
   getCategoryByLanguage,
   updateCategoryStatus,
 };
