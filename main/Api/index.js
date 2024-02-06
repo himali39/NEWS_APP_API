@@ -18,10 +18,19 @@ app.use(adminRoutes);
 
 /*App route */
 const userRoute = require("./src/routes/app");
+// const { error } = require("console");
 app.use(userRoute);
 
 /** database connection  */
 connectDB();
+
+app.use((err, req, res, next) => {
+  res.status(422).json({
+    status: 422,
+    success: false,
+    message: err.errorMessage,
+  });
+});
 
 /**UPLOAD FILE */
 // app.use("/public", express.static(path.join(__dirname, "./public/")));

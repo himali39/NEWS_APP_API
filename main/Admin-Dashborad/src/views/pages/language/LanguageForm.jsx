@@ -22,7 +22,6 @@ import 'react-toastify/dist/ReactToastify.css'
 const LanguageForm = () => {
   const {
     register,
-    getValues,
     setValue,
     handleSubmit,
     formState: { errors },
@@ -31,16 +30,18 @@ const LanguageForm = () => {
   const [newUrl, setNewUrl] = useState()
   const [isUpdate, setIsUpdate] = useState('')
   const [isLoading, setIsLoading] = useState(false)
+  const [defaultLoading, setDefaultLoading] = useState(true)
 
   const { state } = useLocation()
 
-  const handleFileUpload = (event) => {
-    const file = event.target.files[0]
-    const reader = new FileReader()
-    reader.onloadend = () => {
-      setNewUrl(reader.result)
+  const handleFileUpload = (e) => {
+    const files = e.target.files[0]
+    if (files) {
+      const imageUrl = URL.createObjectURL(files)
+      setNewUrl(imageUrl)
+    } else {
+      setNewUrl(null)
     }
-    reader.readAsDataURL(file)
   }
 
   const onSubmit = (data) => {
@@ -60,7 +61,6 @@ const LanguageForm = () => {
             navigate('/language')
           })
           .catch((err) => {
-            console.log(err)
             if (!err.response.data.success) {
               toast.error(err.response.data.message)
             } else {
@@ -69,7 +69,6 @@ const LanguageForm = () => {
           })
       : updateLanguage(formData, isUpdate)
           .then((res) => {
-            console.log(res)
             navigate('/language')
           })
           .catch((err) => {
@@ -91,8 +90,8 @@ const LanguageForm = () => {
       setNewUrl(imageUrl + editData.jsonFile)
       setNewUrl(imageUrl + editData.flagImage)
     }
-    // setdefaultLoading(false)
-  })
+    setDefaultLoading(false)
+  }, [])
   return (
     <div className=" bg-light min-vh-100">
       <CContainer className="mt-3">
@@ -104,88 +103,122 @@ const LanguageForm = () => {
               </CCardHeader>
               <CCardBody>
                 <ToastContainer />
-                <CForm className="row g-3 " onSubmit={handleSubmit(onSubmit)}>
-                  <CCol md={6}>
-                    <CFormLabel htmlFor="validationDefault01">Language</CFormLabel>
-                    <CFormInput
-                      type="text"
-                      id="validationDefault01"
-                      {...register('languagesName', { required: 'Language is required' })}
-                      invalid={!!errors.languagesName}
-                    />
-                    <CFormFeedback invalid>Language is required</CFormFeedback>
-                  </CCol>
-                  <CCol md={6}>
-                    <CFormLabel htmlFor="validationDefault01">Display Name</CFormLabel>
-                    <CFormInput
-                      type="text"
-                      id="validationDefault01"
-                      {...register('displayName', { required: 'displayName is required' })}
-                      invalid={!!errors.displayName}
-                    />
-                    <CFormFeedback invalid>displayName is required</CFormFeedback>
-                  </CCol>
-                  <CCol md={6}>
-                    <CFormLabel htmlFor="validationDefault01">Code</CFormLabel>
-                    <CFormInput
-                      type="text"
-                      id="validationDefault01"
-                      {...register('code', { required: 'Language code is required' })}
-                      invalid={!!errors.code}
-                    />
-                    <CFormFeedback invalid>Language code is required</CFormFeedback>
-                  </CCol>
-                  <CCol md={6}>
-                    <CFormLabel htmlFor="validationDefault01">
-                      Json File
-                      <span style={{ color: '#ff2d55', fontSize: '12px' }}>
-                        Only Json file allow
-                      </span>
-                    </CFormLabel>
-                    <CFormInput
-                      type="file"
-                      id="validationTextarea"
-                      aria-label="file example"
-                      {...register('jsonFile', { required: 'Json File is required' })}
-                      invalid={!!errors.jsonFile}
-                      onChange={handleFileUpload}
-                    />
-                    <CFormFeedback invalid>Json File is required</CFormFeedback>
-                  </CCol>
-                  <CCol md={6}>
-                    <CFormLabel htmlFor="validationDefault01">
-                      Flag Image
-                      <span style={{ color: '#ff2d55', fontSize: '12px' }}>
-                        Only png, jpg, webp and jpeg image allow
-                      </span>
-                    </CFormLabel>
-                    <CFormInput
-                      type="file"
-                      id="validationTextarea"
-                      aria-label="file example"
-                      {...register('flagImage', { required: 'flag Image is required' })}
-                      invalid={!!errors.flagImage}
-                      onChange={handleFileUpload}
-                    />
-                    {errors.newUrl && (
-                      <img src={newUrl} alt="flag Img" style={{ maxWidth: '20%' }} />
-                    )}
+                {defaultLoading ? (
+                  <CButton disabled>
+                    <CSpinner component="span" size="sm" aria-hidden="true" />
+                    Loading...
+                  </CButton>
+                ) : (
+                  <CForm className="row g-3 " onSubmit={handleSubmit(onSubmit)}>
+                    <CCol md={6}>
+                      <CFormLabel>Language</CFormLabel>
+                      <CFormInput
+                        type="text"
+                        id="languagesName"
+                        {...register('languagesName', { required: 'Language is required' })}
+                        invalid={!!errors.languagesName}
+                      />
+                      <CFormFeedback invalid>Language is required</CFormFeedback>
+                    </CCol>
+                    <CCol md={6}>
+                      <CFormLabel>Display Name</CFormLabel>
+                      <CFormInput
+                        type="text"
+                        id="displayName"
+                        {...register('displayName', { required: 'displayName is required' })}
+                        invalid={!!errors.displayName}
+                      />
+                      <CFormFeedback invalid>displayName is required</CFormFeedback>
+                    </CCol>
 
-                    <CFormFeedback invalid>Flag Image is required</CFormFeedback>
-                  </CCol>
-                  <CCol md={12} className="text-center submitButton">
-                    {isLoading ? (
-                      <CButton disabled>
-                        <CSpinner component="span" size="sm" aria-hidden="true" />
-                        Loading...
-                      </CButton>
-                    ) : (
-                      <CButton type="submit" className="AddButton">
-                        {isUpdate === '' ? 'Add' : 'Update'}
-                      </CButton>
-                    )}
-                  </CCol>
-                </CForm>
+                    {/* language code */}
+                    <CCol md={6}>
+                      <CFormLabel>Code</CFormLabel>
+                      <CFormInput
+                        type="text"
+                        id="code"
+                        {...register('code', { required: 'Language code is required' })}
+                        invalid={!!errors.code}
+                      />
+                      <CFormFeedback invalid>Language code is required</CFormFeedback>
+                    </CCol>
+                    {/* end of code */}
+
+                    {/* language Json file */}
+                    <CCol md={6}>
+                      <CFormLabel>
+                        Json File
+                        <span style={{ color: '#ff2d55', fontSize: '12px' }}>
+                          Only Json file allow
+                        </span>
+                      </CFormLabel>
+                      <CFormInput
+                        type="file"
+                        id="jsonFile"
+                        aria-label="file example"
+                        {...register('jsonFile', { required: 'Json File is required' })}
+                        invalid={!!errors.jsonFile}
+                        // onChange={handleFileUpload}
+                      />
+                      <CFormFeedback invalid>Json File is required</CFormFeedback>
+                    </CCol>
+                    {/* end of code */}
+
+                    {/* flag img */}
+                    <CCol md={6}>
+                      <CFormLabel>
+                        Flag Image
+                        <span style={{ color: '#ff2d55', fontSize: '12px' }}>
+                          Only png, jpg, webp and jpeg image allow
+                        </span>
+                      </CFormLabel>
+                      <CFormInput
+                        type="file"
+                        id="flagImage"
+                        aria-label="file example"
+                        {...register('flagImage', { required: 'flag Image is required' })}
+                        invalid={!!errors.flagImage}
+                        onChange={handleFileUpload}
+                      />
+                      {errors.newUrl && (
+                        <img src={newUrl} alt="flag Img" style={{ maxWidth: '20%' }} />
+                      )}
+
+                      <CFormFeedback invalid>Flag Image is required</CFormFeedback>
+                    </CCol>
+
+                    <CCol md={6}>
+                      {newUrl && (
+                        <>
+                          <p>Image preview</p>
+                          <img
+                            src={newUrl}
+                            alt="newUrl"
+                            style={{
+                              maxWidth: '40%',
+                              borderRadius: '10px',
+                              maxHeight: '40%',
+                            }}
+                          />
+                        </>
+                      )}
+                    </CCol>
+                    {/* end of code */}
+
+                    <CCol md={12} className="text-center submitButton">
+                      {isLoading ? (
+                        <CButton disabled>
+                          <CSpinner component="span" size="sm" aria-hidden="true" />
+                          Loading...
+                        </CButton>
+                      ) : (
+                        <CButton type="submit" className="AddButton">
+                          {isUpdate === '' ? 'Add' : 'Update'}
+                        </CButton>
+                      )}
+                    </CCol>
+                  </CForm>
+                )}
               </CCardBody>
             </CCard>
           </CCol>

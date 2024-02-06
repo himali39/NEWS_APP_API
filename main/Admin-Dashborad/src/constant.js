@@ -32,6 +32,9 @@ export const UPDATE_LANGUAGE_API = '/admin/language/update-Language/'
 /* delete language  */
 export const DELETE_LANGUAGE_API = '/admin/language/delete-Language/'
 
+/*  delete MULTIPLE language  */
+export const DELETE_MULTIPLE_LANGUAGES_API = '/admin/language/multidelete-Language'
+
 /* ---------------------------- END LANGUAGE API ---------------------------- */
 
 /* ---------------------------- ALL CATEGORY API ---------------------------- */
@@ -129,6 +132,9 @@ export const DELETE_NEWS_API = '/admin/news/delete-News/'
 
 /*  update news  */
 export const UPDATE_NEWS_API = '/admin/news/update-News/'
+
+/*  delete MULTIPLE news  */
+export const DELETE_MULTIPLE_NEWS_API = '/admin/news/multidelete-News'
 
 /**update status */
 export const UPDATE_NEWS_STATUS_API = '/admin/news/update-Status/'

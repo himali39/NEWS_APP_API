@@ -52,7 +52,7 @@ const getLanguage = async (req, res) => {
       req.protocol +
       "://" +
       req.get("host") +
-      process.env.BASE_URL_CATEGORY_PATH;
+      process.env.BASE_URL_LANGUAGES_PATH;
 
     res.status(200).json({
       success: true,
@@ -96,23 +96,56 @@ const deleteLanguage = async (req, res) => {
   }
 };
 
+/* ----------------------- Multiple Languages delete ---------------------- */
+const deleteMultipleLanguages = async (req, res) => {
+  try {
+    const { ids } = req.body;
+
+    const languageData = await Languages.find({ _id: { $in: ids } });
+
+    // Check if any news data is found
+    if (languageData.length === 0) {
+      throw new Error("news not Found");
+    }
+    // Extract newsImage from news data and delete files
+    languageData.forEach((news) => {
+      deleteFiles("/languagesFiles/" + news.flagImage);
+      deleteFiles("/languagesFiles/" + news.jsonFile);
+    });
+
+    const deleteResult = await Languages.deleteMany({ _id: { $in: ids } });
+    // Check if any news were deleted
+    if (deleteResult.deletedCount === 0) {
+      throw new Error("news not Found");
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "news deleted successfully!",
+      news: languageData,
+    });
+  } catch (err) {
+    res.status(400).json({
+      success: false,
+      message: err.message,
+    });
+  }
+};
 /* ----------------------------- update Languages  data ----------------------------- */
 const updateLanguage = async (req, res) => {
   try {
-  
     const Language = await Languages.findById(req.params.id);
 
     if (!Language) {
       return res.status(404).json({ message: "Language data not found" });
     }
-    if (req.file && req.file != "undefined") {
-      req.body.flagImage = req.file.filename;
+    if (req.files.flagImage && req.file != "undefined") {
+      req.body.flagImage = req.files.flagImage[0].filename;
     }
-   if (req.file && req.file != "undefined") {
-     req.body.jsonFile = req.file.filename;
-   }
-
-    const updatedData = await Languages.findByIdAndUpdate(
+    if (req.files.jsonFile && req.file != "undefined") {
+      req.body.jsonFile = req.files.jsonFile[0].filename;
+    }
+        const updatedData = await Languages.findByIdAndUpdate(
       req.params.id,
       req.body,
       {
@@ -130,14 +163,17 @@ const updateLanguage = async (req, res) => {
       language: updatedData,
     });
   } catch (error) {
-    res.status(404).json({
+    res.status(500).json({
       success: false,
       message: error.message,
     });
   }
 };
 
-
-
-
-module.exports = { addLanguage, getLanguage, deleteLanguage, updateLanguage };
+module.exports = {
+  addLanguage,
+  getLanguage,
+  deleteLanguage,
+  updateLanguage,
+  deleteMultipleLanguages,
+};

@@ -28,6 +28,8 @@ import {
   DELETE_LANGUAGE_API,
   DELETE_LOCATION_API,
   DELETE_MULTIPLE_CATEGORY_API,
+  DELETE_MULTIPLE_LANGUAGES_API,
+  DELETE_MULTIPLE_NEWS_API,
   DELETE_MULTIPLE_SUBCATE_API,
   DELETE_MULTIPLE_TAG_API,
   DELETE_MULTIPLE_USER_API,
@@ -164,6 +166,13 @@ export const updateLanguage = (data, id) =>
 export const deleteLanguage = (id) =>
   axios.delete(MAIN_URL + DELETE_LANGUAGE_API + id, {
     headers: { Authorization: `Bearer ${Cookies.get('accessToken')}` },
+  })
+
+/* delete MULTIPLE NEWS  */
+export const deleteMultipleLanguages = (data) =>
+  axios.delete(MAIN_URL + DELETE_MULTIPLE_LANGUAGES_API, {
+    headers: { Authorization: `Bearer ${Cookies.get('accessToken')}` },
+    data: { ids: data },
   })
 /* ----------------------------------- END LANGUAGE API ---------------------------------- */
 
@@ -336,6 +345,13 @@ export const deleteNews = (id) =>
 export const updateNews = (data, id) =>
   axios.put(MAIN_URL + UPDATE_NEWS_API + id, data, {
     headers: { Authorization: `Bearer ${Cookies.get('accessToken')}` },
+  })
+
+/* delete MULTIPLE NEWS  */
+export const deleteMultipleNews = (data) =>
+  axios.delete(MAIN_URL + DELETE_MULTIPLE_NEWS_API, {
+    headers: { Authorization: `Bearer ${Cookies.get('accessToken')}` },
+    data: { ids: data },
   })
 
 /* update news status */

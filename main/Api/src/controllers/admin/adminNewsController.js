@@ -8,17 +8,17 @@ const addNews = async (req, res) => {
     if (req.file && req.file.filename != "undefined") {
       reqbody.newsImage = req.files.newsImage[0].filename;
     }
-  
+
     if (req.files && req.files.filename != "undefined") {
       reqbody.multipleImage = req.files.multipleImage.map(
         (file) => file.filename
       );
     }
-   
+
     if (req.files && req.files.filename != "undefined") {
       reqbody.video = req.files.video[0].filename;
     }
-    
+
     const newsData = await News.create(reqbody);
     if (!newsData) {
       return res.status(404).json({ message: "News Data not found" });
@@ -33,7 +33,6 @@ const addNews = async (req, res) => {
     res.status(400).json({
       success: false,
       message: err.message,
-     
     });
   }
 };
@@ -116,6 +115,7 @@ const updateNews = async (req, res) => {
     if (!newsData) {
       return res.status(404).json({ message: "News data not found" });
     }
+    
     if (req.files.newsImage) {
       reqbody.newsImage = req.files.newsImage[0].filename;
     }
@@ -141,6 +141,42 @@ const updateNews = async (req, res) => {
     res.status(404).json({
       success: false,
       message: error.message,
+    });
+  }
+};
+
+/* ----------------------- Multiple Category delete ---------------------- */
+const deleteMultipleNews = async (req, res) => {
+  try {
+    const { ids } = req.body;
+
+    const newsData = await News.find({ _id: { $in: ids } });
+
+    // Check if any news data is found
+    if (newsData.length === 0) {
+      throw new Error("news not Found");
+    }
+    // Extract newsImage from news data and delete files
+    newsData.forEach((news) => {
+      deleteFiles("/News_image/" + news.newsImage);
+    });
+
+    const deleteResult = await News.deleteMany({ _id: { $in: ids } });
+
+    // Check if any news were deleted
+    if (deleteResult.deletedCount === 0) {
+      throw new Error("news not Found");
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "news deleted successfully!",
+      news: newsData,
+    });
+  } catch (err) {
+    res.status(400).json({
+      success: false,
+      message: err.message,
     });
   }
 };
@@ -173,5 +209,6 @@ module.exports = {
   allNewsList,
   deleteNews,
   updateNews,
+  deleteMultipleNews,
   updateNewsStatus,
 };

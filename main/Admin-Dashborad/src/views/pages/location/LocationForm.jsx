@@ -90,10 +90,10 @@ const LocationForm = () => {
                 <ToastContainer />
                 <CForm className="row g-3 " onSubmit={handleSubmit(onSubmit)}>
                   <CCol md={6}>
-                    <CFormLabel htmlFor="validationDefault01">Location</CFormLabel>
+                    <CFormLabel>Location</CFormLabel>
                     <CFormInput
                       type="text"
-                      id="validationDefault01"
+                      id="locationName"
                       {...register('locationName', {
                         required: ' Location Name is required',
                       })}
@@ -104,10 +104,10 @@ const LocationForm = () => {
                   </CCol>
 
                   <CCol md={6}>
-                    <CFormLabel htmlFor="validationDefault01"></CFormLabel>
+                    <CFormLabel>Latitude</CFormLabel>
                     <CFormInput
                       type="text"
-                      id="validationDefault01"
+                      id="latitude"
                       {...register('latitude', {
                         required: 'Latitude is required',
                         pattern: {
@@ -124,10 +124,9 @@ const LocationForm = () => {
                   </CCol>
 
                   <CCol md={6}>
-                    <CFormLabel htmlFor="validationDefault01"></CFormLabel>
+                    <CFormLabel>longitude</CFormLabel>
                     <CFormInput
                       type="text"
-                      id="validationDefault01"
                       {...register('longitude', {
                         required: ' Longitude is required',
                         pattern: {

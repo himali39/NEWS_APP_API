@@ -6,10 +6,12 @@ const {
   deleteNews,
   updateNews,
   updateNewsStatus,
+  deleteMultipleNews,
 } = require("../../controllers/admin/adminNewsController");
 const verifyAdminToken = require("../../helper/verifyAdminToken");
 const router = express.Router();
 
+/* ----------------------- add News data route  ----------------------- */
 router.post(
   "/add-News",
   verifyAdminToken,
@@ -33,10 +35,16 @@ router.post(
   addNews
 );
 
+/* ----------------------- list of  News route  ----------------------- */
 router.get("/get-News", verifyAdminToken, allNewsList);
 
+/* ----------------------- delete  News route  ----------------------- */
 router.delete("/delete-News/:id", verifyAdminToken, deleteNews);
 
+/* ----------------------- delete multiple News route  ----------------------- */
+router.delete("/multidelete-News", verifyAdminToken, deleteMultipleNews);
+
+/* ----------------------- update  News route  ----------------------- */
 router.put(
   "/update-News/:id",
   verifyAdminToken,
@@ -59,6 +67,8 @@ router.put(
   ]),
   updateNews
 );
+
+/* ----------------------- news status update route  ----------------------- */
 router.put("/update-Status/:id", verifyAdminToken, updateNewsStatus);
 
 module.exports = router;

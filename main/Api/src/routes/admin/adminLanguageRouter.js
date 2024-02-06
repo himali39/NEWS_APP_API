@@ -3,6 +3,7 @@ const {
   getLanguage,
   deleteLanguage,
   updateLanguage,
+  deleteMultipleLanguages,
 } = require("../../controllers/admin/adminLanguagesController");
 const { multiDiffFileUpload } = require("../../helper/upload");
 const verifyAdminToken = require("../../helper/verifyAdminToken");
@@ -52,5 +53,9 @@ router.put(
   ]),
   updateLanguage
 );
+
+/* ----------------------- delete multiple Language  route  ----------------------- */
+router.delete("/multidelete-Language", verifyAdminToken, deleteMultipleLanguages);
+
 
 module.exports = router;

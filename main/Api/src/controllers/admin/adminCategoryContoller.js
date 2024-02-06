@@ -146,6 +146,7 @@ const deleteMultipleCategory = async (req, res) => {
     });
   }
 };
+
 /* ----------- selected languageId through get category data list in news form----------- */
 const getCategoryByLanguage = async (req, res) => {
   try {
