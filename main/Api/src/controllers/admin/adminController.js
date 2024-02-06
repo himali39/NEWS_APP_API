@@ -110,7 +110,7 @@ const allAdminList = async (req, res) => {
 };
 
 /* ------------------------------- admin Forgot password ------------------------------- */
-const forgotPasswordEmail = async (req, res, next) => {
+const forgotPasswordEmail = async (req, res) => {
   try {
     const { email } = req.body;
 
@@ -159,11 +159,11 @@ const forgotPasswordEmail = async (req, res, next) => {
       message: `Check your email for Reset password`,
     });
   } catch (err) {
-    next(err);
-    // res.status(500).json({
-    //   success: false,
-    //   message: err.message,
-    // });
+    
+    res.status(500).json({
+      success: false,
+      message: err.message,
+    });
   }
 };
 

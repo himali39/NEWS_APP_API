@@ -9,6 +9,7 @@ const ejs = require("ejs");
 const { sendMail } = require("../../helper/emailsend");
 const News = require("../../models/newsModel");
 const Location = require("../../models/locationModel");
+const path = require("path");
 
 /* ---------------------------- Register User Data ---------------------------- */
 const signupUser = async (req, res) => {
@@ -86,6 +87,30 @@ const loginUser = async (req, res) => {
       throw new Error("User not Found");
     }
 
+    if (findUser) {
+      const emailTemplate = await ejs.renderFile(
+        "../Api/src/views/loginEmail.ejs",
+        {
+          email: email,
+          fullName: req.body.fullName,
+        }
+      );
+      // send mail service is use by email service
+      const mailSent = sendMail(
+        process.env.EMAIL_FROM, // from email
+        email, //to email
+        emailTemplate,
+        "Login successfully"
+      );
+
+      if (!mailSent) {
+        // If email sending fails, handle the error
+        res.status(404).json({
+          success: false,
+          message: "Failed to send email with OTP",
+        });
+      }
+    }
     /**compare password   */
     const successPassword = await bcrypt.compare(password, findUser.password);
 
@@ -103,7 +128,7 @@ const loginUser = async (req, res) => {
     if (findUser && successPassword) {
       accessToken = await jwt.sign(payload, process.env.JWT_SECRECT_KEY);
       findUser.accessToken = accessToken;
-    } 
+    }
 
     /**generate Refresh token */
     const generateRefreshToken = (payload) => {
@@ -153,15 +178,15 @@ const forgotPasswordEmail = async (req, res) => {
 
     // Render the EJS template
     const emailTemplate = await ejs.renderFile(
-      "./Api/src/views/email_otp.ejs",
+      "../Api/src/views/email_otp.ejs",
       {
         otp,
       }
     );
     // send mail service is use by email service
     const mailSent = sendMail(
-      process.env.EMAIL_FROM,// from email
-      email,//to email
+      process.env.EMAIL_FROM, // from email
+      email, //to email
       emailTemplate,
       "Password Reset OTP"
     );
