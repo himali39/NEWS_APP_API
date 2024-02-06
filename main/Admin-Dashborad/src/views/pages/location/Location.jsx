@@ -99,7 +99,7 @@ const Location = () => {
                 onClick={() => {
                   const editData = dataTableData.find((data) => data._id === value)
                   console.log(editData)
-                  navigate('/location-form', { state: { editData: editData } })
+                  navigate('/Location-form', { state: { editData: editData } })
                 }}
               ></Icons.EditRounded>
               <Icons.DeleteRounded
@@ -150,7 +150,7 @@ const Location = () => {
           variant="contained"
           size="medium"
           className="AddButton"
-          onClick={() => navigate('/location-form')}
+          onClick={() => navigate('/Location-form')}
         >
           Add Language
         </Button>

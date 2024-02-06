@@ -118,7 +118,7 @@ const Category = () => {
                 className="editButton"
                 onClick={() => {
                   const editData = dataTableData.find((data) => data._id === value)
-                  navigate('/category-form', { state: { editData: editData, imageUrl: baseUrl } })
+                  navigate('/Category-form', { state: { editData: editData, imageUrl: baseUrl } })
                 }}
               ></Icons.EditRounded>
               <Icons.DeleteRounded
@@ -213,7 +213,7 @@ const Category = () => {
           variant="contained"
           size="medium"
           className="AddButton"
-          onClick={() => navigate('/category-form')}
+          onClick={() => navigate('/Category-form')}
         >
           Add Category
         </Button>

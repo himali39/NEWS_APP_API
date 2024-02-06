@@ -101,7 +101,6 @@ const SubCategoryForm = () => {
   useEffect(() => {
     if (state) {
       const { editData } = state
-      console.log(editData)
       setIsUpdate(editData._id)
       setValue('subCategoryName', editData.subCategoryName)
       setValue('languages', editData.languages._id)
@@ -123,7 +122,7 @@ const SubCategoryForm = () => {
                 <ToastContainer />
                 <CForm className="row g-3 " onSubmit={handleSubmit(onSubmit)}>
                   {/* subCategory field */}
-                  <CCol md={6}>
+                  <CCol xl={6} md={12}>
                     <CFormLabel>Sub Category</CFormLabel>
                     <CFormInput
                       type="text"
@@ -139,7 +138,7 @@ const SubCategoryForm = () => {
                   {/* end sub category field */}
 
                   {/* Language field */}
-                  <CCol md={6}>
+                  <CCol xl={6} md={12}>
                     <CFormLabel>Language</CFormLabel>
                     <CFormSelect
                       id="languages"
@@ -161,7 +160,7 @@ const SubCategoryForm = () => {
                   {/* end languages field */}
 
                   {/* category field */}
-                  <CCol md={6}>
+                  <CCol xl={6} md={12}>
                     <CFormLabel>Category</CFormLabel>
                     <CFormSelect
                       id="category"
@@ -182,7 +181,7 @@ const SubCategoryForm = () => {
                   </CCol>
                   {/* end category field */}
 
-                  <CCol md={12} className="text-center submitButton">
+                  <CCol xl={6} md={12} className="text-center submitButton">
                     {isLoading ? (
                       <CButton disabled>
                         <CSpinner component="span" size="sm" aria-hidden="true" />

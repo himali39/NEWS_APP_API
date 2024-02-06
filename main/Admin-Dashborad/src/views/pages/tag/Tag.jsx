@@ -96,7 +96,7 @@ const Tag = () => {
                 onClick={() => {
                   const editData = dataTableData.find((data) => data._id === value)
                   console.log(editData)
-                  navigate('/tag-form', {
+                  navigate('/Tag-form', {
                     state: { editData: editData },
                   })
                 }}
@@ -193,7 +193,7 @@ const Tag = () => {
           variant="contained"
           size="medium"
           className="AddButton"
-          onClick={() => navigate('/tag-form')}
+          onClick={() => navigate('/Tag-form')}
         >
           Add Tag
         </Button>

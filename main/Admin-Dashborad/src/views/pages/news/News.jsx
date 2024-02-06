@@ -175,7 +175,7 @@ const News = () => {
                 onClick={() => {
                   const editData = dataTableData.find((data) => data._id === value)
                   console.log(editData)
-                  navigate('/news-form', { state: { editData: editData, imageUrl: baseUrl } })
+                  navigate('/News-form', { state: { editData: editData, imageUrl: baseUrl } })
                 }}
               ></Icons.EditRounded>
               <Icons.DeleteRounded
@@ -270,7 +270,7 @@ const News = () => {
           variant="contained"
           size="medium"
           className="AddButton"
-          onClick={() => navigate('/news-form')}
+          onClick={() => navigate('/News-form')}
         >
           Add News
         </Button>

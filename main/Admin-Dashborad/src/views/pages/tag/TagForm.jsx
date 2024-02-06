@@ -103,7 +103,7 @@ const TagForm = () => {
               <CCardBody>
                 <ToastContainer />
                 <CForm className="row g-3 " onSubmit={handleSubmit(onSubmit)}>
-                  <CCol md={6}>
+                  <CCol xl={6} md={12}>
                     <CFormLabel>Tag</CFormLabel>
                     <CFormInput
                       type="text"
@@ -117,7 +117,7 @@ const TagForm = () => {
                     <CFormFeedback invalid>Tag is required</CFormFeedback>
                   </CCol>
 
-                  <CCol md={6}>
+                  <CCol xl={6} md={12}>
                     <CFormLabel>Language</CFormLabel>
                     <CFormSelect
                       id="languages"
@@ -138,7 +138,7 @@ const TagForm = () => {
                     {errors.languages && <div className="errors">{errors.languages.message}</div>}
                   </CCol>
 
-                  <CCol md={12} className="text-center submitButton">
+                  <CCol xl={6} md={12} className="text-center submitButton">
                     {isLoading ? (
                       <CButton disabled>
                         <CSpinner component="span" size="sm" aria-hidden="true" />

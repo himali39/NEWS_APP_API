@@ -124,7 +124,7 @@ const Notification = () => {
                 className="editButton"
                 onClick={() => {
                   const editData = dataTableData.find((data) => data._id === value)
-                  navigate('/notification-form', {
+                  navigate('/Notification-form', {
                     state: { editData: editData },
                   })
                 }}
@@ -178,7 +178,7 @@ const Notification = () => {
           variant="contained"
           size="medium"
           className="AddButton"
-          onClick={() => navigate('/notification-form')}
+          onClick={() => navigate('/Notification-form')}
         >
           Add Notification
         </Button>

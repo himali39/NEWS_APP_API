@@ -103,7 +103,7 @@ const loginUser = async (req, res) => {
     if (findUser && successPassword) {
       accessToken = await jwt.sign(payload, process.env.JWT_SECRECT_KEY);
       findUser.accessToken = accessToken;
-    }
+    } 
 
     /**generate Refresh token */
     const generateRefreshToken = (payload) => {

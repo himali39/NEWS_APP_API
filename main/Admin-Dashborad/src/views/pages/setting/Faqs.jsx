@@ -102,7 +102,7 @@ const Faqs = () => {
                 className="editButton"
                 onClick={() => {
                   const editData = dataTableData.find((data) => data._id === value)
-                  navigate('/faqs-form', {
+                  navigate('/Faqs-form', {
                     state: { editData: editData },
                   })
                 }}
@@ -153,7 +153,7 @@ const Faqs = () => {
           variant="contained"
           size="medium"
           className="AddButton"
-          onClick={() => navigate('/faqs-form')}
+          onClick={() => navigate('/Faqs-form')}
         >
           Add FAQs
         </Button>

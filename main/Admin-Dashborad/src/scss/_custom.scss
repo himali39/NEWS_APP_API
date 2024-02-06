@@ -61,6 +61,7 @@ html:not([dir='rtl']) .ms-2 {
 .AddButton {
   background-color: #15b3ce !important;
   border: none !important;
+  margin-top: 3.3rem;
 }
 
 /* -------------------------- datatable responsive media query-------------------------- */
@@ -78,6 +79,22 @@ html:not([dir='rtl']) .ms-2 {
 @media (max-width: 426px) {
   .tss-1vd39vz-MUIDataTableBodyCell-stackedCommon {
     font-size: 10px !important;
+  }
+}
+@media (max-width: 1400px) {
+  html:not([dir='rtl']) .ms-2 {
+    margin-left: 2rem !important;
+  }
+}
+@media (min-width: 1440px) {
+  html:not([dir='rtl']) .ms-2 {
+    margin-left: 9rem !important;
+  }
+}
+
+@media (max-width: 320px) {
+  html:not([dir='rtl']) .ms-2 {
+    padding-bottom: 28px;
   }
 }
 /* ----------------------------- end media query ----------------------------- */

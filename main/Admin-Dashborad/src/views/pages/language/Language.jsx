@@ -124,7 +124,7 @@ const Language = () => {
                 onClick={() => {
                   const editData = dataTableData.find((data) => data._id === value)
                   console.log(editData)
-                  navigate('/language-form', { state: { editData: editData, imageUrl: baseUrl } })
+                  navigate('/Language-form', { state: { editData: editData, imageUrl: baseUrl } })
                 }}
               ></Icons.EditRounded>
               <Icons.DeleteRounded
@@ -218,7 +218,7 @@ const Language = () => {
           variant="contained"
           size="medium"
           className="AddButton"
-          onClick={() => navigate('/language-form')}
+          onClick={() => navigate('/Language-form')}
         >
           Add Language
         </Button>

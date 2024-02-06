@@ -114,7 +114,7 @@ const SubCategory = () => {
                 className="editButton"
                 onClick={() => {
                   const editData = dataTableData.find((data) => data._id === value)
-                  navigate('/sub-category-form', {
+                  navigate('/Sub-category-form', {
                     state: { editData: editData },
                   })
                 }}
@@ -211,7 +211,7 @@ const SubCategory = () => {
           variant="contained"
           size="medium"
           className="AddButton"
-          onClick={() => navigate('/sub-category-form')}
+          onClick={() => navigate('/Sub-category-form')}
         >
           Add SubCategory
         </Button>

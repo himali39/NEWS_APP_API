@@ -110,7 +110,7 @@ const LanguageForm = () => {
                   </CButton>
                 ) : (
                   <CForm className="row g-3 " onSubmit={handleSubmit(onSubmit)}>
-                    <CCol md={6}>
+                    <CCol xl={6} md={12}>
                       <CFormLabel>Language</CFormLabel>
                       <CFormInput
                         type="text"
@@ -120,7 +120,7 @@ const LanguageForm = () => {
                       />
                       <CFormFeedback invalid>Language is required</CFormFeedback>
                     </CCol>
-                    <CCol md={6}>
+                    <CCol xl={6} md={12}>
                       <CFormLabel>Display Name</CFormLabel>
                       <CFormInput
                         type="text"
@@ -132,7 +132,7 @@ const LanguageForm = () => {
                     </CCol>
 
                     {/* language code */}
-                    <CCol md={6}>
+                    <CCol xl={6} md={12}>
                       <CFormLabel>Code</CFormLabel>
                       <CFormInput
                         type="text"
@@ -145,7 +145,7 @@ const LanguageForm = () => {
                     {/* end of code */}
 
                     {/* language Json file */}
-                    <CCol md={6}>
+                    <CCol xl={6} md={12}>
                       <CFormLabel>
                         Json File
                         <span style={{ color: '#ff2d55', fontSize: '12px' }}>
@@ -165,7 +165,7 @@ const LanguageForm = () => {
                     {/* end of code */}
 
                     {/* flag img */}
-                    <CCol md={6}>
+                    <CCol xl={6} md={8}>
                       <CFormLabel>
                         Flag Image
                         <span style={{ color: '#ff2d55', fontSize: '12px' }}>
@@ -187,7 +187,7 @@ const LanguageForm = () => {
                       <CFormFeedback invalid>Flag Image is required</CFormFeedback>
                     </CCol>
 
-                    <CCol md={6}>
+                    <CCol xl={6} md={4}>
                       {newUrl && (
                         <>
                           <p>Image preview</p>
@@ -205,7 +205,7 @@ const LanguageForm = () => {
                     </CCol>
                     {/* end of code */}
 
-                    <CCol md={12} className="text-center submitButton">
+                    <CCol className="text-center submitButton">
                       {isLoading ? (
                         <CButton disabled>
                           <CSpinner component="span" size="sm" aria-hidden="true" />

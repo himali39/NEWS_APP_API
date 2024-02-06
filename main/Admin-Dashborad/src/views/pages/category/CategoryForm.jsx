@@ -126,7 +126,7 @@ const CategoryForm = () => {
                 <ToastContainer />
                 <CForm className="row g-3 " onSubmit={handleSubmit(onSubmit)}>
                   {/* Category Name field */}
-                  <CCol md={6}>
+                  <CCol xl={6} md={12}>
                     <CFormLabel>Category Name</CFormLabel>
                     <CFormInput
                       type="text"
@@ -139,7 +139,7 @@ const CategoryForm = () => {
                   </CCol>
                   {/* end field */}
 
-                  <CCol md={6}>
+                  <CCol xl={6} md={12}>
                     <CFormLabel>Language</CFormLabel>
                     <CFormSelect
                       id="languages"
@@ -158,7 +158,7 @@ const CategoryForm = () => {
                     </CFormSelect>
                     {errors.languages && <div className="errors">{errors.languages.message}</div>}
                   </CCol>
-                  <CCol md={6}>
+                  <CCol xl={6} md={12}>
                     <CFormLabel>
                       Category Image
                       <span className="errors">Only png, jpg, webp and jpeg image allow</span>

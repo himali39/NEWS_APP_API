@@ -265,7 +265,7 @@ const NewsForm = () => {
                 ) : (
                   <CForm className="row g-3 " onSubmit={handleSubmit(onSubmit)}>
                     {/* start language */}
-                    <CCol md={4}>
+                    <CCol xl={4} md={12}>
                       <CFormLabel>Language</CFormLabel>
                       <CFormSelect
                         id="languages"
@@ -287,7 +287,7 @@ const NewsForm = () => {
                     {/* end language */}
 
                     {/* start-category field */}
-                    <CCol md={4}>
+                    <CCol xl={4} md={12}>
                       <CFormLabel>Category</CFormLabel>
                       <CFormSelect
                         id="category"
@@ -309,7 +309,7 @@ const NewsForm = () => {
                     {/* end category */}
 
                     {/* start subcategory */}
-                    <CCol md={4}>
+                    <CCol xl={4} md={12}>
                       <CFormLabel>Sub Category</CFormLabel>
                       <CFormSelect
                         id="subcategory"
@@ -331,7 +331,7 @@ const NewsForm = () => {
                     {/* end subcategory */}
 
                     {/* start Title */}
-                    <CCol md={6}>
+                    <CCol xl={6} md={12}>
                       <CFormLabel>Title</CFormLabel>
                       <CFormInput
                         type="text"
@@ -347,7 +347,7 @@ const NewsForm = () => {
                     {/* end title */}
 
                     {/* Start Expiry Date */}
-                    <CCol md={6}>
+                    <CCol xl={6} md={12}>
                       <CFormLabel>Expiry Date</CFormLabel>
                       <CFormInput
                         type="date"
@@ -367,7 +367,7 @@ const NewsForm = () => {
                     {/* End  Expiry Date  */}
 
                     {/* start location */}
-                    <CCol md={6}>
+                    <CCol xl={6} md={12}>
                       <CFormLabel>Location</CFormLabel>
                       <CFormSelect
                         id="location"
@@ -391,7 +391,7 @@ const NewsForm = () => {
                     {/* end location */}
 
                     {/* start tag */}
-                    <CCol md={6}>
+                    <CCol xl={6} md={12}>
                       <CFormLabel>Tag</CFormLabel>
                       <CFormSelect
                         id="tag"
@@ -414,7 +414,7 @@ const NewsForm = () => {
                     {/* end tag */}
 
                     {/* start image field */}
-                    <CCol md={6}>
+                    <CCol xl={6} md={12}>
                       <CFormLabel>
                         News Images
                         <span className="errors"> Only png, jpg, webp and jpeg image allow</span>
@@ -457,7 +457,7 @@ const NewsForm = () => {
                     {/* end image */}
 
                     {/* start multiple image field */}
-                    <CCol md={6}>
+                    <CCol xl={6} md={12}>
                       <CFormLabel>
                         Other Images
                         <span className="errors"> Only png, jpg, webp and jpeg image allow</span>
@@ -492,7 +492,7 @@ const NewsForm = () => {
                     {/* end image */}
 
                     {/* start contentType field */}
-                    <CCol md={6}>
+                    <CCol xl={6} md={12}>
                       <CFormLabel>Content Type</CFormLabel>
                       <CFormSelect
                         id="contentType"
@@ -513,7 +513,7 @@ const NewsForm = () => {
                     {/* Video upload */}
                     {videoDiv && (
                       <>
-                        <CCol md={4}>
+                        <CCol xl={4} md={6}>
                           <CFormLabel>
                             Video Upload
                             <span className="errors"> Only mp4 allow</span>
@@ -534,7 +534,7 @@ const NewsForm = () => {
                             onChange={handleVideoChange}
                           />
                         </CCol>
-                        <CCol md={2}>
+                        <CCol xl={2} md={6}>
                           {videoFile && (
                             <video
                               alt="Video"
@@ -558,7 +558,7 @@ const NewsForm = () => {
                     )}
 
                     {/* start Description Field */}
-                    <CCol md={12}>
+                    <CCol xl={12} md={12}>
                       <CFormLabel>Description</CFormLabel>
                       <Controller
                         name="description"
@@ -577,7 +577,7 @@ const NewsForm = () => {
                     {/* end Description  */}
 
                     {/* submit button */}
-                    <CCol md={12} className="text-center submitButton">
+                    <CCol xl={6} md={12} className="text-center submitButton">
                       {isLoading ? (
                         <CButton disabled>
                           <CSpinner component="span" size="sm" aria-hidden="true" />

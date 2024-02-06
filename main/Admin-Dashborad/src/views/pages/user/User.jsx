@@ -122,7 +122,7 @@ const User = () => {
                 onClick={() => {
                   const editData = dataTableData.find((data) => data._id === value)
 
-                  navigate('/user-form', { state: { editData: editData, imageUrl: baseUrl } })
+                  navigate('/User-form', { state: { editData: editData, imageUrl: baseUrl } })
                 }}
               ></Icons.EditRounded>
               <Icons.DeleteRounded
@@ -217,7 +217,7 @@ const User = () => {
           variant="contained"
           size="medium"
           className="AddButton"
-          onClick={() => navigate('/user-form')}
+          onClick={() => navigate('/User-form')}
         >
           Add User
         </Button>
