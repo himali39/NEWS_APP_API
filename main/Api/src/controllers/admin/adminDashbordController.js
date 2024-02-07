@@ -19,12 +19,14 @@ const getDashboradCount = async (req, res) => {
     };
 
     res.status(200).json({
+      status:200,
       success: true,
       message: "get all Data ",
       data: countedData,
     });
   } catch (error) {
     res.status(404).json({
+      status: 404,
       success: false,
       message: error.message,
     });
@@ -55,12 +57,14 @@ const getCategoryWiseNewsCount = async (req, res) => {
     }
 
     res.status(200).json({
+      status: 200,
       success: true,
       message: "Category-wise news count and percentage",
       data: categoryNewsCount,
     });
   } catch (error) {
     res.status(404).json({
+      status: 404,
       success: false,
       message: error.message,
     });
@@ -95,12 +99,14 @@ const getLanguageWiseNewsCount = async (req, res) => {
       },
     ]);
     res.status(200).json({
+      status: 200,
       success: true,
       message: "Language-wise all news count",
       data: languageNewsCount,
     });
   } catch (error) {
     res.status(404).json({
+      status: 404,
       success: false,
       message: error.message,
     });

@@ -5,17 +5,17 @@ const addNews = async (req, res) => {
   try {
     const reqbody = req.body;
 
-    if (req.file && req.file.filename != "undefined") {
+    if (req.files.newsImage && req.files.newsImage[0].filename != "undefined") {
       reqbody.newsImage = req.files.newsImage[0].filename;
     }
 
-    if (req.files && req.files.filename != "undefined") {
+    if (req.files.multipleImage) {
       reqbody.multipleImage = req.files.multipleImage.map(
         (file) => file.filename
       );
     }
 
-    if (req.files && req.files.filename != "undefined") {
+    if (req.files.video && req.files.video[0].filename != "undefined") {
       reqbody.video = req.files.video[0].filename;
     }
 
@@ -25,12 +25,14 @@ const addNews = async (req, res) => {
     }
 
     res.status(200).json({
+      status: 200,
       success: true,
       message: `News Data data add successfully!`,
       data: newsData,
     });
   } catch (err) {
     res.status(400).json({
+      status: 400,
       success: false,
       message: err.message,
     });
@@ -70,6 +72,7 @@ const allNewsList = async (req, res) => {
     const baseUrl =
       req.protocol + "://" + req.get("host") + process.env.BASE_URL_NEWS_PATH;
     res.status(200).json({
+      status: 200,
       success: true,
       message: "News data get successfully ",
       news: newsData,
@@ -77,6 +80,7 @@ const allNewsList = async (req, res) => {
     });
   } catch (error) {
     res.status(404).json({
+      status: 404,
       success: false,
       message: error.message,
     });
@@ -91,15 +95,23 @@ const deleteNews = async (req, res) => {
     if (!newsData) {
       return res.status(404).json({ message: "News data not found" });
     }
+     deleteFiles("News_image/" + newsData.newsImage);
+ 
+     deleteFiles("News_image/" + newsData.multipleImage);
+
+     deleteFiles("News_image/" + newsData.video);
+
     const deleteNews = await News.findByIdAndDelete(req.params.id);
 
     res.status(200).json({
+      status: 200,
       success: true,
       message: "News data deleted successfully",
       Location: deleteNews,
     });
   } catch (error) {
     res.status(404).json({
+      status: 404,
       success: false,
       message: error.message,
     });
@@ -115,7 +127,7 @@ const updateNews = async (req, res) => {
     if (!newsData) {
       return res.status(404).json({ message: "News data not found" });
     }
-    
+
     if (req.files.newsImage) {
       reqbody.newsImage = req.files.newsImage[0].filename;
     }
@@ -133,12 +145,14 @@ const updateNews = async (req, res) => {
     });
 
     res.status(200).json({
+      status: 200,
       success: true,
       message: "News data update successfully",
       News: updateNews,
     });
   } catch (error) {
     res.status(404).json({
+      status: 404,
       success: false,
       message: error.message,
     });

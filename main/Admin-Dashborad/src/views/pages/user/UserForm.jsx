@@ -38,11 +38,14 @@ const UserForm = () => {
 
   const handleFileUpload = (event) => {
     const file = event.target.files[0]
-    const reader = new FileReader()
-    reader.onloadend = () => {
-      setSingleImageUrl(reader.result)
+
+    if (file) {
+      const reader = new FileReader()
+      reader.onloadend = () => {
+        setSingleImageUrl(reader.result)
+      }
+      reader.readAsDataURL(file)
     }
-    reader.readAsDataURL(file)
   }
 
   const onSubmit = (data) => {
@@ -108,7 +111,7 @@ const UserForm = () => {
                 <ToastContainer />
                 <CForm className="row g-3 " onSubmit={handleSubmit(onSubmit)}>
                   {/* fullName field */}
-                  <CCol md={6}>
+                  <CCol xl={6} md={12}>
                     <CFormLabel>FullName</CFormLabel>
                     <CFormInput
                       type="text"
@@ -122,7 +125,7 @@ const UserForm = () => {
                   {/* end field */}
 
                   {/* userName field */}
-                  <CCol md={6}>
+                  <CCol xl={6} md={12}>
                     <CFormLabel>UserName</CFormLabel>
                     <CFormInput
                       type="text"
@@ -135,8 +138,21 @@ const UserForm = () => {
                   </CCol>
                   {/* end field */}
 
+                  {/* password field */}
+                  <CCol xl={6} md={12}>
+                    <CFormLabel>Password</CFormLabel>
+                    <CFormInput
+                      type="password"
+                      id="password"
+                      placeholder=" Enter ypur password"
+                      {...register('password', { required: 'Password is required' })}
+                      invalid={!!errors.password}
+                    />
+                    <CFormFeedback invalid>Password is required</CFormFeedback>
+                  </CCol>
+                  {/* end field */}
                   {/* email field */}
-                  <CCol md={6}>
+                  <CCol xl={6} md={12}>
                     <CFormLabel>Email</CFormLabel>
                     <CFormInput
                       type="text"
@@ -150,7 +166,7 @@ const UserForm = () => {
                   {/* end field */}
 
                   {/* Mobile field */}
-                  <CCol md={6}>
+                  <CCol xl={6} md={12}>
                     <CFormLabel>Mobile</CFormLabel>
                     <CFormInput
                       type="text"
@@ -170,7 +186,7 @@ const UserForm = () => {
                   {/* end field */}
 
                   {/* Gender field */}
-                  <CCol md={6}>
+                  <CCol xl={6} md={12}>
                     <CFormLabel className="gender">Gender</CFormLabel>
                     <CFormCheck
                       type="radio"
@@ -207,7 +223,7 @@ const UserForm = () => {
                   {/* end field */}
 
                   {/* Profile field */}
-                  <CCol md={6}>
+                  <CCol xl={6} md={12}>
                     <CFormLabel>Profile</CFormLabel>
                     <CFormInput
                       type="file"
@@ -228,7 +244,7 @@ const UserForm = () => {
                   {/* end field */}
 
                   {/* Your Bio field */}
-                  <CCol md={12}>
+                  <CCol xl={6} md={12}>
                     <CFormLabel>Your Bio</CFormLabel>
                     <CFormTextarea
                       id="bioTextarea1"

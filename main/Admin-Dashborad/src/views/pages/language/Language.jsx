@@ -11,7 +11,7 @@ import {
   updateLanguage,
 } from 'src/redux/api/api'
 import swal from 'sweetalert'
-import defaultImg from '../../../../src/assets/images/defaultImg.png'
+import defaultImg from '../../../assets/images/defaultImg.png'
 
 const Language = () => {
   const [dataTableData, setDataTable] = useState([])
@@ -76,7 +76,7 @@ const Language = () => {
               style={{ height: '50px', width: '50px' }}
             />
           ) : (
-            <img src={defaultImg} alt={defaultImg} style={{ height: '50px', width: '50px' }} />
+            <img src={defaultImg} alt={flagImage} style={{ height: '50px', width: '50px' }} />
           ),
       },
     },

@@ -5,12 +5,12 @@ const addLanguage = async (req, res) => {
   try {
     const reqbody = req.body;
 
-    if (req.files["jsonFile"][0]) {
-      reqbody.jsonFile = req.files["jsonFile"][0].filename;
+    if (req.files.jsonFile && req.files.jsonFile !== "undefined") {
+      reqbody.jsonFile = req.files.jsonFile[0].filename;
     }
 
-    if (req.files["flagImage"][0]) {
-      reqbody.flagImage = req.files["flagImage"][0].filename;
+    if (req.files.flagImage && req.files.flagImage !== "undefined") {
+      reqbody.flagImage = req.files.flagImage[0].filename;
     }
 
     const addData = await Languages.create(reqbody);
@@ -19,20 +19,15 @@ const addLanguage = async (req, res) => {
       return res.status(404).json({ message: "language data not found" });
     }
 
-    // const baseUrl =
-    //   req.protocol +
-    //   "://" +
-    //   req.get("host") +
-    //   process.env.BASE_URL_CATEGORY_PATH;
-
     res.status(200).json({
+      status: 200,
       success: true,
       message: "language data add successfully!",
       data: addData,
-      // baseUrl: baseUrl,
     });
   } catch (err) {
     res.status(400).json({
+      status: 400,
       success: false,
       message: err.message,
     });
@@ -55,6 +50,7 @@ const getLanguage = async (req, res) => {
       process.env.BASE_URL_LANGUAGES_PATH;
 
     res.status(200).json({
+      status: 200,
       success: true,
       message: "List of Language Data successfully ",
       language: LanguageData,
@@ -62,6 +58,7 @@ const getLanguage = async (req, res) => {
     });
   } catch (error) {
     res.status(404).json({
+      status: 404,
       success: false,
       message: error.message,
     });
@@ -76,6 +73,10 @@ const deleteLanguage = async (req, res) => {
     if (!LanguageData) {
       return res.status(404).json({ message: "Language Data not found" });
     }
+
+    deleteFiles("languagesFiles/" + LanguageData.jsonFile);
+    deleteFiles("languagesFiles/" + LanguageData.flagImage);
+
     const DeletedData = await Languages.findByIdAndDelete(
       req.params.id,
       req.body,
@@ -83,13 +84,17 @@ const deleteLanguage = async (req, res) => {
         new: true,
       }
     );
+
     res.status(200).json({
+      status: 200,
       success: true,
-      message: "List of Language Data successfully ",
+      message: "Delete Language Data successfully ",
       language: DeletedData,
     });
+    
   } catch (error) {
     res.status(404).json({
+      status: 404,
       success: false,
       message: error.message,
     });
@@ -120,12 +125,14 @@ const deleteMultipleLanguages = async (req, res) => {
     }
 
     res.status(200).json({
+      status: 200,
       success: true,
       message: "news deleted successfully!",
       news: languageData,
     });
   } catch (err) {
     res.status(400).json({
+      status: 400,
       success: false,
       message: err.message,
     });
@@ -145,7 +152,7 @@ const updateLanguage = async (req, res) => {
     if (req.files.jsonFile && req.file != "undefined") {
       req.body.jsonFile = req.files.jsonFile[0].filename;
     }
-        const updatedData = await Languages.findByIdAndUpdate(
+    const updatedData = await Languages.findByIdAndUpdate(
       req.params.id,
       req.body,
       {
@@ -158,12 +165,14 @@ const updateLanguage = async (req, res) => {
     }
 
     res.status(200).json({
+      status: 200,
       success: true,
       message: "Language data update successfully",
       language: updatedData,
     });
   } catch (error) {
-    res.status(500).json({
+    res.status(404).json({
+      status: 404,
       success: false,
       message: error.message,
     });

@@ -24,6 +24,8 @@ const getAllNotification = async (req, res, next) => {
 const deleteAllNotification= async (req, res, next) => {
   try {
 
+    deleteFiles("notifImages/" + noti.notifiImage);
+
     // Delete all records in the User collection
     await Notification.deleteMany({});
 

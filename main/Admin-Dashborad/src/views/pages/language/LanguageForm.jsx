@@ -48,7 +48,9 @@ const LanguageForm = () => {
     let formData = new FormData() //formdata object
     Object.keys(data).forEach(function (key) {
       if (key === 'jsonFile' || key === 'flagImage') {
-        formData.append(key, data[key][0])
+        if (data[key][0] !== undefined) {
+          formData.append(key, data[key][0])
+        }
       } else {
         formData.append(key, data[key])
       }
@@ -92,6 +94,7 @@ const LanguageForm = () => {
     }
     setDefaultLoading(false)
   }, [])
+
   return (
     <div className=" bg-light min-vh-100">
       <CContainer className="mt-3">
@@ -117,6 +120,7 @@ const LanguageForm = () => {
                         id="languagesName"
                         {...register('languagesName', { required: 'Language is required' })}
                         invalid={!!errors.languagesName}
+                        placeholder="Language Name"
                       />
                       <CFormFeedback invalid>Language is required</CFormFeedback>
                     </CCol>
@@ -127,6 +131,7 @@ const LanguageForm = () => {
                         id="displayName"
                         {...register('displayName', { required: 'displayName is required' })}
                         invalid={!!errors.displayName}
+                        placeholder="Language displayName"
                       />
                       <CFormFeedback invalid>displayName is required</CFormFeedback>
                     </CCol>
@@ -137,6 +142,7 @@ const LanguageForm = () => {
                       <CFormInput
                         type="text"
                         id="code"
+                        placeholder="Language code"
                         {...register('code', { required: 'Language code is required' })}
                         invalid={!!errors.code}
                       />
@@ -158,6 +164,7 @@ const LanguageForm = () => {
                         aria-label="file example"
                         {...register('jsonFile', { required: 'Json File is required' })}
                         invalid={!!errors.jsonFile}
+
                         // onChange={handleFileUpload}
                       />
                       <CFormFeedback invalid>Json File is required</CFormFeedback>
@@ -176,15 +183,9 @@ const LanguageForm = () => {
                         type="file"
                         id="flagImage"
                         aria-label="file example"
-                        {...register('flagImage', { required: 'flag Image is required' })}
-                        invalid={!!errors.flagImage}
+                        {...register('flagImage')}
                         onChange={handleFileUpload}
                       />
-                      {errors.newUrl && (
-                        <img src={newUrl} alt="flag Img" style={{ maxWidth: '20%' }} />
-                      )}
-
-                      <CFormFeedback invalid>Flag Image is required</CFormFeedback>
                     </CCol>
 
                     <CCol xl={6} md={4}>
@@ -205,7 +206,7 @@ const LanguageForm = () => {
                     </CCol>
                     {/* end of code */}
 
-                    <CCol className="text-center submitButton">
+                    <CCol className="submitButton">
                       {isLoading ? (
                         <CButton disabled>
                           <CSpinner component="span" size="sm" aria-hidden="true" />

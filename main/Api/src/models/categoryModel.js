@@ -17,7 +17,6 @@ const categorySchema = mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "languages",
     },
-
     categoryImage: {
       type: String,
       default: null,

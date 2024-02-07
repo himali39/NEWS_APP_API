@@ -82,6 +82,7 @@ const Dashboard = () => {
           <CCard className="mb-4">
             <CCardBody>
               <CRow>
+                {/* piechart in this code */}
                 <CCol xs={12} md={6} xl={4}>
                   <CCard className="mb-4" style={{ height: '96%' }}>
                     <CCardHeader>Category wise News</CCardHeader>
@@ -101,6 +102,8 @@ const Dashboard = () => {
                     </CCardBody>
                   </CCard>
                 </CCol>
+
+                {/* user active and diactive user in table */}
                 <CCol xs={12} md={6} xl={8}>
                   <CCard className="mb-4">
                     <CCardHeader>Active Users</CCardHeader>
@@ -111,6 +114,7 @@ const Dashboard = () => {
                 </CCol>
               </CRow>
               <CRow>
+                {/* Language wise News in chartbar */}
                 <CCol md={8}>
                   <CCard className="mb-4">
                     <CCardHeader>Language wise News</CCardHeader>
@@ -131,6 +135,7 @@ const Dashboard = () => {
                     </CCardBody>
                   </CCard>
                 </CCol>
+                {/* Active InActive User in chart */}
                 <CCol md={4}>
                   <CCard className="mb-4">
                     <CCardHeader>Active InActive User</CCardHeader>

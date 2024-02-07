@@ -87,30 +87,30 @@ const loginUser = async (req, res) => {
       throw new Error("User not Found");
     }
 
-    if (findUser) {
-      const emailTemplate = await ejs.renderFile(
-        "../Api/src/views/loginEmail.ejs",
-        {
-          email: email,
-          fullName: req.body.fullName,
-        }
-      );
-      // send mail service is use by email service
-      const mailSent = sendMail(
-        process.env.EMAIL_FROM, // from email
-        email, //to email
-        emailTemplate,
-        "Login successfully"
-      );
+    // if (findUser) {
+    //   const emailTemplate = await ejs.renderFile(
+    //     "../Api/src/views/loginEmail.ejs",
+    //     {
+    //       email: email,
+    //       fullName: req.body.fullName,
+    //     }
+    //   );
+    //   // send mail service is use by email service
+    //   const mailSent = sendMail(
+    //     process.env.EMAIL_FROM, // from email
+    //     email, //to email
+    //     emailTemplate,
+    //     "Login successfully"
+    //   );
 
-      if (!mailSent) {
-        // If email sending fails, handle the error
-        res.status(404).json({
-          success: false,
-          message: "Failed to send email with OTP",
-        });
-      }
-    }
+    //   if (!mailSent) {
+    //     // If email sending fails, handle the error
+    //     res.status(404).json({
+    //       success: false,
+    //       message: "Failed to send email with OTP",
+    //     });
+    //   }
+    // }
     /**compare password   */
     const successPassword = await bcrypt.compare(password, findUser.password);
 

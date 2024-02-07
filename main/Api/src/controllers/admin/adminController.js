@@ -22,11 +22,12 @@ const adminRegister = async (req, res) => {
     const newAdmin = await Admin.create(reqbody);
 
     res.status(201).json({
+      status: 201,
       message: "admin data created successfully!",
       admin: newAdmin,
     });
   } catch (err) {
-    res.status(400).json({ error: err.message });
+    res.status(400).json({ status: 400, error: err.message });
   }
 };
 
@@ -71,6 +72,7 @@ const adminLogin = async (req, res) => {
       process.env.BASE_URL_PROFILE_PATH;
 
     res.status(200).json({
+      status: 200,
       success: true,
       message: `Admin Login successfully!`,
       admin: admin,
@@ -79,6 +81,7 @@ const adminLogin = async (req, res) => {
     });
   } catch (err) {
     res.status(400).json({
+      status: 400,
       success: false,
       message: err.message,
     });
@@ -97,12 +100,14 @@ const allAdminList = async (req, res) => {
     }
 
     res.status(200).json({
+      status: 200,
       success: true,
       message: "All Admin List Get successfully!",
       admin: admin,
     });
   } catch (err) {
     res.status(400).json({
+      status: 400,
       success: false,
       message: err.message,
     });
@@ -155,12 +160,13 @@ const forgotPasswordEmail = async (req, res) => {
     );
 
     res.status(200).json({
+      status: 200,
       success: true,
       message: `Check your email for Reset password`,
     });
   } catch (err) {
-    
-    res.status(500).json({
+    res.status(404).json({
+      status: 404,
       success: false,
       message: err.message,
     });
@@ -204,11 +210,13 @@ const resetPassword = async (req, res) => {
     await admin.save();
 
     res.status(200).json({
+      status: 200,
       success: true,
       message: "Password reset successful.",
     });
   } catch (error) {
-    res.status(500).json({
+    res.status(404).json({
+      status: 404,
       success: false,
       message: error.message,
     });
@@ -248,11 +256,16 @@ const changePassword = async (req, res, next) => {
     await admin.save();
 
     res.status(200).json({
+      status: 200,
       success: true,
       message: "Password reset successful.",
     });
   } catch (err) {
-    next(err);
+    res.status(404).json({
+      status: 404,
+      success: false,
+      message: err.message,
+    });
   }
 };
 
@@ -281,7 +294,12 @@ const refreshToken = async (req, res, next) => {
         expiresIn: "1m",
       }
     );
-    res.status(200).json({ success: true, admin: admin, refreshToken: token });
+    res.status(200).json({
+      status: 200,
+      success: true,
+      admin: admin,
+      refreshToken: token,
+    });
   } catch (err) {
     next(err);
   }
@@ -315,6 +333,7 @@ const updateProfile = async (req, res, next) => {
       process.env.BASE_URL_PROFILE_PATH;
 
     res.status(200).json({
+      status:200,
       success: true,
       message: "Profile set successful.",
       admin: updatedData,

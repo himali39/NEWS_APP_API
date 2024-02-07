@@ -98,9 +98,12 @@ const NewsForm = () => {
   /**multiple image url handle change */
   const handleMultiImgChange = (e) => {
     const files = e.target.files
-    const multipleImgPreviews = Array.from(files).map((file) => URL.createObjectURL(file))
-    setMultipleImageUrls(multipleImgPreviews)
-    clearErrors('multipleImage')
+
+    if (files && files.length > 0) {
+      const multipleImgPreviews = Array.from(files).map((file) => URL.createObjectURL(file))
+      setMultipleImageUrls(multipleImgPreviews)
+      clearErrors('multipleImage')
+    }
   }
   /* list of languages data*/
   const LanguagesList = () => {
@@ -174,9 +177,11 @@ const NewsForm = () => {
     let formData = new FormData() // FormData object
     Object.keys(data).forEach(function (key) {
       if (key === 'newsImage') {
-        formData.append(key, data[key][0])
+        if (data[key][0] !== undefined) {
+          formData.append(key, data[key][0])
+        }
       } else if (key === 'multipleImage') {
-        if (data[key] !== undefined) {
+        if (data[key] !== undefined && data[key].length > 0) {
           for (let i = 0; i < data[key].length; i++) {
             formData.append('multipleImage', data[key][i])
           }
@@ -240,6 +245,7 @@ const NewsForm = () => {
       setVideoDiv(newVal)
       setVideoFile(imageUrl + editData.video)
       setValue('description', editData.description)
+
       const imageUrls = editData.multipleImage.map((filename) => imageUrl + filename)
       setMultipleImageUrls(imageUrls)
     }
@@ -424,13 +430,13 @@ const NewsForm = () => {
                         id="newsImage"
                         {...register(
                           'newsImage',
-                          // isUpdate
-                          //   ? {
-                          //       required: false,
-                          //     }
-                          //   : {
-                          //       required: 'newsImage is required',
-                          //     },
+                          isUpdate
+                            ? {
+                                required: false,
+                              }
+                            : {
+                                required: 'newsImage is required',
+                              },
                         )}
                         className={errors.newsImage ? 'is-invalid' : ''}
                         onChange={(e) => {
@@ -450,9 +456,9 @@ const NewsForm = () => {
                         />
                       )}
 
-                      {/* {errors.newsImage && (
+                      {errors.newsImage && (
                         <CFormFeedback invalid>News Image is required</CFormFeedback>
-                      )} */}
+                      )}
                     </CCol>
                     {/* end image */}
 
@@ -577,7 +583,7 @@ const NewsForm = () => {
                     {/* end Description  */}
 
                     {/* submit button */}
-                    <CCol xl={6} md={12} className="text-center submitButton">
+                    <CCol xl={12} md={12} className="text-center submitButton">
                       {isLoading ? (
                         <CButton disabled>
                           <CSpinner component="span" size="sm" aria-hidden="true" />

@@ -1,3 +1,4 @@
+const News = require("../../models/newsModel");
 const subCategory = require("../../models/subCategoryModel");
 
 /* -------------------------------add sub-Category data------------------------------ */
@@ -59,8 +60,18 @@ const deleteSubCategory = async (req, res) => {
         .status(404)
         .json({ message: "subCategoryData  data not found" });
     }
-
+  
     const deleteCateData = await subCategory.findByIdAndDelete(req.params.id);
+
+    // all news data id find
+    const news = await News.find({ subcategory: req.params.id });
+
+    // Extracting newsIds from the news array
+    const newsIds = news.map((news) => news._id);
+
+    await News.deleteMany({
+      _id: { $in: newsIds },
+    });
 
     res.status(200).json({
       success: true,
@@ -170,7 +181,7 @@ const getSubCateByCategory = async (req, res) => {
       });
     }
 
-    const subsubCateData = await subCategory
+    const subCategoryData = await subCategory
       .find({
         category: categoryId,
       })

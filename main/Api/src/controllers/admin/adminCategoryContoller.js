@@ -1,8 +1,10 @@
 const Category = require("../../models/categoryModel");
 const deleteFiles = require("../../helper/deleteFile");
 const mongoose = require("mongoose");
-/* -------------------------------add Personalize data------------------------------ */
+const subCategory = require("../../models/subCategoryModel");
+const News = require("../../models/newsModel");
 
+/* -------------------------------add Personalize data------------------------------ */
 const addCategory = async (req, res) => {
   try {
     const reqbody = req.body;
@@ -18,12 +20,14 @@ const addCategory = async (req, res) => {
       return res.status(404).json({ message: "category data not found" });
     }
     res.status(200).json({
+      status:200,
       success: true,
       message: `category data add successfully!`,
       data: category,
     });
   } catch (err) {
     res.status(400).json({
+      status:400,
       success: false,
       message: err.message,
     });
@@ -40,12 +44,14 @@ const getCategory = async (req, res) => {
     }
 
     res.status(200).json({
+      status: 200,
       success: true,
       message: "get all Category data ",
       category: CategoryData,
     });
   } catch (error) {
     res.status(404).json({
+      status: 404,
       success: false,
       message: error.message,
     });
@@ -65,13 +71,35 @@ const deleteCategory = async (req, res) => {
 
     const deleteCateData = await Category.findByIdAndDelete(req.params.id);
 
+    // all subCategory  id find
+    const subCate = await subCategory.find({ category: req.params.id });
+
+    // Extracting subcategory IDs from the subCate array
+    const subCategoryIds = subCate.map((sub) => sub._id);
+
+    await subCategory.deleteMany({
+      _id: { $in: subCategoryIds },
+    });
+
+    // all news data id find
+    const news = await News.find({ category: req.params.id });
+
+    // Extracting newsIds from the news array
+    const newsIds = news.map((news) => news._id);
+
+    await News.deleteMany({
+      _id: { $in: newsIds },
+    });
+
     res.status(200).json({
+      status: 200,
       success: true,
       message: "Category data deleted successfully",
       category: deleteCateData,
     });
   } catch (error) {
     res.status(404).json({
+      status: 404,
       success: false,
       message: error.message,
     });
@@ -100,12 +128,14 @@ const updateCategory = async (req, res) => {
     }
 
     res.status(200).json({
+      status:200,
       success: true,
       message: "Category data deleted successfully",
       category: updateCateData,
     });
   } catch (error) {
     res.status(404).json({
+      status: 404,
       success: false,
       message: error.message,
     });
@@ -135,12 +165,14 @@ const deleteMultipleCategory = async (req, res) => {
     }
 
     res.status(200).json({
+      status: 200,
       success: true,
       message: "category deleted successfully!",
       category: categoryData,
     });
   } catch (err) {
     res.status(400).json({
+      status: 400,
       success: false,
       message: err.message,
     });
@@ -170,12 +202,14 @@ const getCategoryByLanguage = async (req, res) => {
     }
 
     res.status(200).json({
+      status: 200,
       success: true,
       message: "Get categories data based on Language",
       category: CategoryData,
     });
   } catch (error) {
-    res.status(500).json({
+    res.status(404).json({
+      status: 404,
       success: false,
       message: error.message,
     });
@@ -183,7 +217,7 @@ const getCategoryByLanguage = async (req, res) => {
 };
 
 /* --------------------------- Update News Status --------------------------- */
-const updateCategoryStatus = async (req, res, next) => {
+const updateCategoryStatus = async (req, res) => {
   try {
     const categoryData = await Category.findById(req.params.id);
 
@@ -196,12 +230,17 @@ const updateCategoryStatus = async (req, res, next) => {
     const updatedStatus = await categoryData.save();
 
     res.status(200).json({
+      status: 200,
       success: true,
       message: "Category update status successfully",
       news: updatedStatus,
     });
   } catch (err) {
-    next(err);
+   res.status(404).json({
+     status: 404,
+     success: false,
+     message: err.message,
+   });
   }
 };
 

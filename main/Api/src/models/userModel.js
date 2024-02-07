@@ -75,6 +75,10 @@ const UserSchema = mongoose.Schema(
       type: Boolean,
       default: true,
     },
+    deviceType: {
+      type: Number,
+      default: 1,
+    },
   },
 
   {

@@ -3,7 +3,7 @@ const subCategory = require("../../models/subCategoryModel");
 /* ----------------------------- Get Sub Category data ----------------------------- */
 const getSubCategoryById = async (req, res) => {
   try {
-    const subCategoryList = await subCategory.find();
+    const subCategoryList = await subCategory.find().populate("languages").populate("category");
 
     if (!subCategoryList) {
       return res.status(404).json({ message: "subCategory  data not found" });
@@ -12,7 +12,7 @@ const getSubCategoryById = async (req, res) => {
     res.status(200).json({
       success: true,
       message: "subCategory List was successfully",
-      personalize: subCategoryList,
+      subCategory: subCategoryList,
     });
   } catch (error) {
     res.status(404).json({
@@ -26,10 +26,9 @@ const getSubcategoriesByCategories = async (req, res) => {
   try {
     const { categoryIds } = req.body;
 
-    // if (!req.body.categoryIds || req.body.categoryIds.length < 3) {
-    //   throw new Error("select at least 3 category are required.");
-    // }
-
+    if (!req.body.categoryIds || req.body.categoryIds.length < 3) {
+      throw new Error("select at least 3 category are required.");
+    }
     if (
       !categoryIds ||
       !Array.isArray(categoryIds) ||
@@ -40,9 +39,13 @@ const getSubcategoriesByCategories = async (req, res) => {
         .json({ success: false, message: "Invalid categoryIds" });
     }
 
-    const subcategories = await subCategory.find({
-      categoryName: { $in: categoryIds },
-    });
+    const subcategories = await subCategory
+      .find({
+        category: { $in: categoryIds },
+      })
+      .populate("category")
+      .populate("languages");
+
     res.status(200).json({
       success: true,
       message: "list of subCategory data ",

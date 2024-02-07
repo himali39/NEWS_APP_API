@@ -11,12 +11,14 @@ const addLocation = async (req, res) => {
       return res.status(404).json({ message: "Location data not found" });
     }
     res.status(200).json({
+      status: 200,
       success: true,
       message: "Location data add successfully!",
       location: addData,
     });
   } catch (err) {
-    res.status(400).json({
+    res.status(404).json({
+      status: 404,
       success: false,
       message: err.message,
     });
@@ -33,12 +35,14 @@ const getLocation = async (req, res) => {
     }
 
     res.status(200).json({
+      status: 200,
       success: true,
       message: "List of Location Data successfully ",
       location: locationData,
     });
   } catch (error) {
     res.status(404).json({
+      status: 404,
       success: false,
       message: error.message,
     });
@@ -56,12 +60,14 @@ const deleteLocation = async (req, res) => {
     const deleteLocation = await Location.findByIdAndDelete(req.params.id);
 
     res.status(200).json({
+      status: 200,
       success: true,
       message: "Location data deleted successfully",
       Location: deleteLocation,
     });
   } catch (error) {
     res.status(404).json({
+      status: 404,
       success: false,
       message: error.message,
     });
@@ -87,12 +93,14 @@ const updateLocation = async (req, res) => {
     }
 
     res.status(200).json({
+      status: 200,
       success: true,
       message: "Location data deleted successfully",
       Location: updateCateData,
     });
   } catch (error) {
     res.status(404).json({
+      status: 404,
       success: false,
       message: error.message,
     });

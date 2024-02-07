@@ -55,9 +55,7 @@ const deleteNotification = async (req, res, next) => {
     }
     deleteFiles("notifImages/" + noti.notifiImage);
 
-    // console.log(deleteFiles("notifImages/" + noti.notifiImage));
-
-    await Notification.deleteOne({ _id: id });
+        await Notification.deleteOne({ _id: id });
 
     res.status(200).json({
       success: true,
