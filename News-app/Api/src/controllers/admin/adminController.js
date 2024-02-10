@@ -129,7 +129,7 @@ const forgotPasswordEmail = async (req, res) => {
     let resetCode = crypto.randomBytes(32).toString("hex");
 
     const otp = generateOTP(); //generate otp code emailService through generate
-    const expirationTime = new Date(Date.now() + 5 * 60 * 1000); // 5 minutes expiration
+    const expirationTime = new Date(Date.now() + 1 * 60 * 1000); // 5 minutes expiration
 
     admin.otp = {
       value: otp,
@@ -143,7 +143,7 @@ const forgotPasswordEmail = async (req, res) => {
 
     // Render the EJS template
     const emailTemplate = await ejs.renderFile(
-      "../Api/src/views/email_otp.ejs",
+      "../Api/src/views/adminforgotpwd_otp.ejs",
       {
         otp,
         otpURL: `${email_URL}reset-password/${resetCode}/${admin._id}`,
@@ -333,7 +333,7 @@ const updateProfile = async (req, res, next) => {
       process.env.BASE_URL_PROFILE_PATH;
 
     res.status(200).json({
-      status:200,
+      status: 200,
       success: true,
       message: "Profile set successful.",
       admin: updatedData,
